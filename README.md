@@ -44,3 +44,37 @@ db.createUser(
 mongo localhost:27017/jobs -unaukri -pnaukri
 
 http://docs.mongodb.org/manual/reference/configuration-options/
+
+security:
+    authorization: "enabled"
+
+sudo systemctl restart mongodb
+
+db.createUser(
+  {
+    user: "root",
+    pwd: "root",
+    roles: [ { role: "userAdminAnyDatabase", db: "admin" } ]
+  }
+)
+
+sudo ufw allow from 172.17.0.1 to any port 27017
+
+
+
+
+
+mongo mongodb://root:root@localhost:27017
+
+
+mongo 172.105.35.196:27017/jobs -unaukri -pnaukri
+
+
+mongo -u root -p --authenticationDatabase admin --host localhost
+
+mongo "mongodb://naukri:naukri@localhost:27017/jobs?keepAlive=true&poolSize=30&autoReconnect=true&socketTimeoutMS=360000&connectTimeoutMS=360000"
+
+
+mongo "mongodb://naukri:naukri@172.105.35.196:27017/jobs?keepAlive=true&poolSize=30&autoReconnect=true&socketTimeoutMS=360000&connectTimeoutMS=360000"
+
+https://docs.mongodb.com/manual/mongo/
