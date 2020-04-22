@@ -29,3 +29,18 @@ https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/mongoo
 
 # MongoDb Compass Location
 cd /home/digiapt/code/project/python/jobs/mongodb-compass_1.20.5_amd64/usr/bin
+
+
+https://medium.com/mongoaudit/how-to-enable-authentication-on-mongodb-b9e8a924efac
+
+db.createUser(
+  {
+    user: "naukri",
+    pwd: "naukri",
+    roles: [ { role: "readWrite", db: "jobs" } ]
+  }
+)
+
+mongo localhost:27017/jobs -unaukri -pnaukri
+
+http://docs.mongodb.org/manual/reference/configuration-options/

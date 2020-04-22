@@ -16,6 +16,7 @@ function listen() {
 
 
 function connect() {
+console.log("Connecting.....")
   mongoose.connection
     .on('error', console.log)
     .on('disconnected', connect)
