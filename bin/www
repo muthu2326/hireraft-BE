@@ -1,0 +1,29 @@
+#!/usr/bin/nodejs
+var debug = require('debug')('my-application');
+var app = require('../app');
+const mongoose = require('mongoose');
+const config = require('config');
+
+app.set('port', process.env.PORT || 3000);
+
+connect();
+
+function listen() {
+ var server=app.listen(app.get('port'), function() {
+  console.log('Express server listening on port ' + server.address().port);
+});
+}
+
+
+function connect() {
+  mongoose.connection
+    .on('error', console.log)
+    .on('disconnected', connect)
+    .once('open', listen);
+
+  return mongoose.connect(config.db, {
+    keepAlive: 1,
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  });
+}
