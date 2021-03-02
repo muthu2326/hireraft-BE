@@ -41,9 +41,11 @@ db.createUser(
   }
 )
 
-mongo localhost:27017/jobs -unaukri -pnaukri
+mongo localhost:27017/jobs -u naukri -p naukri
 
 http://docs.mongodb.org/manual/reference/configuration-options/
+
+Open /etc/mongod.conf with your favorite code editor and search for the following lines:
 
 security:
     authorization: "enabled"
@@ -67,7 +69,9 @@ sudo ufw allow from 172.17.0.1 to any port 27017
 mongo mongodb://root:root@localhost:27017
 
 
-mongo 172.105.35.196:27017/jobs -unaukri -pnaukri
+mongo 172.105.35.196:27017/jobs -u naukri -p naukri
+
+mongo 172.105.35.196:27017/jobs -u root -p root
 
 
 mongo -u root -p --authenticationDatabase admin --host localhost
