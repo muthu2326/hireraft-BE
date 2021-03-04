@@ -13,7 +13,12 @@ const setTags = tags => {
     return [];
 };
 
-const RegisteredUsersSchema = new Schema({
+const UsersAndJobsAppliedSchema = new Schema({
+    job_id: {
+        type: String,
+        default: '',
+        trim: true,
+    },
     name: {
         type: String,
         default: null,
@@ -24,39 +29,26 @@ const RegisteredUsersSchema = new Schema({
         default: null,
         trim: true,
     },
-    password: {
-        type: String,
-        default: null,
-        trim: true,
-    },
     phone: {
         type: String,
         default: null,
         trim: true,
     },
-    course: {
+    user_id: {
         type: String,
-        default: null,
+        default: '',
         trim: true,
     },
-    passing_year: {
-        type: Number,
-        default: 0,
-        trim: true,
-    },
-    skills: {
-        type: Array,
-        default: []
-    },
-    joining_by: {
+    applied_date: { type: Date, default: Date.now },
+    status: {
         type: String,
-        default: null,
+        default: '',
         trim: true,
     },
     created: { type: Date, default: Date.now },
     updated: { type: Date, default: Date.now },
 });
 
-const registeredUsers = mongoose.model('registeredUsers', RegisteredUsersSchema);
+const usersAndJobsApplied = mongoose.model('usersAndJobsApplied', UsersAndJobsAppliedSchema);
 
-module.exports = registeredUsers;
+module.exports = usersAndJobsApplied;

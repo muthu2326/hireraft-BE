@@ -3,6 +3,8 @@ var utility = require('../service/utils')
 const message = require("../service/message.json");
 
 const RegisteredUsers = require('../models/RegisteredUsersSchema');
+const UsersAndJobsApplied = require('../models/UsersAndJobsAppliedSchema');
+const NaukriPostedJob = require('../models/NaukriPostedJobSchema');
 
 exports.userRegistration = function (req, res) {
     console.log('Entering userRegistration')
@@ -107,6 +109,84 @@ exports.getUserById = function (req, res) {
                     msg: message.user_not_found,
                 },
             });
+            return;
+        }
+    });
+}; /*End of getUser*/
+
+
+/*Get a single user */
+exports.getUserJobs = function (req, res) {
+    console.log("User Controller: entering getUserJobs")
+    console.log('Request params :: ', req.params)
+    console.log("request query :: ", req.query);
+
+    /*Validate for a null id*/
+    if (!req.params.user_id) {
+        console.log("missing user_id in params");
+        res.status(400).jsonp({
+            status: 400,
+            data: {},
+            message: message.invalid_get_request,
+        });
+        return;
+    }
+
+    var user_id = req.params.user_id;
+
+    UsersAndJobsApplied.find({user_id: user_id}, {_id: 0, job_id: 1, status: 1}, function (err, jobs_applied) {
+        if (err) {
+            console.log('err in finding getUserJobs', err)
+            res.status(500).jsonp({
+                status: 500,
+                data: {},
+                error: {
+                    msg: message.something_went_wrong,
+                    err: err,
+                },
+            });
+            return;
+        }
+        console.log('getUserJobs response', jobs_applied.length)
+        if (jobs_applied.length > 0) {
+            job_ids = []
+            jobs_applied.forEach(jobs => {
+                if(!job_ids.includes(jobs.job_id)){
+                    job_ids.push(jobs.job_id)
+                }
+            });
+
+            console.log('job_ids', job_ids)
+            NaukriPostedJob.find({ _id: {"$in": job_ids}},{ _id: 1, company_name: 1, company_address: 1, employment_type: 1, role: 1},function(err, docs) {
+                console.log('docs', docs)
+                    if (err) {
+                        console.log('err in getJobsCount', err)
+                        res.send({
+                            status: 500,
+                            data: {},
+                            err: {
+                                msg: message.something_went_wrong,
+                                err: err
+                            }
+                        })
+                        return;
+                    } else {
+                        res.send({
+                            status: 200,
+                            data: docs,
+                            err: {}
+                        })
+                        return;
+                    }
+                })
+        }else{
+            res.send({
+                status: 200,
+                data: {
+                    jobs: []  
+                },
+                err: {}
+            })
             return;
         }
     });

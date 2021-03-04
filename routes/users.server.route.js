@@ -11,4 +11,6 @@ router.get('/',users.getAllUsers);
 /* Get all registered users */
 router.get('/:user_id',users.getUserById);
 
+router.get('/:user_id/jobs',users.getUserJobs);
+
 module.exports = router;
