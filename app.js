@@ -50,6 +50,25 @@ if (app.get('env') === 'development') {
         });
     });
 }
+app.use(function(req, res, next) {
+    var allowedOrigins = ['https://www.hireraft.com', 'http://192.168.43.37:4200', 'http://localhost:4200'];
+    var origin = req.headers.origin;
+    origin = "*";
+    // Commented temporarily for any frotend with IP address can point to remote backend
+    //if (allowedOrigins.indexOf(origin) > -1) {
+        res.setHeader('Access-Control-Allow-Origin', origin);
+    //}
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Origin, Content-Type, Authorization, Accept,Content-Length, X-Requested-With, X-PINGOTHER, token');
+    res.header('Access-Control-Expose-Headers', 'X-Total-Count');
+    res.header('X-Total-Count', 5000);
+    
+    if ('OPTIONS' === req.method) {
+        res.sendStatus(200);
+    } else {
+        next();
+    }
+});
 
 // production error handler
 // no stacktraces leaked to user
