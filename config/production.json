@@ -1,7 +1,7 @@
 {
     "db":"mongodb://naukri:naukri@localhost:27017/jobs",
     "from_email": "muthu.r@digiapt.com",
-    "notify_to": ["muthu.r@digiapt.com", "jayarama.reddy@digiapt.com", "deepak.tomson@digiapt.com"],
+    "notify_to": ["gaurav.kumar@digiapt.com", "hr@digiapt.com"],
     "auth_email": "muthu.r@digiapt.com",
     "auth_pass": "Sainila@23"
 }

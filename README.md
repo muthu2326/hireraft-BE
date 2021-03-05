@@ -82,3 +82,19 @@ mongo "mongodb://naukri:naukri@localhost:27017/jobs?keepAlive=true&poolSize=30&a
 mongo "mongodb://naukri:naukri@172.105.35.196:27017/jobs?keepAlive=true&poolSize=30&autoReconnect=true&socketTimeoutMS=360000&connectTimeoutMS=360000"
 
 https://docs.mongodb.com/manual/mongo/
+
+To start the server for development locally:
+
+PORT=3000 NODE_ENV=development DEBUG=joblisting:* npm start bin/www
+
+To start the server for production locally:
+
+PORT=3000 NODE_ENV=development DEBUG=joblisting:* npm start bin/www
+
+To start the server for development forver:
+
+./scripts/restart-dev-server-application.sh
+
+To start the server for production forver:
+
+./scripts/restart-prod-server-application.sh
