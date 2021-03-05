@@ -95,31 +95,70 @@ exports.applyJob = function (req, res) {
                             return;
                         }
 
-                        email_content = {
-                            subject: `${req.body.name} - Applied for a Job`,
-                            body: `<html><body>
-                            Hi,<br><br>A candidate has applied for a Job, Please find the details below<br><br>
-                            Name: ${jobs_response.name}<br>
-                            Email: ${jobs_response.email}<br>
-                            Phone: ${jobs_response.phone}<br><br>
-                            Thanks & Regards,<br>
-                            <b>Hireraft<b>
-                            </body></html>`,
-                            from: config.get('from_email'),
-                            to: config.get('notify_to')
-                        }
-                        sendEmail(email_content)
-                        console.log('jobs_response', jobs_response)
-                        console.log('Exiting applyJob')
-                        res.send({
-                            status: 200,
-                            data: {
-                                reference: jobs_response._id,
-                                msg: "Successfully Applied"
-                            },
-                            err: {}
+                        NaukriPostedJob.findOne({
+                            _id: req.body.job_id
+                        }, {
+                            _id: 1,
+                            company_name: 1,
+                            company_address: 1,
+                            employment_type: 1,
+                            role: 1
+                        }, function (err, docs) {
+                            console.log('docs', docs)
+                            if (err) {
+                                console.log('err in find Job Details', err)
+                                res.send({
+                                    status: 500,
+                                    data: {},
+                                    err: {
+                                        msg: message.something_went_wrong,
+                                        err: err
+                                    }
+                                })
+                                return;
+                            } else {
+                                if (docs) {
+                                    email_content = {
+                                        subject: `${req.body.name} - Applied for a Job`,
+                                        body: `<html><body>
+                                    Hi,<br><br>A candidate has applied for a Job, Please find the details below<br><br>
+                                    <b>Name:</b> ${jobs_response.name}<br>
+                                    <b>Email:</b> ${jobs_response.email}<br>
+                                    <b>Phone:</b> ${jobs_response.phone}<br><br>
+                                    <b>Company Name:</b> ${docs.company_name}<br>
+                                    <b>Company Address:</b> ${docs.company_address}<br>
+                                    <b>Role:</b> ${docs.role}<br>
+                                    <b>Employment Type:</b> ${docs.employment_type}<br><br>                                    
+                                    Thanks & Regards,<br>
+                                    <b>Hireraft<b>
+                                    </body></html>`,
+                                        from: config.get('from_email'),
+                                        to: config.get('notify_to')
+                                    }
+                                    sendEmail(email_content)
+                                    console.log('jobs_response', jobs_response)
+                                    console.log('Exiting applyJob')
+                                    res.send({
+                                        status: 200,
+                                        data: {
+                                            reference: jobs_response._id,
+                                            msg: "Successfully Applied"
+                                        },
+                                        err: {}
+                                    })
+                                    return;
+                                }else{
+                                    res.send({
+                                        status: 400,
+                                        data: {},
+                                        err: {
+                                            msg: "Could not find the Job"
+                                        }
+                                    })
+                                    return;
+                                }
+                            }
                         })
-                        return;
                     })
                 } else {
                     res.send({
@@ -171,26 +210,26 @@ sendEmail = (data) => {
     var transporter = nodemailer.createTransport({
         host: "smtp.gmail.com",
         port: 587,
-        secure: false, 
+        secure: false,
         service: 'gmail',
         auth: {
-               user: config.get('auth_email'),
-               pass: config.get('auth_pass')
-           }
-       });
+            user: config.get('auth_email'),
+            pass: config.get('auth_pass')
+        }
+    });
 
-       const mailOptions = {
+    const mailOptions = {
         from: data.from,
-        to: data.to, 
-        subject: data.subject, 
+        to: data.to,
+        subject: data.subject,
         html: data.body
-      };
+    };
 
-      transporter.sendMail(mailOptions, function (err, info) {
-        if(err)
-          console.log(err)
+    transporter.sendMail(mailOptions, function (err, info) {
+        if (err)
+            console.log(err)
         else
-          console.log(info);
-     });
+            console.log(info);
+    });
 
 }
