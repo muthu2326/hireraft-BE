@@ -46,6 +46,7 @@ exports.getjob = function (req, res) {
         }, pagination,
         function (err, docs) {
             if (err) {
+                console.log('err', err)
                 res.send(err)
             } else {
                 NaukriPostedJob.countDocuments((err, counts) => {

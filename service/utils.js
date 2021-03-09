@@ -33,6 +33,15 @@ exports.getFilterCondition = function(filter) {
                     }
                 }
                 break;
+            case "location":
+                if (filter[key] != "-1") {
+                    conditionflag = true;
+                    condition["company_address"] = {
+                        $regex: filter.location, 
+                        $options: 'i'
+                    }
+                }
+                break;                
             default:
                 console.log("Not a valid filter ::: ", key);
         }
