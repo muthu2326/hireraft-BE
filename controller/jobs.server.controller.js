@@ -13,15 +13,35 @@ exports.getjob = function (req, res) {
     if (check.error) {
         res.status(400).send(check.message)
     }
-
+    
     condition = utility.getFilterCondition(req.body.filter)
+    const page = req.query.page
+    const limit = req.query.limit
+    const sort = req.query.sort
+    const field = req.query.field
+
+    console.log('page', page, 'limit', limit)
+    let pagination = {}
+
+    if(page != null && limit != null){
+        pagination.limit = limit * 1
+        pagination.skip = ((page - 1) * limit)
+    }
+
+    if(sort){
+        pagination.sort = { "date" : sort }
+    }
+
+    console.log('condition', condition)
+    console.log('pagination', pagination)
+    
     NaukriPostedJob.find(condition, {
             _id: 1,
             company_name: 1,
             company_address: 1,
             employment_type: 1,
             role: 1
-        },
+        },pagination,
         function (err, docs) {
             if (err) {
                 res.send(err)
