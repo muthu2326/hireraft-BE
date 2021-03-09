@@ -1,5 +1,6 @@
 var waterfall = require('async-waterfall');
 var utility = require('../service/utils')
+var dbHelper = require('../service/db_helper')
 var nodemailer = require('nodemailer');
 const config = require('config');
 
@@ -31,6 +32,106 @@ exports.getjob = function (req, res) {
                 })
             }
         })
+}
+
+exports.applyJobNew = function (req, res) {
+    console.log("Jobs Controller: entering applyJob")
+    console.log('Request params :: ', req.params)
+    console.log("request query :: ", req.query);
+
+    if (!req.body.email || !req.body.uuid || !req.body.job_id) {
+        let response = {
+            status: 400,
+            data: {},
+            error: {
+                msg: message.missing_fields,
+            },
+        };
+        res.status(400).jsonp(response);
+        return;
+    }
+    let user_id = req.body.uuid
+    let email = req.body.email
+    let job_id = req.body.job_id
+
+    dbHelper.findUser(user_id, email, (err, ch_user) => {
+        if (err) {
+            res.status(err.status).jsonp(err);
+            return;
+        } else {
+            if (!ch_user) {
+                console.log('New User')
+                dbHelper.registerUser(req, (err, new_user) => {
+                    if (err) {
+                        res.status(err.status).jsonp(err);
+                        return;
+                    }
+                    if (new_user) {
+                        let new_user_id = new_user._id;
+                        dbHelper.FindJobDetails(job_id, (err, job) => {
+                            if (err) {
+                                res.status(err.status).jsonp(err);
+                                return;
+                            }
+                            if (job) {
+                                dbHelper.applyForJob(req, new_user, job, (err, response) => {
+                                    if (err) {
+                                        res.status(err.status).jsonp(err);
+                                        return;
+                                    } else {
+                                        res.send({
+                                            status: 200,
+                                            data: {
+                                                reference: response._id,
+                                                msg: "Successfully Applied"
+                                            },
+                                            err: {}
+                                        })
+                                        return;
+                                    }
+                                })
+                            }
+                        })
+                    }
+                })
+            } else {
+                console.log('user already registered')
+                dbHelper.FindJobDetails(job_id, (err, job) => {
+                    if (err) {
+                        res.status(err.status).jsonp(err);
+                        return;
+                    }
+                    if (job) {
+                        dbHelper.checkIfUserAppliedForSameJob(user_id, job_id, (err, duplicateJob) => {
+                            if (err) {
+                                res.status(err.status).jsonp(err);
+                                return;
+                            } else {
+                                if (!duplicateJob) {
+                                    dbHelper.applyForJob(req, ch_user, job, (err, response) => {
+                                        if (err) {
+                                            res.status(err.status).jsonp(err);
+                                            return;
+                                        } else {
+                                            res.send({
+                                                status: 200,
+                                                data: {
+                                                    reference: response._id,
+                                                    msg: "Successfully Applied"
+                                                },
+                                                err: {}
+                                            })
+                                            return;
+                                        }
+                                    })
+                                }
+                            }
+                        })
+                    }
+                })
+            }
+        }
+    })
 }
 
 exports.applyJob = function (req, res) {
@@ -147,7 +248,7 @@ exports.applyJob = function (req, res) {
                                         err: {}
                                     })
                                     return;
-                                }else{
+                                } else {
                                     res.send({
                                         status: 400,
                                         data: {},

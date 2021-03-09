@@ -19,21 +19,6 @@ const UsersAndJobsAppliedSchema = new Schema({
         default: '',
         trim: true,
     },
-    name: {
-        type: String,
-        default: null,
-        trim: true,
-    },
-    email: {
-        type: String,
-        default: null,
-        trim: true,
-    },
-    phone: {
-        type: String,
-        default: null,
-        trim: true,
-    },
     user_id: {
         type: String,
         default: '',
@@ -49,6 +34,6 @@ const UsersAndJobsAppliedSchema = new Schema({
     updated: { type: Date, default: Date.now },
 });
 
-const usersAndJobsApplied = mongoose.model('usersAndJobsApplied', UsersAndJobsAppliedSchema);
+const usersAndJobsApplied = mongoose.model('usersandJobsApplied', UsersAndJobsAppliedSchema);
 
 module.exports = usersAndJobsApplied;

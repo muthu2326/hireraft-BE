@@ -25,12 +25,14 @@ exports.userRegistration = function (req, res) {
     }
 
     let users_request = {
+        _id: req.body.uuid,
         name: req.body.name,
         email: req.body.email,
         phone: req.body.phone,
         course: req.body.course,
         passing_year: req.body.passing_year,
         skills: req.body.skills,
+        experiance: req.body.experiance,
         joining_by: req.body.joining_by
     }
 

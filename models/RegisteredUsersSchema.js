@@ -14,6 +14,10 @@ const setTags = tags => {
 };
 
 const RegisteredUsersSchema = new Schema({
+    _id: {
+        type: String,
+        key: true
+    },
     name: {
         type: String,
         default: null,
@@ -29,6 +33,11 @@ const RegisteredUsersSchema = new Schema({
         default: null,
         trim: true,
     },
+    experience: {
+        type: String,
+        default: null,
+        trim: true,
+    },
     phone: {
         type: String,
         default: null,
@@ -40,7 +49,7 @@ const RegisteredUsersSchema = new Schema({
         trim: true,
     },
     passing_year: {
-        type: Number,
+        type: String,
         default: 0,
         trim: true,
     },

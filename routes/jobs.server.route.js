@@ -6,7 +6,7 @@ var jobs=require("../controller/jobs.server.controller");
 router.post('/',jobs.getjob);
 
 /* POST user apply for a job. */
-router.post('/apply',jobs.applyJob);
+router.post('/apply',jobs.applyJobNew);
 
 /* GET user apply for a job. */
 router.get('/count',jobs.getJobsCount);
