@@ -135,8 +135,25 @@ exports.getUserJobs = function (req, res) {
     }
 
     var user_id = req.params.user_id;
+    const page = req.query.page
+    const limit = req.query.limit
+    const sort = req.query.sort
 
-    UsersAndJobsApplied.find({user_id: user_id}, {_id: 0, job_id: 1, status: 1}, function (err, jobs_applied) {
+    console.log('page', page, 'limit', limit)
+    let pagination = {}
+
+    if(page != null && limit != null){
+        pagination.limit = limit * 1
+        pagination.skip = ((page - 1) * limit)
+    }
+
+    if(sort){
+        pagination.sort = { "created" : sort }
+    }
+
+    console.log('pagination', pagination)
+
+    UsersAndJobsApplied.find({user_id: user_id}, {_id: 0, job_id: 1, status: 1}, pagination, function (err, jobs_applied) {
         if (err) {
             console.log('err in finding getUserJobs', err)
             res.status(500).jsonp({

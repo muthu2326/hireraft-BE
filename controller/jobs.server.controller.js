@@ -13,7 +13,7 @@ exports.getjob = function (req, res) {
     if (check.error) {
         res.status(400).send(check.message)
     }
-    
+
     condition = utility.getFilterCondition(req.body.filter)
     const page = req.query.page
     const limit = req.query.limit
@@ -23,32 +23,51 @@ exports.getjob = function (req, res) {
     console.log('page', page, 'limit', limit)
     let pagination = {}
 
-    if(page != null && limit != null){
+    if (page != null && limit != null) {
         pagination.limit = limit * 1
         pagination.skip = ((page - 1) * limit)
     }
 
-    if(sort){
-        pagination.sort = { "date" : sort }
+    if (sort) {
+        pagination.sort = {
+            "date": sort
+        }
     }
 
     console.log('condition', condition)
     console.log('pagination', pagination)
-    
+
     NaukriPostedJob.find(condition, {
             _id: 1,
             company_name: 1,
             company_address: 1,
             employment_type: 1,
             role: 1
-        },pagination,
+        }, pagination,
         function (err, docs) {
             if (err) {
                 res.send(err)
             } else {
-                res.send({
-                    total: docs.length,
-                    docs
+                NaukriPostedJob.countDocuments((err, counts) => {
+                    console.log('counts', counts)
+                    if (err) {
+                        console.log('err in getting counts', err)
+                        res.send({
+                            status: 500,
+                            data: {},
+                            err: {
+                                msg: message.something_went_wrong,
+                                err: err
+                            }
+                        })
+                        return;
+                    } else {
+                        res.send({
+                            total: counts,
+                            results_count: docs.length,
+                            docs
+                        })
+                    }
                 })
             }
         })
