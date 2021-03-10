@@ -14,6 +14,8 @@
     "user_deleted": "Successfully removed user",
     "user_updated": "Successfully updated user",
 
+    "job_not_found": "Job not found",
+
     "session_expired": "Your session is expired, please re-login",
     "authorization_not_found": "Authentication error. Token required.",
     "invalid_authorization": "Authentication error. Token not found.",

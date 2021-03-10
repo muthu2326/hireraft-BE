@@ -11,4 +11,7 @@ router.post('/apply',jobs.applyJobNew);
 /* GET user apply for a job. */
 router.get('/count',jobs.getJobsCount);
 
+/* GET job by ID. */
+router.get('/:job_id',jobs.getJobById);
+
 module.exports = router;

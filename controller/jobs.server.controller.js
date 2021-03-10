@@ -74,6 +74,59 @@ exports.getjob = function (req, res) {
         })
 }
 
+exports.getJobById = function (req, res) {
+    console.log("Job Controller: entering getJobById")
+    console.log('Request params :: ', req.params)
+    console.log("request query :: ", req.query);
+
+    /*Validate for a null id*/
+    if (!req.params.job_id) {
+        console.log("missing job_id in params");
+        res.status(400).jsonp({
+            status: 400,
+            data: {},
+            message: message.invalid_get_request,
+        });
+        return;
+    }
+
+    var job_id = req.params.job_id;
+
+    NaukriPostedJob.findById(job_id, function (err, job) {
+        if (err) {
+            console.log('err in finding job', err)
+            res.status(500).jsonp({
+                status: 500,
+                data: {},
+                error: {
+                    msg: message.something_went_wrong,
+                    err: err,
+                },
+            });
+            return;
+        }
+        console.log('job response', job)
+        if (job) {
+            res.status(200).jsonp({
+                status: 200,
+                data: job,
+                error: {},
+            });
+            return;
+        } else {
+            console.log('could not find job')
+            res.status(400).jsonp({
+                status: 400,
+                data: {},
+                error: {
+                    msg: message.job_not_found,
+                },
+            });
+            return;
+        }
+    });
+}; 
+
 exports.applyJobNew = function (req, res) {
     console.log("Jobs Controller: entering applyJob")
     console.log('Request params :: ', req.params)

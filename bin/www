@@ -30,9 +30,9 @@ app.set('port', port);
 
 
 let options = {
-  key: fs.readFileSync('joblisting.hireraft.com.key'),
-  cert: fs.readFileSync('a63120cb9ee9c98.crt'),
-  ca: fs.readFileSync('gd_bundle-g2-g1.crt'),  
+  key: fs.readFileSync("joblisting.hireraft.com.key"),
+  cert: fs.readFileSync("a63120cb9ee9c98.crt"),
+  ca: fs.readFileSync("gd_bundle-g2-g1.crt"),  
 };
 
 var server = https.createServer(options, app)

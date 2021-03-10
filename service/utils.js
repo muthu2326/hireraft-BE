@@ -1,4 +1,4 @@
-exports.getFilterCondition = function(filter) {
+exports.getFilterCondition = function (filter) {
     condition = {}
     var conditionflag = false;
 
@@ -36,12 +36,28 @@ exports.getFilterCondition = function(filter) {
             case "location":
                 if (filter[key] != "-1") {
                     conditionflag = true;
-                    condition["company_address"] = {
-                        $regex: filter.location, 
-                        $options: 'i'
+                    let locations = []
+                    if (filter.location) {
+                        if (filter.location.length > 0) {
+                            filter.location.forEach((loc) => {
+                                let obj = {
+                                    "company_address": {
+                                        $regex: `${loc}`,
+                                        $options: 'i'
+                                    }
+                                }
+                                locations.push(obj)
+                            })
+                        }
+                        condition["$or"] = locations
+
+                        // condition["company_address"] = {
+                        //     $regex: filter.location, 
+                        //     $options: 'i'
+                        // }
                     }
                 }
-                break;                
+                break;
             default:
                 console.log("Not a valid filter ::: ", key);
         }
@@ -51,7 +67,7 @@ exports.getFilterCondition = function(filter) {
 
 }
 
-exports.checkRequestBody = function(data) {
+exports.checkRequestBody = function (data) {
     var v = new lib.Validator('filter:object');
     if (!v.run(data)) {
         return {
