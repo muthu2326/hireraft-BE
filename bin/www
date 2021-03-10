@@ -7,7 +7,7 @@
 var app = require('../app');
 var debug = require('debug')('job-scraping-node');
 // var https = require('https');
-var http = require('http');
+var https = require('https');
 var config = require('config');
 const mongoose = require('mongoose');
 const fs = require('fs')
@@ -28,7 +28,14 @@ app.set('port', port);
 //   cert: fs.readFileSync('server.cert')
 // },app);
 
-var server = http.createServer(app)
+
+let options = {
+  key: fs.readFileSync('joblisting.hireraft.com.key'),
+  cert: fs.readFileSync('a63120cb9ee9c98.crt'),
+  ca: fs.readFileSync('gd_bundle-g2-g1.crt'),  
+};
+
+var server = https.createServer(options, app)
 /**
  * Listen on provided port, on all network interfaces.
  */
@@ -96,6 +103,7 @@ function onListening() {
     ? 'pipe ' + addr
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
+  console.log('Listening to ', port)
   console.log(`******** Application Environment: ${config.env} ********`);
 }
 
