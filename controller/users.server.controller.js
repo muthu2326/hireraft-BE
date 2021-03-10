@@ -32,7 +32,8 @@ exports.userRegistration = function (req, res) {
         course: req.body.course,
         passing_year: req.body.passing_year,
         skills: req.body.skills,
-        experiance: req.body.experiance,
+        experience_year: req.body.experience_year,
+        experience_month: req.body.experience_month,
         joining_by: req.body.joining_by
     }
 

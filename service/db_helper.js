@@ -63,7 +63,8 @@ exports.registerUser = function (req, cb) {
         email: req.body.email,
         phone: req.body.phone,
         course: req.body.course,
-        experience: req.body.experience,
+        experience_year: req.body.experience_year,
+        experience_month: req.body.experience_month,
         passing_year: req.body.passing_year,
         skills: req.body.skills,
         joining_by: req.body.joining_by

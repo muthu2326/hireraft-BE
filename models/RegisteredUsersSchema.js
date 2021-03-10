@@ -33,8 +33,13 @@ const RegisteredUsersSchema = new Schema({
         default: null,
         trim: true,
     },
-    experience: {
-        type: String,
+    experience_year: {
+        type: Number,
+        default: null,
+        trim: true,
+    },
+    experience_month: {
+        type: Number,
         default: null,
         trim: true,
     },
@@ -49,7 +54,7 @@ const RegisteredUsersSchema = new Schema({
         trim: true,
     },
     passing_year: {
-        type: String,
+        type: Number,
         default: 0,
         trim: true,
     },
