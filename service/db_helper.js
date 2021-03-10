@@ -45,7 +45,7 @@ exports.registerUser = function (req, cb) {
     console.log('Request params :: ', req.params)
     console.log("request query :: ", req.query);
 
-    if (!req.body.email || !req.body.name || !req.body.phone || !req.body.course || !req.body.experience || !req.body.skills || !req.body.passing_year || !req.body.joining_by) {
+    if (!req.body.email || !req.body.name || !req.body.phone || !req.body.course || !req.body.experience_year || !req.body.experience_month || !req.body.skills || !req.body.passing_year || !req.body.joining_by) {
         let err = {
             status: 400,
             data: {},
