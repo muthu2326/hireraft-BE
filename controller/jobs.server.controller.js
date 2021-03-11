@@ -49,10 +49,10 @@ exports.getjob = function (req, res) {
                 console.log('err', err)
                 res.send(err)
             } else {
-                NaukriPostedJob.countDocuments((err, counts) => {
-                    console.log('counts', counts)
+                NaukriPostedJob.find(condition, {_id: 1}, (err, response) => {
+                    console.log('response', response.length)
                     if (err) {
-                        console.log('err in getting counts', err)
+                        console.log('err in getting response', err)
                         res.send({
                             status: 500,
                             data: {},
@@ -70,7 +70,7 @@ exports.getjob = function (req, res) {
                                     return;
                                 } else {
                                     res.send({
-                                        total: counts,
+                                        total: response.length,
                                         results_count: jobs_res.length,
                                         docs: jobs_res
                                     })
@@ -78,7 +78,7 @@ exports.getjob = function (req, res) {
                             })
                         } else {
                             res.send({
-                                total: counts,
+                                total: response.length,
                                 results_count: docs.length,
                                 docs
                             })
