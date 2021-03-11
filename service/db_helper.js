@@ -323,15 +323,10 @@ exports.getJobsStatusForUser = function (user_id, jobs, cb) {
             console.log('applied_jobs', applied_jobs)
             if(jobs.length > 0){
                 console.log('inside if ++++++')
-                let arr = jobs.map((jb) => {
-                    let obj = {
-                        company_name: jb.company_name,
-                        company_address: jb.company_address,
-                        role: jb.role,
-                        employment_type: jb.employment_type,
-                        _id: jb._id,
-                        applied_status: false
-                    }
+                let arr = jobs.map((jb) => {              
+                    let obj = {...jb["_doc"]} // copying all the fields of document - value is stored under "_doc" property of mongoose response
+                    obj.applied_status = false
+
                     if(applied_jobs.includes(String(jb._id))){                        
                         obj.applied_status = true
                         return obj
