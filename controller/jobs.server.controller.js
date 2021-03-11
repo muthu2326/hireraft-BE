@@ -18,7 +18,7 @@ exports.getjob = function (req, res) {
     const page = req.query.page
     const limit = req.query.limit
     const sort = req.query.sort
-    const field = req.query.field
+    const user_id = req.query.uuid ? req.query.uuid : null
 
     console.log('page', page, 'limit', limit)
     let pagination = {}
@@ -63,11 +63,26 @@ exports.getjob = function (req, res) {
                         })
                         return;
                     } else {
-                        res.send({
-                            total: counts,
-                            results_count: docs.length,
-                            docs
-                        })
+                        if(user_id != null){
+                            dbHelper.getJobsStatusForUser(user_id, docs, (err, jobs_res) => {
+                                if(err){
+                                    res.status(err.status).send(jobs_res)
+                                    return;
+                                }else{
+                                    res.send({
+                                        total: counts,
+                                        results_count: jobs_res.length,
+                                        docs: jobs_res
+                                    })
+                                }
+                            })
+                        }else{
+                            res.send({
+                                total: counts,
+                                results_count: docs.length,
+                                docs
+                            })
+                        }                                           
                     }
                 })
             }

@@ -298,3 +298,54 @@ sendEmail = (data) => {
     });
 
 }
+
+exports.getJobsStatusForUser = function (user_id, jobs, cb) {
+    console.log("DB Helper ::  entering getJobsStatusForUser")
+    console.log('user_id', user_id)
+    console.log('jobs recieved', jobs.length)
+
+    UsersAndJobsApplied.find({user_id: user_id}, {_id: 0, job_id: 1, status: 1}, 
+        function (err, jobs_applied) {
+        if (err) {
+            console.log('err in finding getJobsStatusForUser', err)
+            let err_res = {
+                status: 500,
+                data: {},
+                error: {
+                    msg: message.something_went_wrong,
+                    err: err,
+                },
+            }
+            cb(err_res, null)
+            return;  
+        }else{
+            let applied_jobs = jobs_applied.map(ap => { return ap.job_id })
+            console.log('applied_jobs', applied_jobs)
+            if(jobs.length > 0){
+                console.log('inside if ++++++')
+                let arr = jobs.map((jb) => {
+                    let obj = {
+                        company_name: jb.company_name,
+                        company_address: jb.company_address,
+                        role: jb.role,
+                        employment_type: jb.employment_type,
+                        _id: jb._id,
+                        applied_status: false
+                    }
+                    if(applied_jobs.includes(String(jb._id))){                        
+                        obj.applied_status = true
+                        return obj
+                    }else{                        
+                        return obj
+                    }                    
+                })
+                cb(null, arr)
+                return;
+            }else{
+                console.log('inside else ++++++')
+                cb(null, jobs)
+                return;
+            }           
+        }
+    });
+}; /*End of getUser*/
