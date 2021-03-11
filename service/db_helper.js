@@ -45,7 +45,7 @@ exports.registerUser = function (req, cb) {
     console.log('Request params :: ', req.params)
     console.log("request query :: ", req.query);
 
-    if (!req.body.email || !req.body.name || !req.body.phone || !req.body.course || !req.body.experience_year || !req.body.experience_month || !req.body.skills || !req.body.passing_year || !req.body.joining_by) {
+    if (!req.body.email || !req.body.name || !req.body.phone || !req.body.course || !req.body.skills || !req.body.passing_year || !req.body.joining_by) {
         let err = {
             status: 400,
             data: {},
@@ -63,8 +63,6 @@ exports.registerUser = function (req, cb) {
         email: req.body.email,
         phone: req.body.phone,
         course: req.body.course,
-        experience_year: req.body.experience_year,
-        experience_month: req.body.experience_month,
         passing_year: req.body.passing_year,
         skills: req.body.skills,
         joining_by: req.body.joining_by

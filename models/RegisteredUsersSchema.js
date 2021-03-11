@@ -33,16 +33,6 @@ const RegisteredUsersSchema = new Schema({
         default: null,
         trim: true,
     },
-    experience_year: {
-        type: Number,
-        default: null,
-        trim: true,
-    },
-    experience_month: {
-        type: Number,
-        default: null,
-        trim: true,
-    },
     phone: {
         type: String,
         default: null,
