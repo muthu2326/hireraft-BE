@@ -36,14 +36,14 @@ exports.getjob = function (req, res) {
 
     console.log('condition', condition)
     console.log('pagination', pagination)
-
-    NaukriPostedJob.find(condition, {
-            _id: 1,
-            company_name: 1,
-            company_address: 1,
-            employment_type: 1,
-            role: 1
-        }, pagination,
+     //  {
+        //     _id: 1,
+        //     company_name: 1,
+        //     company_address: 1,
+        //     employment_type: 1,
+        //     role: 1
+        // }, 
+    NaukriPostedJob.find(condition,{}, pagination,
         function (err, docs) {
             if (err) {
                 console.log('err', err)
