@@ -43,6 +43,7 @@ exports.getjob = function (req, res) {
             employment_type: 1,
             raw_experience_required: 1,
             raw_salary_package: 1,
+            raw_skills_required: 1,
             date: 1,
             role: 1
         }, pagination,
@@ -302,7 +303,7 @@ exports.getJobsCount = function (req, res) {
     console.log('Request params :: ', req.params)
     console.log("request query :: ", req.query);
 
-    NaukriPostedJob.countDocuments(function (err, docs) {
+    NaukriPostedJob.find(function (err, docs) {
         console.log('docs', docs)
         if (err) {
             console.log('err in getJobsCount', err)
@@ -316,10 +317,15 @@ exports.getJobsCount = function (req, res) {
             })
             return;
         } else {
+            filter = docs.filter((job) => {
+                if(job.company_address != null && job.role != null && job.employment_type != null){
+                    return job
+                }
+            })
             res.send({
                 status: 200,
                 data: {
-                    jobs_count: docs
+                    jobs_count: filter.length
                 },
                 err: {}
             })

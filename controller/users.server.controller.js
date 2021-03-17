@@ -183,6 +183,7 @@ exports.getUserJobs = function (req, res) {
                 employment_type: 1,
                 raw_experience_required: 1,
                 raw_salary_package: 1,
+                raw_skills_required: 1,
                 date: 1,
                 role: 1
             }, pagination
