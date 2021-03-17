@@ -152,7 +152,7 @@ exports.getUserJobs = function (req, res) {
 
     console.log('pagination', pagination)
 
-    UsersAndJobsApplied.find({user_id: user_id}, {_id: 0, job_id: 1, status: 1}, pagination, function (err, jobs_applied) {
+    UsersAndJobsApplied.find({user_id: user_id}, {_id: 0, job_id: 1, status: 1}, function (err, jobs_applied) {
         if (err) {
             console.log('err in finding getUserJobs', err)
             res.status(500).jsonp({
@@ -175,9 +175,9 @@ exports.getUserJobs = function (req, res) {
             });
 
             console.log('job_ids', job_ids)
-            NaukriPostedJob.find({ _id: {"$in": job_ids}},
+            NaukriPostedJob.find({ _id: {"$in": job_ids}}, 
             // { _id: 1, company_name: 1, company_address: 1, employment_type: 1, role: 1}
-            {}
+            {}, pagination
             ,function(err, docs) {
                 console.log('docs', docs.length)
                     if (err) {
@@ -194,7 +194,11 @@ exports.getUserJobs = function (req, res) {
                     } else {
                         res.send({
                             status: 200,
-                            data: docs,
+                            data: {
+                                total: jobs_applied.length,
+                                results_count: docs.length,
+                                docs
+                            },
                             err: {}
                         })
                         return;
