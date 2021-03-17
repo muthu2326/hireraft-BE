@@ -71,10 +71,10 @@ exports.getjob = function (req, res) {
                         if (user_id != null) {
                             dbHelper.getJobsStatusForUser(user_id, docs, (err, jobs_res) => {
                                 if (err) {
-                                    res.status(err.status).send(jobs_res)
+                                    res.status(err.status).send(err)
                                     return;
                                 } else {
-                                    filter = docs.filter((job) => {
+                                    filter = jobs_res.filter((job) => {
                                         if(job.company_address != null && job.role != null && job.employment_type != null){
                                             return job
                                         }
