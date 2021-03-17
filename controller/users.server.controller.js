@@ -176,8 +176,16 @@ exports.getUserJobs = function (req, res) {
 
             console.log('job_ids', job_ids)
             NaukriPostedJob.find({ _id: {"$in": job_ids}}, 
-            // { _id: 1, company_name: 1, company_address: 1, employment_type: 1, role: 1}
-            {}, pagination
+            {
+                _id: 1,
+                company_name: 1,
+                company_address: 1,
+                employment_type: 1,
+                raw_experience_required: 1,
+                raw_salary_package: 1,
+                date: 1,
+                role: 1
+            }, pagination
             ,function(err, docs) {
                 console.log('docs', docs.length)
                     if (err) {
@@ -191,7 +199,7 @@ exports.getUserJobs = function (req, res) {
                             }
                         })
                         return;
-                    } else {
+                    } else {                        
                         res.send({
                             status: 200,
                             data: {

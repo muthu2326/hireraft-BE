@@ -36,20 +36,24 @@ exports.getjob = function (req, res) {
 
     console.log('condition', condition)
     console.log('pagination', pagination)
-     //  {
-        //     _id: 1,
-        //     company_name: 1,
-        //     company_address: 1,
-        //     employment_type: 1,
-        //     role: 1
-        // }, 
-    NaukriPostedJob.find(condition,{}, pagination,
+    NaukriPostedJob.find(condition, {
+            _id: 1,
+            company_name: 1,
+            company_address: 1,
+            employment_type: 1,
+            raw_experience_required: 1,
+            raw_salary_package: 1,
+            date: 1,
+            role: 1
+        }, pagination,
         function (err, docs) {
             if (err) {
                 console.log('err', err)
                 res.send(err)
             } else {
-                NaukriPostedJob.find(condition, {_id: 1}, (err, response) => {
+                NaukriPostedJob.find(condition, {
+                    _id: 1
+                }, (err, response) => {
                     console.log('response', response.length)
                     if (err) {
                         console.log('err in getting response', err)
@@ -69,18 +73,28 @@ exports.getjob = function (req, res) {
                                     res.status(err.status).send(jobs_res)
                                     return;
                                 } else {
+                                    filter = docs.filter((job) => {
+                                        if(job.company_address != null && job.role != null && job.employment_type != null){
+                                            return job
+                                        }
+                                    })
                                     res.send({
                                         total: response.length,
-                                        results_count: jobs_res.length,
-                                        docs: jobs_res
+                                        results_count: filter.length,
+                                        docs: filter
                                     })
                                 }
                             })
                         } else {
+                            filter = docs.filter((job) => {
+                                if(job.company_address != null && job.role != null && job.employment_type != null){
+                                    return job
+                                }
+                            })
                             res.send({
                                 total: response.length,
-                                results_count: docs.length,
-                                docs
+                                results_count: filter.length,
+                                docs: filter
                             })
                         }
                     }
@@ -144,11 +158,13 @@ exports.getJobById = function (req, res) {
                                 },
                             });
                             return;
-                        }else{
-                            let job_data = {...job["_doc"]}
-                            if(job_applied){                                
+                        } else {
+                            let job_data = {
+                                ...job["_doc"]
+                            }
+                            if (job_applied) {
                                 job_data.applied_status = true
-                            }else{
+                            } else {
                                 job_data.applied_status = false
                             }
                             res.status(200).jsonp({
@@ -159,14 +175,14 @@ exports.getJobById = function (req, res) {
                             return;
                         }
                     })
-            }else{                
+            } else {
                 res.status(200).jsonp({
                     status: 200,
                     data: job,
                     error: {},
                 });
                 return;
-            }            
+            }
         } else {
             console.log('could not find job')
             res.status(400).jsonp({
