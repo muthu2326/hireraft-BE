@@ -149,7 +149,9 @@ const NaukriPostedJobSchema = new Schema({
         type: Number,
         default: '',
         trim: true,
-    }
+    },
+    created: { type: Date, default: Date.now },
+    updated: { type: Date, default: Date.now },
 });
 
 
