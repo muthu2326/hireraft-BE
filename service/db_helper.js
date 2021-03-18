@@ -247,7 +247,6 @@ sendEmailToHr = (user, job, cb) => {
         <b>Email:</b> ${user.email}<br>
         <b>Phone:</b> ${user.phone}<br>
         <b>Skills:</b> ${user.skills}<br>
-        <b>Experience:</b> ${user.experience}<br>
         <b>Course:</b> ${user.course}<br>
         <b>Passing Year:</b> ${user.passing_year}<br>
         <b>Joining By:</b> ${user.joining_by}<br><br>
