@@ -1,7 +1,7 @@
 var nodemailer = require('nodemailer');
-var mongoose = require('mongoose'); 
+var mongoose = require('mongoose');
 const config = require('config');
-var Schema = mongoose.Schema; 
+var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
 
 const message = require("./message.json");
@@ -131,7 +131,7 @@ exports.checkIfUserAppliedForSameJob = function (user_id, job_id, cb) {
         })
 }
 
-exports.applyForJob = function (req, user, job, cb) {
+exports.applyForJob = function (req, user, job, job_url, cb) {
     console.log('entering applyForJob')
 
     let applyForJob_request = {
@@ -157,8 +157,8 @@ exports.applyForJob = function (req, user, job, cb) {
             cb(err_res, null)
             return;
         } else {
-            if(jobs_res){             
-                sendEmailToHr(user, job, (err, email_res) => {
+            if (jobs_res) {
+                sendEmailToHr(user, job, job_url, (err, email_res) => {
                     if (err) {
                         console.log('err in find Job Details', err)
                         let err_res = {
@@ -171,13 +171,13 @@ exports.applyForJob = function (req, user, job, cb) {
                         }
                         cb(err_res, null)
                         return;
-                    }else{
+                    } else {
                         console.log('sent email to HR', email_res)
                         console.log('Applied for succesfully')
                         cb(null, jobs_res)
-                    }                    
+                    }
                 })
-            }else{
+            } else {
                 let err_res2 = {
                     status: 500,
                     data: {},
@@ -237,8 +237,8 @@ exports.FindJobDetails = (job_id, cb) => {
     })
 }
 
-sendEmailToHr = (user, job, cb) => {
-    if(user != null && job != null){
+sendEmailToHr = (user, job, job_url, cb) => {
+    if (user != null && job != null) {
         email_content = {
             subject: `${user.name} - Applied for a Job`,
             body: `<html><body>
@@ -252,6 +252,7 @@ sendEmailToHr = (user, job, cb) => {
         <b>Joining By:</b> ${user.joining_by}<br><br>
         <b>Company Name:</b> ${job.company_name}<br>
         <b>Company Address:</b> ${job.company_address}<br>
+        <b>Job Details</b>: To view <a href=${job_url}>click here</a><br>
         <b>Role:</b> ${job.role}<br>
         <b>Employment Type:</b> ${job.employment_type}<br><br>                                    
         Thanks & Regards,<br>
@@ -263,7 +264,7 @@ sendEmailToHr = (user, job, cb) => {
         sendEmail(email_content)
         cb(null, 'succesfully sent email to HR')
         return;
-    }else{
+    } else {
         cb(null, 'could not send email to HR')
         return
     }
@@ -303,43 +304,63 @@ exports.getJobsStatusForUser = function (user_id, jobs, cb) {
     console.log('user_id', user_id)
     console.log('jobs recieved', jobs.length)
 
-    UsersAndJobsApplied.find({user_id: user_id}, {_id: 0, job_id: 1, status: 1}, 
-        function (err, jobs_applied) {
-        if (err) {
-            console.log('err in finding getJobsStatusForUser', err)
-            let err_res = {
-                status: 500,
-                data: {},
-                error: {
-                    msg: message.something_went_wrong,
-                    err: err,
-                },
-            }
-            cb(err_res, null)
-            return;  
-        }else{
-            let applied_jobs = jobs_applied.map(ap => { return ap.job_id })
-            console.log('applied_jobs', applied_jobs)
-            if(jobs.length > 0){
-                console.log('inside if ++++++')
-                let arr = jobs.map((jb) => {              
-                    let obj = {...jb["_doc"]} // copying all the fields of document - value is stored under "_doc" property of mongoose response
-                    obj.applied_status = false
-
-                    if(applied_jobs.includes(String(jb._id))){                        
-                        obj.applied_status = true
-                        return obj
-                    }else{                        
-                        return obj
-                    }                    
-                })
-                cb(null, arr)
-                return;
-            }else{
-                console.log('inside else ++++++')
-                cb(null, jobs)
-                return;
-            }           
+    let condition = {
+        user_id: user_id,
+        company_address: {
+            '$ne': null
+        },
+        role: {
+            '$ne': null
+        },
+        employment_type: {
+            '$ne': null
         }
-    });
+    }
+    UsersAndJobsApplied.find(condition, {
+            _id: 0,
+            job_id: 1,
+            status: 1
+        },
+        function (err, jobs_applied) {
+            if (err) {
+                console.log('err in finding getJobsStatusForUser', err)
+                let err_res = {
+                    status: 500,
+                    data: {},
+                    error: {
+                        msg: message.something_went_wrong,
+                        err: err,
+                    },
+                }
+                cb(err_res, null)
+                return;
+            } else {
+                let applied_jobs = jobs_applied.map(ap => {
+                    return ap.job_id
+                })
+                console.log('applied_jobs', applied_jobs)
+                if (jobs.length > 0) {
+                    console.log('inside if ++++++')
+                    let arr = jobs.map((jb) => {
+                        let obj = {
+                            ...jb["_doc"]
+                        } // copying all the fields of document - value is stored under "_doc" property of mongoose response
+                        obj.applied_status = false
+
+                        if (applied_jobs.includes(String(jb._id))) {
+                            obj.applied_status = true
+                            return obj
+                        } else {
+                            return obj
+                        }
+                    })
+                    cb(null, arr)
+                    return;
+                } else {
+                    console.log('inside else ++++++')
+                    cb(null, jobs)
+                    return;
+                }
+            }
+        });
 }; /*End of getUser*/

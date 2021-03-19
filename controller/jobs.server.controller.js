@@ -3,6 +3,7 @@ var utility = require('../service/utils')
 var dbHelper = require('../service/db_helper')
 var nodemailer = require('nodemailer');
 const config = require('config');
+const message = require("../service/message.json");
 
 const NaukriPostedJob = require('../models/NaukriPostedJobSchema');
 const UsersAndJobsApplied = require('../models/UsersAndJobsAppliedSchema');
@@ -74,28 +75,18 @@ exports.getjob = function (req, res) {
                                     res.status(err.status).send(err)
                                     return;
                                 } else {
-                                    filter = jobs_res.filter((job) => {
-                                        if(job.company_address != null && job.role != null && job.employment_type != null){
-                                            return job
-                                        }
-                                    })
                                     res.send({
                                         total: response.length,
-                                        results_count: filter.length,
-                                        docs: filter
+                                        results_count: jobs_res.length,
+                                        docs: jobs_res
                                     })
                                 }
                             })
                         } else {
-                            filter = docs.filter((job) => {
-                                if(job.company_address != null && job.role != null && job.employment_type != null){
-                                    return job
-                                }
-                            })
                             res.send({
                                 total: response.length,
-                                results_count: filter.length,
-                                docs: filter
+                                results_count: docs.length,
+                                docs: docs
                             })
                         }
                     }
@@ -203,7 +194,7 @@ exports.applyJobNew = function (req, res) {
     console.log('Request params :: ', req.params)
     console.log("request query :: ", req.query);
 
-    if (!req.body.email || !req.body.uuid || !req.body.job_id) {
+    if (!req.body.email || !req.body.uuid || !req.body.job_id || !req.body.job_url) {
         let response = {
             status: 400,
             data: {},
@@ -217,6 +208,7 @@ exports.applyJobNew = function (req, res) {
     let user_id = req.body.uuid
     let email = req.body.email
     let job_id = req.body.job_id
+    let job_url = req.body.job_url
 
     dbHelper.findUser(user_id, email, (err, ch_user) => {
         if (err) {
@@ -238,7 +230,7 @@ exports.applyJobNew = function (req, res) {
                                 return;
                             }
                             if (job) {
-                                dbHelper.applyForJob(req, new_user, job, (err, response) => {
+                                dbHelper.applyForJob(req, new_user, job, job_url, (err, response) => {
                                     if (err) {
                                         res.status(err.status).jsonp(err);
                                         return;
@@ -272,7 +264,7 @@ exports.applyJobNew = function (req, res) {
                                 return;
                             } else {
                                 if (!duplicateJob) {
-                                    dbHelper.applyForJob(req, ch_user, job, (err, response) => {
+                                    dbHelper.applyForJob(req, ch_user, job, job_url, (err, response) => {
                                         if (err) {
                                             res.status(err.status).jsonp(err);
                                             return;
@@ -302,9 +294,19 @@ exports.getJobsCount = function (req, res) {
     console.log("Jobs Controller: entering getJobsCount")
     console.log('Request params :: ', req.params)
     console.log("request query :: ", req.query);
-
-    NaukriPostedJob.find(function (err, docs) {
-        console.log('docs', docs)
+    let condition = {
+        company_address: {
+            '$ne': null
+        },
+        role: {
+            '$ne': null
+        },
+        employment_type: {
+            '$ne': null
+        }
+    }
+    NaukriPostedJob.find(condition, function (err, docs) {
+        console.log('docs', docs.length)
         if (err) {
             console.log('err in getJobsCount', err)
             res.send({
@@ -317,15 +319,10 @@ exports.getJobsCount = function (req, res) {
             })
             return;
         } else {
-            filter = docs.filter((job) => {
-                if(job.company_address != null && job.role != null && job.employment_type != null){
-                    return job
-                }
-            })
             res.send({
                 status: 200,
                 data: {
-                    jobs_count: filter.length
+                    jobs_count: docs.length
                 },
                 err: {}
             })

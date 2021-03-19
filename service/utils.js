@@ -63,6 +63,10 @@ exports.getFilterCondition = function (filter) {
         }
     }
 
+    condition.company_address = { $ne: null }
+    condition.role = { $ne: null }
+    condition.employment_type = { $ne: null }
+    
     return condition;
 
 }

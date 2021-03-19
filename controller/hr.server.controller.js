@@ -4,6 +4,7 @@ var dbHelper = require('../service/db_helper')
 var nodemailer = require('nodemailer');
 const config = require('config');
 var async = require("async");
+const message = require("../service/message.json");
 
 const NaukriPostedJob = require('../models/NaukriPostedJobSchema');
 const UsersAndJobsApplied = require('../models/UsersAndJobsAppliedSchema');
@@ -19,11 +20,21 @@ exports.getJobsSummary = function (req, res) {
 
     async.parallel({
         one: function(cb){
-            let condition = {}
+            let condition = {
+                company_address: {
+                    '$ne': null
+                },
+                role: {
+                    '$ne': null
+                },
+                employment_type: {
+                    '$ne': null
+                }
+            }
             if(start_date != null && end_date != null){
                 condition.date = {
                     $gte: new Date(new Date(start_date).setHours(00, 00, 00)),
-                    $lt: new Date(new Date(end_date).setHours(23, 59, 59))
+                    $lt: new Date(new Date(end_date).setHours(23, 59, 59)),                    
                 }      
             }
 
@@ -33,13 +44,8 @@ exports.getJobsSummary = function (req, res) {
                     console.log('Exiting NaukriPostedJob')
                     cb(err, null)
                     return;
-                }else{
-                    filter = jobs.filter((job) => {
-                        if(job.company_address != null && job.role != null && job.employment_type != null){
-                            return job
-                        }
-                    })
-                    cb(null, filter)
+                }else{                   
+                    cb(null, jobs)
                 }
             })
         },
