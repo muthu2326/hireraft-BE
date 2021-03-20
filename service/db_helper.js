@@ -303,20 +303,7 @@ exports.getJobsStatusForUser = function (user_id, jobs, cb) {
     console.log("DB Helper ::  entering getJobsStatusForUser")
     console.log('user_id', user_id)
     console.log('jobs recieved', jobs.length)
-
-    let condition = {
-        user_id: user_id,
-        company_address: {
-            '$ne': null
-        },
-        role: {
-            '$ne': null
-        },
-        employment_type: {
-            '$ne': null
-        }
-    }
-    UsersAndJobsApplied.find(condition, {
+    UsersAndJobsApplied.find({user_id: user_id,},{
             _id: 0,
             job_id: 1,
             status: 1
