@@ -35,7 +35,7 @@ var server = https.createServer({
 //   ca: fs.readFileSync("gd_bundle-g2-g1.crt"),  
 // };
 
-var server = https.createServer(options, app)
+// var server = https.createServer(options, app)
 /**
  * Listen on provided port, on all network interfaces.
  */
