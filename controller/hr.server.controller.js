@@ -34,10 +34,10 @@ exports.getJobsSummary = function (req, res) {
             if(start_date != null && end_date != null){
                 condition.date = {
                     $gte: new Date(new Date(start_date).setHours(00, 00, 00)),
-                    $lt: new Date(new Date(end_date).setHours(23, 59, 59)),                    
+                    $lte: new Date(new Date(end_date).setHours(23, 59, 59)),                    
                 }      
             }
-
+            console.log('condition', condition)
             NaukriPostedJob.find(condition, (err, jobs) => {
                 if(err){
                     console.log('err in NaukriPostedJob', err)
