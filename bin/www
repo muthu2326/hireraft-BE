@@ -6,8 +6,8 @@
 
 var app = require('../app');
 var debug = require('debug')('job-scraping-node');
+var http = require('https');
 // var https = require('https');
-var https = require('https');
 var config = require('config');
 const mongoose = require('mongoose');
 const fs = require('fs')
@@ -23,10 +23,12 @@ app.set('port', port);
  * Create HTTP server.
  */
 
-var server = https.createServer({
-  key: fs.readFileSync('server.key'),
-  cert: fs.readFileSync('server.cert')
-},app);
+var server = http.createServer(app);
+
+// var server = https.createServer({
+//   key: fs.readFileSync('server.key'),
+//   cert: fs.readFileSync('server.cert')
+// },app);
 
 
 // let options = {
