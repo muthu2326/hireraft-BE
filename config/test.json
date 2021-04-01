@@ -1,5 +1,5 @@
 {
-    "db":"mongodb://naukri:naukri@localhost:27017/jobs_test",
+    "db":"mongodb://naukri:naukri@localhost:27017/jobs",
     "from_email": "jobs@hireraft.com",
     "notify_to": ["muthu.r@digiapt.com", "jayarama.reddy@digiapt.com", "deepak.tomson@digiapt.com"],
     "auth_email": "jobs@hireraft.com",

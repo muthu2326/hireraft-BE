@@ -35,8 +35,8 @@ https://medium.com/mongoaudit/how-to-enable-authentication-on-mongodb-b9e8a924ef
 
 db.createUser(
   {
-    user: "naukri_test",
-    pwd: "naukri_test",
+    user: "naukri",
+    pwd: "naukri",
     roles: [ { role: "readWrite", db: "jobs_test" } ]
   }
 )
