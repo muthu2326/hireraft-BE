@@ -1,6 +1,7 @@
 var waterfall = require('async-waterfall');
 var utility = require('../service/utils')
 const message = require("../service/message.json");
+var dbHelper = require('../service/db_helper')
 
 const RegisteredUsers = require('../models/RegisteredUsersSchema');
 const UsersAndJobsApplied = require('../models/UsersAndJobsAppliedSchema');
@@ -50,14 +51,17 @@ exports.userRegistration = function (req, res) {
             })
             return;
         }
-        response.msg = "Successfully Registered"
-        console.log('Exiting userRegistration')
-        res.send({
-            status: 200,
-            data: response,
-            err: {}
-        })
-        return;
+        dbHelper.sendEmailToHrAfterReg(response, (err, mail_res) => {
+            console.log('email call back response', mail_res)
+            response.msg = "Successfully Registered"
+            console.log('Exiting userRegistration')
+            res.send({
+                status: 200,
+                data: response,
+                err: {}
+            })
+            return;
+        })        
     })
 }
 

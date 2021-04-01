@@ -237,6 +237,30 @@ exports.FindJobDetails = (job_id, cb) => {
     })
 }
 
+exports.sendEmailToHrAfterReg = (user, cb) => {
+    console.log('entering sendEmailToHrAfterReg')
+    email_content = {
+        subject: `New User Registered - ${user.name}`,
+        body: `<html><body>
+    Hi,<br><br>A new user has been registered, Please find the details below<br><br>
+    <b>Name:</b> ${user.name}<br>
+    <b>Email:</b> ${user.email}<br>
+    <b>Phone:</b> ${user.phone}<br>
+    <b>Skills:</b> ${user.skills}<br>
+    <b>Course:</b> ${user.course}<br>
+    <b>Passing Year:</b> ${user.passing_year}<br>
+    <b>Joining By:</b> ${user.joining_by}<br><br>                      
+    Thanks & Regards,<br>
+    <b>Hireraft<b>
+    </body></html>`,
+        from: config.get('from_email'),
+        to: config.get('notify_to')
+    }
+    sendEmail(email_content)
+    cb(null, 'succesfully sent email to HR')
+    return;
+}
+
 sendEmailToHr = (user, job, job_url, cb) => {
     if (user != null && job != null) {
         email_content = {

@@ -35,13 +35,29 @@ https://medium.com/mongoaudit/how-to-enable-authentication-on-mongodb-b9e8a924ef
 
 db.createUser(
   {
-    user: "naukri",
-    pwd: "naukri",
-    roles: [ { role: "readWrite", db: "jobs" } ]
+    user: "naukri_test",
+    pwd: "naukri_test",
+    roles: [ { role: "readWrite", db: "jobs_test" } ]
   }
 )
 
-mongo localhost:27017/jobs -u naukri -p naukri
+# To Update the User
+
+db.updateUser( "naukri",
+{
+   roles : [
+		{
+			"role" : "readWrite",
+			"db" : "jobs"
+		},
+        {
+			"role" : "readWrite",
+			"db" : "jobs_test"
+		}
+	]
+})
+
+mongo localhost:27017/jobs -u naukri_test -p naukri_test
 
 http://docs.mongodb.org/manual/reference/configuration-options/
 
@@ -63,8 +79,7 @@ db.createUser(
 sudo ufw allow from 172.17.0.1 to any port 27017
 
 
-
-
+# Connections
 
 mongo mongodb://root:root@localhost:27017
 
