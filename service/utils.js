@@ -27,10 +27,21 @@ exports.getFilterCondition = function (filter) {
             case "skills":
                 if (filter[key] != "-1") {
                     conditionflag = true;
-                    condition["skills_required"] = {
-                        $regex: filter.skills,
-                        $options: 'i'
-                    }
+                    // condition["skills_required"] = {
+                    //     $regex: filter.skills,
+                    //     $options: 'i'
+                    // }
+                    skills = []
+                    filter.skills.forEach((skill) => {
+                        let obj = {
+                            "skills_required": {
+                                $regex: skill,
+                                $options: 'i'
+                            }
+                        }
+                        skills.push(obj)
+                    })
+                    condition["$or"] = skills
                 }
                 break;
             case "location":
@@ -63,10 +74,16 @@ exports.getFilterCondition = function (filter) {
         }
     }
 
-    condition.company_address = { $ne: null }
-    condition.role = { $ne: null }
-    condition.employment_type = { $ne: null }
-    
+    condition.company_address = {
+        $ne: null
+    }
+    condition.role = {
+        $ne: null
+    }
+    condition.employment_type = {
+        $ne: null
+    }
+
     return condition;
 
 }
@@ -80,7 +97,7 @@ exports.checkRequestBody = function (data) {
         }
     }
 
-    v = new lib.Validator('experience:object,salary:object,skills:string')
+    v = new lib.Validator('experience:object,salary:object,skills:array')
     if (!v.run(data.filter)) {
         return {
             "error": true,
