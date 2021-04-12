@@ -2,6 +2,9 @@ var waterfall = require('async-waterfall');
 var utility = require('../service/utils')
 const message = require("../service/message.json");
 var dbHelper = require('../service/db_helper')
+const fs = require('fs')
+const csv = require('fast-csv');
+const { Parser } = require('json2csv');
 
 const RegisteredUsers = require('../models/RegisteredUsersSchema');
 const UsersAndJobsApplied = require('../models/UsersAndJobsAppliedSchema');
@@ -61,7 +64,7 @@ exports.userRegistration = function (req, res) {
                 err: {}
             })
             return;
-        })        
+        })
     })
 }
 
@@ -145,18 +148,26 @@ exports.getUserJobs = function (req, res) {
     console.log('page', page, 'limit', limit)
     let pagination = {}
 
-    if(page != null && limit != null){
+    if (page != null && limit != null) {
         pagination.limit = limit * 1
         pagination.skip = ((page - 1) * limit)
     }
 
-    if(sort){
-        pagination.sort = { "created" : sort }
+    if (sort) {
+        pagination.sort = {
+            "created": sort
+        }
     }
 
     console.log('pagination', pagination)
 
-    UsersAndJobsApplied.find({user_id: user_id}, {_id: 0, job_id: 1, status: 1}, function (err, jobs_applied) {
+    UsersAndJobsApplied.find({
+        user_id: user_id
+    }, {
+        _id: 0,
+        job_id: 1,
+        status: 1
+    }, function (err, jobs_applied) {
         if (err) {
             console.log('err in finding getUserJobs', err)
             res.status(500).jsonp({
@@ -173,14 +184,17 @@ exports.getUserJobs = function (req, res) {
         if (jobs_applied.length > 0) {
             job_ids = []
             jobs_applied.forEach(jobs => {
-                if(!job_ids.includes(jobs.job_id)){
+                if (!job_ids.includes(jobs.job_id)) {
                     job_ids.push(jobs.job_id)
                 }
             });
 
             console.log('job_ids', job_ids)
-            NaukriPostedJob.find({ _id: {"$in": job_ids}}, 
-            {
+            NaukriPostedJob.find({
+                _id: {
+                    "$in": job_ids
+                }
+            }, {
                 _id: 1,
                 company_name: 1,
                 company_address: 1,
@@ -190,38 +204,37 @@ exports.getUserJobs = function (req, res) {
                 skills_required: 1,
                 date: 1,
                 role: 1
-            }, pagination
-            ,function(err, docs) {
+            }, pagination, function (err, docs) {
                 console.log('docs', docs.length)
-                    if (err) {
-                        console.log('err in getJobsCount', err)
-                        res.send({
-                            status: 500,
-                            data: {},
-                            err: {
-                                msg: message.something_went_wrong,
-                                err: err
-                            }
-                        })
-                        return;
-                    } else {                        
-                        res.send({
-                            status: 200,
-                            data: {
-                                total: jobs_applied.length,
-                                results_count: docs.length,
-                                docs
-                            },
-                            err: {}
-                        })
-                        return;
-                    }
-                })
-        }else{
+                if (err) {
+                    console.log('err in getJobsCount', err)
+                    res.send({
+                        status: 500,
+                        data: {},
+                        err: {
+                            msg: message.something_went_wrong,
+                            err: err
+                        }
+                    })
+                    return;
+                } else {
+                    res.send({
+                        status: 200,
+                        data: {
+                            total: jobs_applied.length,
+                            results_count: docs.length,
+                            docs
+                        },
+                        err: {}
+                    })
+                    return;
+                }
+            })
+        } else {
             res.send({
                 status: 200,
                 data: {
-                    jobs: []  
+                    jobs: []
                 },
                 err: {}
             })
@@ -258,3 +271,72 @@ exports.getAllUsers = function (req, res) {
         return;
     });
 }; /*End of getAllUsers*/
+
+exports.generateHashForEmails = function (req, res) {
+    console.log('User Controller: entering generateHashForEmails');
+    let NOW = new Date()
+    console.log('req.file', req.file)
+
+    if (!req.file) {
+        res.status(400).jsonp({
+            status: 400,
+            data: {},
+            error: {
+                msg: message.invalid_get_request
+            }
+        });
+        return;
+    }
+
+    let users_list = []
+    let lang = 'en';
+
+    // res.status(201).jsonp({
+    //     status: 201,
+    //     data: {
+    //         msg: 'Your request is accepted'
+    //     },
+    //     error: {}
+    // });
+
+    fs.createReadStream(req.file.path)
+        .pipe(csv.parse({
+            headers: true
+        }))
+        .on("data", function (data) {
+            console.log('csv data: dealer')
+            // console.log(data)
+
+            let email = data['Email'];
+            console.log('email', email)
+
+            let obj = {
+                Fristname: data['Fristname'],
+                Email: data['Email'],
+                ID: dbHelper.encrypt(data['Email'])
+            }
+            users_list.push(obj)
+        })
+        .on("end", function () {
+            fs.unlinkSync(req.file.path);
+            if (users_list.length > 0) {
+                const csvFields = ['Firstname', 'Email', 'ID'];
+                console.log('users_list', users_list)
+                const json2csvParser = new Parser({ csvFields });
+                const csvData = json2csvParser.parse(users_list);
+                res.setHeader('Content-disposition', 'attachment; filename=users.csv');
+                res.set('Content-Type', 'text/csv');
+                res.attachment('users.csv');
+                res.send(csvData);   
+            } else {
+                res.status(400).jsonp({
+                    status: 400,
+                    data: {},
+                    error: {
+                        msg: `No Emails found from the file`
+                    }
+                });
+                return;
+            }
+        })
+}

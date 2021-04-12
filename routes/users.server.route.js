@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var users=require("../controller/users.server.controller");
+var multer = require('multer');
+var upload = multer({ dest: 'tmp/users/' }); // for parsing multipart/form-data
 
 /* POST users regsistration. */
 router.post('/register',users.userRegistration);
@@ -12,5 +14,7 @@ router.get('/',users.getAllUsers);
 router.get('/:user_id',users.getUserById);
 
 router.get('/:user_id/jobs',users.getUserJobs);
+
+router.post('/upload/generate/hash', upload.single('file'), users.generateHashForEmails);
 
 module.exports = router;

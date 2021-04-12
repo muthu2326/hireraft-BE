@@ -4,6 +4,11 @@ const config = require('config');
 var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
 
+const crypto = require('crypto');
+const algorithm = 'aes-256-cbc';
+const key = crypto.randomBytes(32);
+const iv = crypto.randomBytes(16);
+
 const message = require("./message.json");
 const RegisteredUsers = require('../models/RegisteredUsersSchema');
 const NaukriPostedJob = require('../models/NaukriPostedJobSchema');
@@ -375,3 +380,21 @@ exports.getJobsStatusForUser = function (user_id, jobs, cb) {
             }
         });
 }; /*End of getUser*/
+
+
+exports.encrypt = (text) =>{
+    let cipher = crypto.createCipheriv('aes-256-cbc', Buffer.from(key), iv);
+    let encrypted = cipher.update(text);
+    encrypted = Buffer.concat([encrypted, cipher.final()]);
+    // return { iv: iv.toString('hex'), encryptedData: encrypted.toString('hex') };
+    return encrypted.toString('hex')
+   }
+   
+exports.decrypt = (text) =>{
+    let iv = Buffer.from(text.iv, 'hex');
+    let encryptedText = Buffer.from(text.encryptedData, 'hex');
+    let decipher = crypto.createDecipheriv('aes-256-cbc', Buffer.from(key), iv);
+    let decrypted = decipher.update(encryptedText);
+    decrypted = Buffer.concat([decrypted, decipher.final()]);
+    return decrypted.toString();
+   }
