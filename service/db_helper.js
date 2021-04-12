@@ -383,18 +383,27 @@ exports.getJobsStatusForUser = function (user_id, jobs, cb) {
 
 
 exports.encrypt = (text) =>{
-    let cipher = crypto.createCipheriv('aes-256-cbc', Buffer.from(key), iv);
-    let encrypted = cipher.update(text);
-    encrypted = Buffer.concat([encrypted, cipher.final()]);
-    // return { iv: iv.toString('hex'), encryptedData: encrypted.toString('hex') };
-    return encrypted.toString('hex')
+    // let cipher = crypto.createCipheriv('aes-256-cbc', Buffer.from(key), iv);
+    // let encrypted = cipher.update(text);
+    // encrypted = Buffer.concat([encrypted, cipher.final()]);
+    // // return { iv: iv.toString('hex'), encryptedData: encrypted.toString('hex') };
+    // return encrypted.toString('hex')
+
+    const cipher = crypto.createCipher('aes192', 'a password');
+    let encrypted = cipher.update(text, 'utf8', 'hex');
+    console.log('encrypted: ' + encrypted);
+    encrypted += cipher.final('hex');
+    return encrypted
    }
    
 exports.decrypt = (text) =>{
-    let iv = Buffer.from(text.iv, 'hex');
-    let encryptedText = Buffer.from(text.encryptedData, 'hex');
-    let decipher = crypto.createDecipheriv('aes-256-cbc', Buffer.from(key), iv);
-    let decrypted = decipher.update(encryptedText);
-    decrypted = Buffer.concat([decrypted, decipher.final()]);
+    // let iv = Buffer.from(text.iv, 'hex');
+    // let encryptedText = Buffer.from(text.encryptedData, 'hex');
+    // let decipher = crypto.createDecipheriv('aes-256-cbc', Buffer.from(key), iv);
+    // let decrypted = decipher.update(encryptedText);
+    // decrypted = Buffer.concat([decrypted, decipher.final()]);
+
+    const decipher = crypto.createDecipher('aes192', 'a password');
+    let decrypted = decipher.update(text, 'hex', 'utf8');
     return decrypted.toString();
    }

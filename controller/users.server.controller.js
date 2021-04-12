@@ -289,15 +289,6 @@ exports.generateHashForEmails = function (req, res) {
     }
 
     let users_list = []
-    let lang = 'en';
-
-    // res.status(201).jsonp({
-    //     status: 201,
-    //     data: {
-    //         msg: 'Your request is accepted'
-    //     },
-    //     error: {}
-    // });
 
     fs.createReadStream(req.file.path)
         .pipe(csv.parse({
@@ -339,4 +330,32 @@ exports.generateHashForEmails = function (req, res) {
                 return;
             }
         })
+}
+
+exports.decryptUserData = function (req, res) {
+    console.log("User Controller: entering decryptUserData")
+    console.log('Request params :: ', req.params)
+    console.log("request query :: ", req.query);
+
+    if (!req.params.encrypt_id) {
+        console.log("missing encrypt_id in params");
+        res.status(400).jsonp({
+            status: 400,
+            data: {},
+            message: message.invalid_get_request,
+        });
+        return;
+    }
+
+    let encrypt_id = req.params.encrypt_id
+    console.log('encrypt_id', encrypt_id)
+    email = dbHelper.decrypt(encrypt_id)
+    res.status(200).jsonp({
+        status: 200,
+        data: {
+            email: email
+        },
+        error: {},
+    });
+    return;
 }

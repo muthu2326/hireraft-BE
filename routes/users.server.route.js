@@ -15,6 +15,8 @@ router.get('/:user_id',users.getUserById);
 
 router.get('/:user_id/jobs',users.getUserJobs);
 
+router.get('/:encrypt_id/decrypt',users.decryptUserData);
+
 router.post('/upload/generate/hash', upload.single('file'), users.generateHashForEmails);
 
 module.exports = router;
