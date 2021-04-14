@@ -1,0 +1,1722 @@
+{
+	"info": {
+		"_postman_id": "f30260f5-b679-476d-a556-67944b388abc",
+		"name": "Hireraft APIs",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get all jobs",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"filter\": {\n        \"experience\": {\n            \"min\": -1,\n            \"max\": -1\n        },\n        \"salary\": {\n            \"min\": -1,\n            \"max\": -1\n        },\n        \"skills\": \"-1\",\n        \"location\": \"-1\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base-url}}/jobs?sort=-1",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"jobs"
+					],
+					"query": [
+						{
+							"key": "sort",
+							"value": "-1"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Get all jobs - Sort By descending",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"filter\": {\n        \"experience\": {\n            \"min\": -1,\n            \"max\": -1\n        },\n        \"salary\": {\n            \"min\": -1,\n            \"max\": -1\n        },\n        \"skills\": \"-1\",\n        \"location\": \"-1\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base-url}}/jobs?page=1&limit=10&sort=-1",
+							"host": [
+								"{{base-url}}"
+							],
+							"path": [
+								"jobs"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "sort",
+									"value": "-1"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "content-type",
+							"value": "application/json"
+						},
+						{
+							"key": "content-length",
+							"value": "1931"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 09 Mar 2021 14:16:14 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"total\": 85,\n    \"results_count\": 10,\n    \"docs\": [\n        {\n            \"company_name\": \"FinnovationZ.com\",\n            \"company_address\": \"Kolkata , Hyderabad/Secunderabad , Bangalore/Bengaluru\",\n            \"role\": \"Graphic/Web Designer\",\n            \"employment_type\": \"Full Time, Permanent\",\n            \"_id\": \"6047233bb6cd4f6084474f7b\"\n        },\n        {\n            \"company_name\": \"Kodiak Networks India Private Limited\",\n            \"company_address\": \"Bangalore/Bengaluru\",\n            \"role\": \"Software Developer\",\n            \"employment_type\": \"Full Time, Permanent\",\n            \"_id\": \"6047233bb6cd4f6084474f7a\"\n        },\n        {\n            \"company_name\": \"Zebra Technologies\",\n            \"company_address\": \"Bangalore\",\n            \"role\": \"Software Developer\",\n            \"employment_type\": \"Full Time, Permanent\",\n            \"_id\": \"6047233bb6cd4f6084474f79\"\n        },\n        {\n            \"company_name\": \"Zebra Technologies\",\n            \"company_address\": \"Bangalore\",\n            \"role\": \"Software Developer\",\n            \"employment_type\": \"Full Time, Permanent\",\n            \"_id\": \"6047233bb6cd4f6084474f78\"\n        },\n        {\n            \"company_name\": \"Oracle India Pvt. Ltd.\",\n            \"company_address\": \"\",\n            \"role\": null,\n            \"employment_type\": null,\n            \"_id\": \"6047233bb6cd4f6084474f77\"\n        },\n        {\n            \"company_name\": \"INDOCAYS PRIVATE LIMITED\",\n            \"company_address\": \"Mumbai , Hyderabad/Secunderabad , Bangalore/Bengaluru\",\n            \"role\": \"Software Developer\",\n            \"employment_type\": \"Full Time, Temporary/Contractual\",\n            \"_id\": \"6047233bb6cd4f6084474f76\"\n        },\n        {\n            \"company_name\": \"Apricot Consulting\",\n            \"company_address\": \"Bangalore/Bengaluru\",\n            \"role\": \"Software Developer\",\n            \"employment_type\": \"Full Time, Permanent\",\n            \"_id\": \"6047233bb6cd4f6084474f75\"\n        },\n        {\n            \"company_name\": \"ZVAL IT Solutions\",\n            \"company_address\": \"Hyderabad/Secunderabad , Bangalore/Bengaluru\",\n            \"role\": \"Graphic/Web Designer\",\n            \"employment_type\": \"Full Time, Permanent\",\n            \"_id\": \"6047233bb6cd4f6084474f74\"\n        },\n        {\n            \"company_name\": \"Mapsted Technologies India Pvt. Ltd.\",\n            \"company_address\": \"Mumbai , New Delhi , Bangalore/Bengaluru\",\n            \"role\": \"Technical Architect\",\n            \"employment_type\": \"Full Time, Permanent\",\n            \"_id\": \"6047233bb6cd4f6084474f73\"\n        },\n        {\n            \"company_name\": \"Benchire\",\n            \"company_address\": \"Bangalore/Bengaluru\",\n            \"role\": \"Testing Engineer\",\n            \"employment_type\": \"Full Time, Permanent\",\n            \"_id\": \"6047233bb6cd4f6084474f72\"\n        }\n    ]\n}"
+				},
+				{
+					"name": "Get all jobs - After User Login  - Jobs with applied status",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"filter\": {\n        \"experience\": {\n            \"min\": -1,\n            \"max\": -1\n        },\n        \"salary\": {\n            \"min\": -1,\n            \"max\": -1\n        },\n        \"skills\": \"-1\",\n        \"location\": [\"Del\", \"Pune\"]\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base-url}}/jobs?uuid={{user_id}}",
+							"host": [
+								"{{base-url}}"
+							],
+							"path": [
+								"jobs"
+							],
+							"query": [
+								{
+									"key": "uuid",
+									"value": "{{user_id}}"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "content-type",
+							"value": "application/json"
+						},
+						{
+							"key": "content-length",
+							"value": "10182"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 11 Mar 2021 10:21:02 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"total\": 202,\n    \"results_count\": 39,\n    \"docs\": [\n        {\n            \"company_name\": \"Lecan Solutions Pvt Ltd \",\n            \"company_address\": \"Kolkata , Hyderabad/Secunderabad , Pune , Chennai , Bangalore/Bengaluru , Delhi / NCR , Mumbai (All Areas)\",\n            \"role\": \"Software Developer\",\n            \"employment_type\": \"Full Time, Permanent\",\n            \"_id\": \"6047233bb6cd4f6084474f2c\",\n            \"applied_status\": false\n        },\n        {\n            \"company_name\": \"PrepHub\",\n            \"company_address\": \"Pune , Ahmedabad , Bangalore/Bengaluru\",\n            \"role\": \"Software Developer\",\n            \"employment_type\": \"Full Time, Permanent\",\n            \"_id\": \"6047233bb6cd4f6084474f2f\",\n            \"applied_status\": false\n        },\n        {\n            \"company_name\": \"Vitel Global Communications\",\n            \"company_address\": \"Hyderabad/Secunderabad , Pune , Gurgaon/Gurugram , Chennai , Bangalore/Bengaluru , Greater Noida\",\n            \"role\": \"Database Architect/Designer\",\n            \"employment_type\": \"Full Time, Permanent\",\n            \"_id\": \"6047233bb6cd4f6084474f32\",\n            \"applied_status\": false\n        },\n        {\n            \"company_name\": \"Capital Recruitment Services   \",\n            \"company_address\": \"Kolkata , Hyderabad/Secunderabad , Pune , Ahmedabad , Chennai , Bangalore/Bengaluru , Delhi / NCR , Mumbai (All Areas)\",\n            \"role\": \"Software Developer\",\n            \"employment_type\": \"Full Time, Permanent\",\n            \"_id\": \"6047233bb6cd4f6084474f33\",\n            \"applied_status\": false\n        },\n        {\n            \"company_name\": \"Leuwint Technologies\",\n            \"company_address\": \"Pune , Bangalore/Bengaluru\",\n            \"role\": \"Software Developer\",\n            \"employment_type\": \"Full Time, Permanent\",\n            \"_id\": \"6047233bb6cd4f6084474f34\",\n            \"applied_status\": false\n        },\n        {\n            \"company_name\": \"DIGITAL APTECH PRIVATE LIMITED\",\n            \"company_address\": \"Kolkata , Pune , Chennai , Bangalore/Bengaluru , Delhi / NCR , Mumbai (All Areas)\",\n            \"role\": \"Software Developer\",\n            \"employment_type\": \"Full Time, Permanent\",\n            \"_id\": \"6047233bb6cd4f6084474f3b\",\n            \"applied_status\": false\n        },\n        {\n            \"company_name\": \"Zorang Technologies\",\n            \"company_address\": \"Pune , Bangalore Rural , Gurgaon/Gurugram\",\n            \"role\": \"Software Developer\",\n            \"employment_type\": \"Full Time, Permanent\",\n            \"_id\": \"6047233bb6cd4f6084474f42\",\n            \"applied_status\": false\n        },\n        {\n            \"company_name\": \"Leuwint Technologies\",\n            \"company_address\": \"Pune , Bangalore/Bengaluru\",\n            \"role\": \"Software Developer\",\n            \"employment_type\": \"Full Time, Permanent\",\n            \"_id\": \"6047233bb6cd4f6084474f4b\",\n            \"applied_status\": false\n        },\n        {\n            \"company_name\": \"Benchire\",\n            \"company_address\": \"Mumbai , Gurgaon/Gurugram , Delhi / NCR , Bangalore/Bengaluru\",\n            \"role\": \"Software Developer\",\n            \"employment_type\": \"Full Time, Permanent\",\n            \"_id\": \"6047233bb6cd4f6084474f5f\",\n            \"applied_status\": false\n        },\n        {\n            \"company_name\": \"Benchire\",\n            \"company_address\": \"Gurgaon/Gurugram , Delhi / NCR , Bangalore/Bengaluru\",\n            \"role\": \"Software Developer\",\n            \"employment_type\": \"Full Time, Permanent\",\n            \"_id\": \"6047233bb6cd4f6084474f60\",\n            \"applied_status\": false\n        },\n        {\n            \"company_name\": \"Benchire\",\n            \"company_address\": \"Gurgaon/Gurugram , Bangalore/Bengaluru , Delhi / NCR\",\n            \"role\": \"Software Developer\",\n            \"employment_type\": \"Full Time, Permanent\",\n            \"_id\": \"6047233bb6cd4f6084474f67\",\n            \"applied_status\": false\n        },\n        {\n            \"company_name\": \"Benchire\",\n            \"company_address\": \"Mumbai , Gurgaon/Gurugram , Bangalore/Bengaluru , Delhi / NCR\",\n            \"role\": \"Software Developer\",\n            \"employment_type\": \"Full Time, Permanent\",\n            \"_id\": \"6047233bb6cd4f6084474f6c\",\n            \"applied_status\": false\n        },\n        {\n            \"company_name\": \"Mapsted Technologies India Pvt. Ltd.\",\n            \"company_address\": \"Mumbai , New Delhi , Bangalore/Bengaluru\",\n            \"role\": \"Technical Architect\",\n            \"employment_type\": \"Full Time, Permanent\",\n            \"_id\": \"6047233bb6cd4f6084474f73\",\n            \"applied_status\": false\n        },\n        {\n            \"company_name\": \"Gratitude India Manpower Consultants Pvt. Ltd.  \",\n            \"company_address\": \"Mumbai , Pune , Bangalore/Bengaluru\",\n            \"role\": \"Software Developer\",\n            \"employment_type\": \"Full Time, Permanent\",\n            \"_id\": \"6048551840506dffd5ec8ecc\",\n            \"applied_status\": false\n        },\n        {\n            \"company_name\": \"Virtusa Consulting Services Pvt Ltd\",\n            \"company_address\": \"Hyderabad/Secunderabad , Pune , Chennai , Bangalore/Bengaluru , Delhi / NCR , Mumbai (All Areas)\",\n            \"role\": \"Technical Architect\",\n            \"employment_type\": \"Full Time, Permanent\",\n            \"_id\": \"6048551840506dffd5ec8ed5\",\n            \"applied_status\": false\n        },\n        {\n            \"company_name\": \"Winfort Services Pvt ltd \",\n            \"company_address\": \"Hyderabad/Secunderabad , Pune , Chennai , Bangalore/Bengaluru\",\n            \"role\": \"Software Developer\",\n            \"employment_type\": \"Full Time, Permanent\",\n            \"_id\": \"6048551840506dffd5ec8eda\",\n            \"applied_status\": false\n        },\n        {\n            \"company_name\": \"Winfort Services Pvt ltd \",\n            \"company_address\": \"Hyderabad/Secunderabad , Pune , Chennai , Bangalore/Bengaluru\",\n            \"role\": \"Software Developer\",\n            \"employment_type\": \"Full Time, Permanent\",\n            \"_id\": \"6048551840506dffd5ec8edb\",\n            \"applied_status\": false\n        },\n        {\n            \"company_name\": \"Bristlecone India Limited\",\n            \"company_address\": \"Mumbai , Pune , Bangalore/Bengaluru , Delhi / NCR\",\n            \"role\": \"Technical Architect\",\n            \"employment_type\": \"Full Time, Permanent\",\n            \"_id\": \"6048551840506dffd5ec8ee1\",\n            \"applied_status\": false\n        },\n        {\n            \"company_name\": \"COLLABERA\",\n            \"company_address\": \"Kolkata , Hyderabad/Secunderabad , Pune , Chennai , Bangalore/Bengaluru\",\n            \"role\": \"Software Developer\",\n            \"employment_type\": \"Full Time, Permanent\",\n            \"_id\": \"6048551840506dffd5ec8ee2\",\n            \"applied_status\": false\n        },\n        {\n            \"company_name\": \"Capital Recruitment Services   \",\n            \"company_address\": \"Kolkata , Hyderabad/Secunderabad , Pune , Ahmedabad , Chennai , Bangalore/Bengaluru , Delhi / NCR , Mumbai (All Areas)\",\n            \"role\": \"Software Developer\",\n            \"employment_type\": \"Full Time, Permanent\",\n            \"_id\": \"6048551840506dffd5ec8eea\",\n            \"applied_status\": false\n        },\n        {\n            \"company_name\": \"Spectral Consultants -Search and Recruitments Firm \",\n            \"company_address\": \"Pune , Bangalore/Bengaluru\",\n            \"role\": \"Quality Assurance/Quality Control Executive\",\n            \"employment_type\": \"Full Time, Permanent\",\n            \"_id\": \"6048551840506dffd5ec8eeb\",\n            \"applied_status\": false\n        },\n        {\n            \"company_name\": \"BALASUNDARAM SANTOSH \",\n            \"company_address\": \"Mumbai , Hyderabad/Secunderabad , Pune , Chennai , Bangalore/Bengaluru , Delhi / NCR\",\n            \"role\": \"Software Developer\",\n            \"employment_type\": \"Full Time, Permanent\",\n            \"_id\": \"6048551840506dffd5ec8eed\",\n            \"applied_status\": false\n        },\n        {\n            \"company_name\": \"BALASUNDARAM SANTOSH \",\n            \"company_address\": \"Mumbai , Hyderabad/Secunderabad , Pune , Chennai , Bangalore/Bengaluru , Delhi / NCR\",\n            \"role\": \"Software Developer\",\n            \"employment_type\": \"Full Time, Permanent\",\n            \"_id\": \"6048551840506dffd5ec8eee\",\n            \"applied_status\": false\n        },\n        {\n            \"company_name\": \"Agilis A/S\",\n            \"company_address\": \"Mumbai , China , Pakistan , Hyderabad/Secunderabad , Sri Lanka , Pune , Delhi / NCR , Bangalore/Bengaluru , Home Office\",\n            \"role\": \"Software Developer\",\n            \"employment_type\": \"Full Time, Permanent\",\n            \"_id\": \"6048551840506dffd5ec8ef1\",\n            \"applied_status\": false\n        },\n        {\n            \"company_name\": \"CityFurnish India Private Limited\",\n            \"company_address\": \"Pune , Bangalore/Bengaluru , Delhi / NCR\",\n            \"role\": \"Software Developer\",\n            \"employment_type\": \"Full Time, Permanent\",\n            \"_id\": \"6048551840506dffd5ec8f02\",\n            \"applied_status\": false\n        },\n        {\n            \"company_name\": \"Innoraft Solutions Pvt Ltd\",\n            \"company_address\": \"Kolkata , Mumbai , Hyderabad/Secunderabad , Pune , Chennai , Jaipur , Bangalore/Bengaluru , Delhi / NCR\",\n            \"role\": \"Software Developer\",\n            \"employment_type\": \"Full Time, Permanent\",\n            \"_id\": \"6049c686f7df76b0b54689a9\",\n            \"applied_status\": false\n        },\n        {\n            \"company_name\": \"Innoraft Solutions Pvt Ltd\",\n            \"company_address\": \"Bhubaneswar , Kolkata , Hyderabad/Secunderabad , Pune , Chennai , Jaipur , Bangalore/Bengaluru , Delhi / NCR\",\n            \"role\": \"Software Developer\",\n            \"employment_type\": \"Full Time, Permanent\",\n            \"_id\": \"6049c686f7df76b0b54689aa\",\n            \"applied_status\": false\n        },\n        {\n            \"company_name\": \"cloudran communications pvt ltd\",\n            \"company_address\": \"Hyderabad/Secunderabad , Bangalore/Bengaluru , Delhi / NCR\",\n            \"role\": \"Software Developer\",\n            \"employment_type\": \"Full Time, Permanent\",\n            \"_id\": \"6049c686f7df76b0b54689b0\",\n            \"applied_status\": false\n        },\n        {\n            \"company_name\": \"TMangoes HR Consulting  \",\n            \"company_address\": \"Pune , Chennai , Bangalore/Bengaluru\",\n            \"role\": \"Software Developer\",\n            \"employment_type\": \"Full Time, Permanent\",\n            \"_id\": \"6049c686f7df76b0b54689b1\",\n            \"applied_status\": false\n        },\n        {\n            \"company_name\": \"TECH ORBIT SOFT SYSTEMS PVT. LTD \",\n            \"company_address\": \"Hyderabad/Secunderabad , Pune , Bangalore/Bengaluru\",\n            \"role\": \"Team Lead/Technical Lead\",\n            \"employment_type\": \"Full Time, Permanent\",\n            \"_id\": \"6049c686f7df76b0b54689b2\",\n            \"applied_status\": false\n        },\n        {\n            \"company_name\": \"BORN Commerce Private Limited\",\n            \"company_address\": \"Kochi/Cochin , Noida , Kolkata , Hyderabad/Secunderabad , Pune , Ahmedabad , Gurgaon/Gurugram , Chennai , Bangalore/Bengaluru\",\n            \"role\": \"Technical Architect\",\n            \"employment_type\": \"Full Time, Permanent\",\n            \"_id\": \"6049c686f7df76b0b54689b6\",\n            \"applied_status\": false\n        },\n        {\n            \"company_name\": \"S2 INFOTECH INTERNATIONAL LIMITED \",\n            \"company_address\": \"Pune , Bangalore/Bengaluru , Delhi / NCR\",\n            \"role\": \"Database Architect/Designer\",\n            \"employment_type\": \"Full Time, Temporary/Contractual\",\n            \"_id\": \"6049c686f7df76b0b54689b8\",\n            \"applied_status\": false\n        },\n        {\n            \"company_name\": \"Pronto Consulting Services\",\n            \"company_address\": \"Nasik/Nashik , Pune , Bangalore/Bengaluru\",\n            \"role\": \"Software Developer\",\n            \"employment_type\": \"Full Time, Permanent\",\n            \"_id\": \"6049c686f7df76b0b54689ba\",\n            \"applied_status\": false\n        },\n        {\n            \"company_name\": \"Techcushy Software Solutions Private Limited\",\n            \"company_address\": \"Hyderabad/Secunderabad , Bangalore/Bengaluru , Delhi / NCR\",\n            \"role\": \"IT/Technical Content Developer\",\n            \"employment_type\": \"Full Time, Permanent\",\n            \"_id\": \"6049c686f7df76b0b54689c2\",\n            \"applied_status\": false\n        },\n        {\n            \"company_name\": \"MSys Tech India Pvt. Ltd.\",\n            \"company_address\": \"Pune , Chennai , Bangalore/Bengaluru\",\n            \"role\": \"Solution Architect / Enterprise Architect\",\n            \"employment_type\": \"Full Time, Permanent\",\n            \"_id\": \"6049c686f7df76b0b54689c7\",\n            \"applied_status\": false\n        },\n        {\n            \"company_name\": \"DYR Consulting  \",\n            \"company_address\": \"Pune , Bangalore/Bengaluru\",\n            \"role\": \"Team Lead/Technical Lead\",\n            \"employment_type\": \"Full Time, Permanent\",\n            \"_id\": \"6049c686f7df76b0b54689c9\",\n            \"applied_status\": false\n        },\n        {\n            \"company_name\": \"Talent Guru  \",\n            \"company_address\": \"Bangalore/Bengaluru , Delhi / NCR , Mumbai (All Areas)\",\n            \"role\": \"Software Developer\",\n            \"employment_type\": \"Full Time, Permanent\",\n            \"_id\": \"6049c686f7df76b0b54689cc\",\n            \"applied_status\": false\n        },\n        {\n            \"company_name\": \"BORN Commerce Private Limited\",\n            \"company_address\": \"Kolkata , Mumbai , Hyderabad/Secunderabad , Pune , Ahmedabad , Chennai , Bangalore/Bengaluru , Delhi / NCR\",\n            \"role\": \"Team Lead/Technical Lead\",\n            \"employment_type\": \"Full Time, Permanent\",\n            \"_id\": \"6049c686f7df76b0b54689d4\",\n            \"applied_status\": false\n        },\n        {\n            \"company_name\": \"Camgemini\",\n            \"company_address\": \"Noida , Kolkata , Hyderabad/Secunderabad , Pune , Ahmedabad , Chennai , Bangalore/Bengaluru , Delhi / NCR , Mumbai (All Areas)\",\n            \"role\": \"Software Developer\",\n            \"employment_type\": \"Full Time, Permanent\",\n            \"_id\": \"6049c686f7df76b0b54689d9\",\n            \"applied_status\": false\n        }\n    ]\n}"
+				},
+				{
+					"name": "Get all jobs - Pagination",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"filter\": {\n        \"experience\": {\n            \"min\": -1,\n            \"max\": -1\n        },\n        \"salary\": {\n            \"min\": -1,\n            \"max\": -1\n        },\n        \"skills\": \"-1\",\n        \"location\": \"-1\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base-url}}/jobs?page=1&limit=10",
+							"host": [
+								"{{base-url}}"
+							],
+							"path": [
+								"jobs"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "content-type",
+							"value": "application/json"
+						},
+						{
+							"key": "content-length",
+							"value": "2083"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 09 Mar 2021 14:14:50 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"total\": 85,\n    \"results_count\": 10,\n    \"docs\": [\n        {\n            \"company_name\": \"ikure Techsoft (P)Ltd\",\n            \"company_address\": \"Bangalore/Bengaluru\",\n            \"role\": \"IT/Technical Content Developer\",\n            \"employment_type\": \"Full Time, Permanent\",\n            \"_id\": \"6047233bb6cd4f6084474f27\"\n        },\n        {\n            \"company_name\": \"Pronto Consulting Services\",\n            \"company_address\": \"Hyderabad/Secunderabad , Bangalore/Bengaluru\",\n            \"role\": \"Software Developer\",\n            \"employment_type\": \"Full Time, Permanent\",\n            \"_id\": \"6047233bb6cd4f6084474f28\"\n        },\n        {\n            \"company_name\": \"CONSULTBAE LLP \",\n            \"company_address\": \"Gurgaon/Gurugram , Bangalore/Bengaluru\",\n            \"role\": \"Software Developer\",\n            \"employment_type\": \"Full Time, Permanent\",\n            \"_id\": \"6047233bb6cd4f6084474f29\"\n        },\n        {\n            \"company_name\": \"DEW INFO-SYSTEMS PRIVATE LIMITED\",\n            \"company_address\": \"Hyderabad/Secunderabad , Chennai , Bangalore/Bengaluru\",\n            \"role\": \"Software Developer\",\n            \"employment_type\": \"Full Time, Permanent\",\n            \"_id\": \"6047233bb6cd4f6084474f2a\"\n        },\n        {\n            \"company_name\": \"DEW INFO-SYSTEMS PRIVATE LIMITED\",\n            \"company_address\": \"Hyderabad/Secunderabad , Chennai , Bangalore/Bengaluru\",\n            \"role\": \"Software Developer\",\n            \"employment_type\": \"Full Time, Permanent\",\n            \"_id\": \"6047233bb6cd4f6084474f2b\"\n        },\n        {\n            \"company_name\": \"Lecan Solutions Pvt Ltd \",\n            \"company_address\": \"Kolkata , Hyderabad/Secunderabad , Pune , Chennai , Bangalore/Bengaluru , Delhi / NCR , Mumbai (All Areas)\",\n            \"role\": \"Software Developer\",\n            \"employment_type\": \"Full Time, Permanent\",\n            \"_id\": \"6047233bb6cd4f6084474f2c\"\n        },\n        {\n            \"company_name\": \"Aspire Systems India (P) Ltd\",\n            \"company_address\": \"\",\n            \"role\": null,\n            \"employment_type\": null,\n            \"_id\": \"6047233bb6cd4f6084474f2d\"\n        },\n        {\n            \"company_name\": \"Sureminds Solutions Pvt. Ltd.  \",\n            \"company_address\": \"Bangalore/Bengaluru\",\n            \"role\": \"Software Developer\",\n            \"employment_type\": \"Full Time, Permanent\",\n            \"_id\": \"6047233bb6cd4f6084474f2e\"\n        },\n        {\n            \"company_name\": \"PrepHub\",\n            \"company_address\": \"Pune , Ahmedabad , Bangalore/Bengaluru\",\n            \"role\": \"Software Developer\",\n            \"employment_type\": \"Full Time, Permanent\",\n            \"_id\": \"6047233bb6cd4f6084474f2f\"\n        },\n        {\n            \"company_name\": \"TechKnowledgey Pte Ltd\",\n            \"company_address\": \"Bangalore/Bengaluru\",\n            \"role\": \"Team Lead/Technical Lead\",\n            \"employment_type\": \"Full Time, Permanent\",\n            \"_id\": \"6047233bb6cd4f6084474f30\"\n        }\n    ]\n}"
+				},
+				{
+					"name": "Get all jobs - Sort by Ascending",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"filter\": {\n        \"experience\": {\n            \"min\": -1,\n            \"max\": -1\n        },\n        \"salary\": {\n            \"min\": -1,\n            \"max\": -1\n        },\n        \"skills\": \"-1\",\n        \"location\": \"-1\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base-url}}/jobs?page=1&limit=10&sort=1",
+							"host": [
+								"{{base-url}}"
+							],
+							"path": [
+								"jobs"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "sort",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "content-type",
+							"value": "application/json"
+						},
+						{
+							"key": "content-length",
+							"value": "2083"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 09 Mar 2021 14:15:21 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"total\": 85,\n    \"results_count\": 10,\n    \"docs\": [\n        {\n            \"company_name\": \"ikure Techsoft (P)Ltd\",\n            \"company_address\": \"Bangalore/Bengaluru\",\n            \"role\": \"IT/Technical Content Developer\",\n            \"employment_type\": \"Full Time, Permanent\",\n            \"_id\": \"6047233bb6cd4f6084474f27\"\n        },\n        {\n            \"company_name\": \"Pronto Consulting Services\",\n            \"company_address\": \"Hyderabad/Secunderabad , Bangalore/Bengaluru\",\n            \"role\": \"Software Developer\",\n            \"employment_type\": \"Full Time, Permanent\",\n            \"_id\": \"6047233bb6cd4f6084474f28\"\n        },\n        {\n            \"company_name\": \"CONSULTBAE LLP \",\n            \"company_address\": \"Gurgaon/Gurugram , Bangalore/Bengaluru\",\n            \"role\": \"Software Developer\",\n            \"employment_type\": \"Full Time, Permanent\",\n            \"_id\": \"6047233bb6cd4f6084474f29\"\n        },\n        {\n            \"company_name\": \"DEW INFO-SYSTEMS PRIVATE LIMITED\",\n            \"company_address\": \"Hyderabad/Secunderabad , Chennai , Bangalore/Bengaluru\",\n            \"role\": \"Software Developer\",\n            \"employment_type\": \"Full Time, Permanent\",\n            \"_id\": \"6047233bb6cd4f6084474f2a\"\n        },\n        {\n            \"company_name\": \"DEW INFO-SYSTEMS PRIVATE LIMITED\",\n            \"company_address\": \"Hyderabad/Secunderabad , Chennai , Bangalore/Bengaluru\",\n            \"role\": \"Software Developer\",\n            \"employment_type\": \"Full Time, Permanent\",\n            \"_id\": \"6047233bb6cd4f6084474f2b\"\n        },\n        {\n            \"company_name\": \"Lecan Solutions Pvt Ltd \",\n            \"company_address\": \"Kolkata , Hyderabad/Secunderabad , Pune , Chennai , Bangalore/Bengaluru , Delhi / NCR , Mumbai (All Areas)\",\n            \"role\": \"Software Developer\",\n            \"employment_type\": \"Full Time, Permanent\",\n            \"_id\": \"6047233bb6cd4f6084474f2c\"\n        },\n        {\n            \"company_name\": \"Aspire Systems India (P) Ltd\",\n            \"company_address\": \"\",\n            \"role\": null,\n            \"employment_type\": null,\n            \"_id\": \"6047233bb6cd4f6084474f2d\"\n        },\n        {\n            \"company_name\": \"Sureminds Solutions Pvt. Ltd.  \",\n            \"company_address\": \"Bangalore/Bengaluru\",\n            \"role\": \"Software Developer\",\n            \"employment_type\": \"Full Time, Permanent\",\n            \"_id\": \"6047233bb6cd4f6084474f2e\"\n        },\n        {\n            \"company_name\": \"PrepHub\",\n            \"company_address\": \"Pune , Ahmedabad , Bangalore/Bengaluru\",\n            \"role\": \"Software Developer\",\n            \"employment_type\": \"Full Time, Permanent\",\n            \"_id\": \"6047233bb6cd4f6084474f2f\"\n        },\n        {\n            \"company_name\": \"TechKnowledgey Pte Ltd\",\n            \"company_address\": \"Bangalore/Bengaluru\",\n            \"role\": \"Team Lead/Technical Lead\",\n            \"employment_type\": \"Full Time, Permanent\",\n            \"_id\": \"6047233bb6cd4f6084474f30\"\n        }\n    ]\n}"
+				},
+				{
+					"name": "Get all jobs",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"filter\": {\n        \"experience\": {\n            \"min\": -1,\n            \"max\": -1\n        },\n        \"salary\": {\n            \"min\": -1,\n            \"max\": -1\n        },\n        \"skills\": \"-1\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base-url}}/jobs",
+							"host": [
+								"{{base-url}}"
+							],
+							"path": [
+								"jobs"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "content-type",
+							"value": "application/json"
+						},
+						{
+							"key": "content-length",
+							"value": "220"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 04 Mar 2021 10:33:18 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"total\": 1,\n    \"docs\": [\n        {\n            \"company_name\": \"MICRO FOCUS SOFTWARE SOLUTIONS INDIA PRIVATE LTD\",\n            \"company_address\": \"Bengaluru\",\n            \"role\": \"Software Developer\",\n            \"employment_type\": \"Full Time, Permanent\",\n            \"_id\": \"5e7c862a5369291abfac97c9\"\n        }\n    ]\n}"
+				},
+				{
+					"name": "Get all jobs with Location",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"filter\": {\n        \"experience\": {\n            \"min\": -1,\n            \"max\": -1\n        },\n        \"salary\": {\n            \"min\": -1,\n            \"max\": -1\n        },\n        \"skills\": \"-1\",\n        \"location\": [\"Bangalore\", \"Chennai\"]\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base-url}}/jobs",
+							"host": [
+								"{{base-url}}"
+							],
+							"path": [
+								"jobs"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "content-type",
+							"value": "application/json"
+						},
+						{
+							"key": "content-length",
+							"value": "1591"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 09 Mar 2021 14:13:24 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"total\": 85,\n    \"results_count\": 6,\n    \"docs\": [\n        {\n            \"company_name\": \"DEW INFO-SYSTEMS PRIVATE LIMITED\",\n            \"company_address\": \"Hyderabad/Secunderabad , Chennai , Bangalore/Bengaluru\",\n            \"role\": \"Software Developer\",\n            \"employment_type\": \"Full Time, Permanent\",\n            \"_id\": \"6047233bb6cd4f6084474f2a\"\n        },\n        {\n            \"company_name\": \"DEW INFO-SYSTEMS PRIVATE LIMITED\",\n            \"company_address\": \"Hyderabad/Secunderabad , Chennai , Bangalore/Bengaluru\",\n            \"role\": \"Software Developer\",\n            \"employment_type\": \"Full Time, Permanent\",\n            \"_id\": \"6047233bb6cd4f6084474f2b\"\n        },\n        {\n            \"company_name\": \"Lecan Solutions Pvt Ltd \",\n            \"company_address\": \"Kolkata , Hyderabad/Secunderabad , Pune , Chennai , Bangalore/Bengaluru , Delhi / NCR , Mumbai (All Areas)\",\n            \"role\": \"Software Developer\",\n            \"employment_type\": \"Full Time, Permanent\",\n            \"_id\": \"6047233bb6cd4f6084474f2c\"\n        },\n        {\n            \"company_name\": \"Vitel Global Communications\",\n            \"company_address\": \"Hyderabad/Secunderabad , Pune , Gurgaon/Gurugram , Chennai , Bangalore/Bengaluru , Greater Noida\",\n            \"role\": \"Database Architect/Designer\",\n            \"employment_type\": \"Full Time, Permanent\",\n            \"_id\": \"6047233bb6cd4f6084474f32\"\n        },\n        {\n            \"company_name\": \"Capital Recruitment Services   \",\n            \"company_address\": \"Kolkata , Hyderabad/Secunderabad , Pune , Ahmedabad , Chennai , Bangalore/Bengaluru , Delhi / NCR , Mumbai (All Areas)\",\n            \"role\": \"Software Developer\",\n            \"employment_type\": \"Full Time, Permanent\",\n            \"_id\": \"6047233bb6cd4f6084474f33\"\n        },\n        {\n            \"company_name\": \"DIGITAL APTECH PRIVATE LIMITED\",\n            \"company_address\": \"Kolkata , Pune , Chennai , Bangalore/Bengaluru , Delhi / NCR , Mumbai (All Areas)\",\n            \"role\": \"Software Developer\",\n            \"employment_type\": \"Full Time, Permanent\",\n            \"_id\": \"6047233bb6cd4f6084474f3b\"\n        }\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "User Registration",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Muthu\",\n    \"email\": \"muthu.r@digiapt.com\",\n    \"job_id\": \"6047233bb6cd4f6084474f27\",\n    \"phone\": \"9066225393\",\n    \"skills\": [\"React JS\", \"HTML\"],\n    \"course\": \"BCA\",\n    \"passing_year\": \"2018\",\n    \"joining_by\": \"Immediate\",\n    \"uuid\": \"8046233bb6cd4f6084474f2712345\"   \n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base-url}}/users/register",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"users",
+						"register"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "User Registration **DO NOT USE**",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Muthu\",\n    \"email\": \"muthu.r@digiapt.com\",\n    \"job_id\": \"6047233bb6cd4f6084474f27\",\n    \"phone\": \"9066225393\",\n    \"skills\": [\"React JS\", \"HTML\"],\n    \"course\": \"BCA\",\n    \"passing_year\": \"2018\",\n    \"experience_year\": 2,\n    \"experience_month\": 5,\n    \"joining_by\": \"Immediate\",\n    \"uuid\": \"5046233bb6cd4f6084474f2712345\"   \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base-url}}/users/register",
+							"host": [
+								"{{base-url}}"
+							],
+							"path": [
+								"users",
+								"register"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "content-type",
+							"value": "application/json"
+						},
+						{
+							"key": "content-length",
+							"value": "364"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 10 Mar 2021 14:32:45 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": 200,\n    \"data\": {\n        \"name\": \"Muthu\",\n        \"email\": \"muthu.r@digiapt.com\",\n        \"password\": null,\n        \"experience_year\": 2,\n        \"experience_month\": 5,\n        \"phone\": \"9066225393\",\n        \"course\": \"BCA\",\n        \"passing_year\": 2018,\n        \"skills\": [\n            \"React JS\",\n            \"HTML\"\n        ],\n        \"joining_by\": \"Immediate\",\n        \"_id\": \"5046233bb6cd4f6084474f2712345\",\n        \"created\": \"2021-03-10T14:32:45.811Z\",\n        \"updated\": \"2021-03-10T14:32:45.812Z\",\n        \"__v\": 0\n    },\n    \"err\": {}\n}"
+				}
+			]
+		},
+		{
+			"name": "Get all Users",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base-url}}/users",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Get all Users",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base-url}}/users",
+							"host": [
+								"{{base-url}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "content-type",
+							"value": "application/json"
+						},
+						{
+							"key": "content-length",
+							"value": "679"
+						},
+						{
+							"key": "etag",
+							"value": "\"2003070290\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 09 Mar 2021 11:03:36 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": 200,\n    \"data\": [\n        {\n            \"name\": \"Muthu\",\n            \"email\": \"muthu.r+test@digiapt.com\",\n            \"password\": null,\n            \"experience\": \"2 years\",\n            \"phone\": \"9066225393\",\n            \"course\": \"BCA\",\n            \"passing_year\": \"2018\",\n            \"skills\": [\n                \"React JS\",\n                \"HTML\"\n            ],\n            \"joining_by\": \"Immediate\",\n            \"_id\": \"KrNxNfHwPyaIs6baMFmDInJcsDu2\",\n            \"created\": \"2021-03-09T10:39:53.907Z\",\n            \"updated\": \"2021-03-09T10:39:53.907Z\",\n            \"__v\": 0\n        },\n        {\n            \"name\": \"Muthu\",\n            \"email\": \"muthu.r+test@digiapt.com\",\n            \"password\": null,\n            \"experience\": \"2 years\",\n            \"phone\": \"9066225393\",\n            \"course\": \"BCA\",\n            \"passing_year\": \"2018\",\n            \"skills\": [\n                \"React JS\",\n                \"HTML\"\n            ],\n            \"joining_by\": \"Immediate\",\n            \"_id\": \"JHrNxNfHwPyaIs6baMFmDInJcsDu2\",\n            \"created\": \"2021-03-09T10:42:02.945Z\",\n            \"updated\": \"2021-03-09T10:42:02.945Z\",\n            \"__v\": 0\n        }\n    ],\n    \"error\": {}\n}"
+				}
+			]
+		},
+		{
+			"name": "Get User By Id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base-url}}/users/{{user_id}}",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"users",
+						"{{user_id}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Get User By Id",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base-url}}/users/{{user_id}}",
+							"host": [
+								"{{base-url}}"
+							],
+							"path": [
+								"users",
+								"{{user_id}}"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "content-type",
+							"value": "application/json"
+						},
+						{
+							"key": "content-length",
+							"value": "354"
+						},
+						{
+							"key": "etag",
+							"value": "\"-968468646\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 09 Mar 2021 11:04:31 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": 200,\n    \"data\": {\n        \"name\": \"Muthu\",\n        \"email\": \"muthu.r+test@digiapt.com\",\n        \"password\": null,\n        \"experience\": \"2 years\",\n        \"phone\": \"9066225393\",\n        \"course\": \"BCA\",\n        \"passing_year\": \"2018\",\n        \"skills\": [\n            \"React JS\",\n            \"HTML\"\n        ],\n        \"joining_by\": \"Immediate\",\n        \"_id\": \"KrNxNfHwPyaIs6baMFmDInJcsDu2\",\n        \"created\": \"2021-03-09T10:39:53.907Z\",\n        \"updated\": \"2021-03-09T10:39:53.907Z\",\n        \"__v\": 0\n    },\n    \"error\": {}\n}"
+				}
+			]
+		},
+		{
+			"name": "Get Job By Id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base-url}}/jobs/{{job_id}}?uuid={{user_id}}",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"jobs",
+						"{{job_id}}"
+					],
+					"query": [
+						{
+							"key": "uuid",
+							"value": "{{user_id}}"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Get User By Id",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base-url}}/users/{{user_id}}",
+							"host": [
+								"{{base-url}}"
+							],
+							"path": [
+								"users",
+								"{{user_id}}"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "content-type",
+							"value": "application/json"
+						},
+						{
+							"key": "content-length",
+							"value": "354"
+						},
+						{
+							"key": "etag",
+							"value": "\"-968468646\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 09 Mar 2021 11:04:31 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": 200,\n    \"data\": {\n        \"name\": \"Muthu\",\n        \"email\": \"muthu.r+test@digiapt.com\",\n        \"password\": null,\n        \"experience\": \"2 years\",\n        \"phone\": \"9066225393\",\n        \"course\": \"BCA\",\n        \"passing_year\": \"2018\",\n        \"skills\": [\n            \"React JS\",\n            \"HTML\"\n        ],\n        \"joining_by\": \"Immediate\",\n        \"_id\": \"KrNxNfHwPyaIs6baMFmDInJcsDu2\",\n        \"created\": \"2021-03-09T10:39:53.907Z\",\n        \"updated\": \"2021-03-09T10:39:53.907Z\",\n        \"__v\": 0\n    },\n    \"error\": {}\n}"
+				},
+				{
+					"name": "Get Job By Id - After Registration - Fetch Job status for User",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base-url}}/jobs/{{job_id}}?uuid={{user_id}}",
+							"host": [
+								"{{base-url}}"
+							],
+							"path": [
+								"jobs",
+								"{{job_id}}"
+							],
+							"query": [
+								{
+									"key": "uuid",
+									"value": "{{user_id}}"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "content-type",
+							"value": "application/json"
+						},
+						{
+							"key": "content-length",
+							"value": "1228"
+						},
+						{
+							"key": "etag",
+							"value": "\"-1920837814\""
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 11 Mar 2021 11:20:16 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": 200,\n    \"data\": {\n        \"technology\": \"java\",\n        \"company_name\": \"Accenture Solutions Pvt Ltd\",\n        \"company_address\": \"\",\n        \"company_website\": null,\n        \"email\": null,\n        \"phone\": null,\n        \"company_contact_person\": null,\n        \"raw_job_description\": null,\n        \"job_description\": null,\n        \"raw_skills_required\": \"Core Java , Automation , GIT , digital content , Consulting , Agile , Unit testing , Android SDK , Business strategy , Integration Architect\",\n        \"skills_required\": [\n            \"Core Java\",\n            \"Automation\",\n            \"GIT\",\n            \"digital content\",\n            \"Consulting\",\n            \"Agile\",\n            \"Unit testing\",\n            \"Android SDK\",\n            \"Business strategy\",\n            \"Integration Architect\"\n        ],\n        \"raw_salary_package\": null,\n        \"raw_experience_required\": null,\n        \"raw_qualifications\": \"\",\n        \"qualifications\": null,\n        \"role\": null,\n        \"industry_type\": null,\n        \"functional_area\": \"\",\n        \"employment_type\": null,\n        \"role_category\": null,\n        \"notice_period\": null,\n        \"job_post_datetime\": \"Today\",\n        \"url\": \"https://www.naukri.com/job-listings-digital-video-solutions-business-and-integration-architect-accenture-solutions-pvt-ltd-bangalore-bengaluru-8-to-10-years-080321907333?src=jobsearchDesk&sid=16152742349915194_1&xp=20&px=2\",\n        \"salary_min\": null,\n        \"salary_max\": null,\n        \"experience_min\": null,\n        \"experience_max\": null,\n        \"_id\": \"6047233bb6cd4f6084474f38\",\n        \"date\": \"2021-03-08T18:30:00.000Z\",\n        \"applied_status\": false\n    },\n    \"error\": {}\n}"
+				}
+			]
+		},
+		{
+			"name": "Get Jobs for the Candidate",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base-url}}/users/{{user_id}}/jobs?page=1&limit=2",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"users",
+						"{{user_id}}",
+						"jobs"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "limit",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Get Jobs for the Candidate",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base-url}}/users/{{user_id}}/jobs",
+							"host": [
+								"{{base-url}}"
+							],
+							"path": [
+								"users",
+								"{{user_id}}",
+								"jobs"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "content-type",
+							"value": "application/json"
+						},
+						{
+							"key": "content-length",
+							"value": "232"
+						},
+						{
+							"key": "etag",
+							"value": "\"-974983935\""
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 04 Mar 2021 10:32:49 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": 200,\n    \"data\": [\n        {\n            \"company_name\": \"MICRO FOCUS SOFTWARE SOLUTIONS INDIA PRIVATE LTD\",\n            \"company_address\": \"Bengaluru\",\n            \"role\": \"Software Developer\",\n            \"employment_type\": \"Full Time, Permanent\",\n            \"_id\": \"5e7c862a5369291abfac97c9\"\n        }\n    ],\n    \"err\": {}\n}"
+				}
+			]
+		},
+		{
+			"name": "Apply for Job at Registration",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Muthu\",\n    \"email\": \"muthu.r+test@digiapt.com\",\n    \"job_id\": \"6047233bb6cd4f6084474f27\",\n    \"phone\": \"9066225393\",\n    \"skills\": [\"React JS\", \"HTML\"],\n    \"course\": \"BCA\",\n    \"passing_year\": 2018,\n    \"joining_by\": \"Immediate\",\n    \"uuid\": \"JJHrNxNfHwPyaIs6baMFmDInJcsDu2\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base-url}}/jobs/apply",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"jobs",
+						"apply"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Apply for Job at Registration",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Muthu\",\n    \"email\": \"muthu.r+test@digiapt.com\",\n    \"job_id\": \"6047233bb6cd4f6084474f27\",\n    \"phone\": \"9066225393\",\n    \"skills\": [\"React JS\", \"HTML\"],\n    \"course\": \"BCA\",\n    \"passing_year\": 2018,\n    \"experience_year\": 2,\n    \"experience_month\": 5,\n    \"joining_by\": \"Immediate\",\n    \"uuid\": \"JHrNxNfHwPyaIs6baMFmDInJcsDu2\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base-url}}/jobs/apply",
+							"host": [
+								"{{base-url}}"
+							],
+							"path": [
+								"jobs",
+								"apply"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "content-type",
+							"value": "application/json"
+						},
+						{
+							"key": "content-length",
+							"value": "100"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 10 Mar 2021 14:40:37 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": 200,\n    \"data\": {\n        \"reference\": \"6048da6529a782017d2da918\",\n        \"msg\": \"Successfully Applied\"\n    },\n    \"err\": {}\n}"
+				},
+				{
+					"name": "Apply for Job - Already applied",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Muthu\",\n    \"email\": \"muthu.r@digiapt.com\",\n    \"job_id\": \"5e7c862a5369291abfac97c9\",\n    \"phone\": \"9066225393\",\n    \"uuid\": \"qwerty-asdhw1234\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base-url}}/jobs/apply",
+							"host": [
+								"{{base-url}}"
+							],
+							"path": [
+								"jobs",
+								"apply"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "content-type",
+							"value": "application/json"
+						},
+						{
+							"key": "content-length",
+							"value": "56"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 04 Mar 2021 10:31:44 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": 400,\n    \"data\": {},\n    \"err\": {\n        \"msg\": \"Already applied\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Apply for Job after Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Muthu\",\n    \"email\": \"muthu.r@digiapt.com\",\n    \"job_id\": \"6047233bb6cd4f6084474f29\",\n    \"phone\": \"9066225393\",\n    \"uuid\": \"KrNxNfHwPyaIs6baMFmDInJcsDu2\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base-url}}/jobs/apply",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"jobs",
+						"apply"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Apply for Job",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Muthu\",\n    \"email\": \"muthu.r@digiapt.com\",\n    \"job_id\": \"5e7c862a5369291abfac97c9\",\n    \"phone\": \"9066225393\",\n    \"uuid\": \"qwerty-asdhw1234\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base-url}}/jobs/apply",
+							"host": [
+								"{{base-url}}"
+							],
+							"path": [
+								"jobs",
+								"apply"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "content-type",
+							"value": "application/json"
+						},
+						{
+							"key": "content-length",
+							"value": "100"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 04 Mar 2021 10:31:26 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": 200,\n    \"data\": {\n        \"reference\": \"6040b6fea753e001b7989330\",\n        \"msg\": \"Successfully Applied\"\n    },\n    \"err\": {}\n}"
+				},
+				{
+					"name": "Apply for Job - Already applied",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Muthu\",\n    \"email\": \"muthu.r@digiapt.com\",\n    \"job_id\": \"5e7c862a5369291abfac97c9\",\n    \"phone\": \"9066225393\",\n    \"uuid\": \"qwerty-asdhw1234\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base-url}}/jobs/apply",
+							"host": [
+								"{{base-url}}"
+							],
+							"path": [
+								"jobs",
+								"apply"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "content-type",
+							"value": "application/json"
+						},
+						{
+							"key": "content-length",
+							"value": "56"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 04 Mar 2021 10:31:44 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": 400,\n    \"data\": {},\n    \"err\": {\n        \"msg\": \"Already applied\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Get Total Jobs Count",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base-url}}/jobs/count",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"jobs",
+						"count"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Get Total Jobs Count",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base-url}}/jobs/count",
+							"host": [
+								"{{base-url}}"
+							],
+							"path": [
+								"jobs",
+								"count"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "content-type",
+							"value": "application/json"
+						},
+						{
+							"key": "content-length",
+							"value": "47"
+						},
+						{
+							"key": "etag",
+							"value": "\"-923343972\""
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 04 Mar 2021 10:32:23 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": 200,\n    \"data\": {\n        \"jobs_count\": 1\n    },\n    \"err\": {}\n}"
+				}
+			]
+		},
+		{
+			"name": "HR Dasboard Summary",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base-url}}/hr/dashboard/summary?start_date=2021-03-09&end_date=2021-03-10",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"hr",
+						"dashboard",
+						"summary"
+					],
+					"query": [
+						{
+							"key": "start_date",
+							"value": "2021-03-09"
+						},
+						{
+							"key": "end_date",
+							"value": "2021-03-10"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "HR Dasboard Summary",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base-url}}/hr/dashboard/summary?start_date=2021-03-09&end_date=2021-03-10",
+							"host": [
+								"{{base-url}}"
+							],
+							"path": [
+								"hr",
+								"dashboard",
+								"summary"
+							],
+							"query": [
+								{
+									"key": "start_date",
+									"value": "2021-03-09"
+								},
+								{
+									"key": "end_date",
+									"value": "2021-03-10"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "content-type",
+							"value": "application/json"
+						},
+						{
+							"key": "content-length",
+							"value": "71"
+						},
+						{
+							"key": "etag",
+							"value": "\"-1471645255\""
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 18 Mar 2021 06:47:54 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": 200,\n    \"data\": {\n        \"jobs\": 117,\n        \"applied\": 11,\n        \"candidates\": 5\n    },\n    \"err\": {}\n}"
+				}
+			]
+		},
+		{
+			"name": "Upload Candidates CSV data to Generate Hash",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/home/muthu/Desktop/Hireraft/Candidates Details - Python - Sheet1.csv"
+						}
+					],
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base-url}}/users/upload/generate/hash",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"users",
+						"upload",
+						"generate",
+						"hash"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Upload Candidates CSV data to Generate Hash",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/home/muthu/Desktop/Hireraft/Candidates Details - Python - Sheet1.csv"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base-url}}/users/upload/generate/hash",
+							"host": [
+								"{{base-url}}"
+							],
+							"path": [
+								"users",
+								"upload",
+								"generate",
+								"hash"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "plain",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "content-disposition",
+							"value": "attachment; filename=\"users.csv\""
+						},
+						{
+							"key": "content-type",
+							"value": "text/csv; charset=utf-8"
+						},
+						{
+							"key": "content-length",
+							"value": "8510"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 14 Apr 2021 12:27:16 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "\"Fristname\",\"Email\",\"ID\"\n\"Vinay\",\"vinay.vnai@gmail.com\",\"1287da91383f6e7e3140c40affe21597fd4c8bb9\"\n\"Sathiyamurthy\",\"sathiyamurthyece@gmail.com\",\"178fc0982868797d255bf005ebe61f9e934889b5d9eb93677ba4\"\n\"Mohideen\",\"moh.abu24@gmail.com\",\"0981dcde20736d226469e300f3ea10d5b04089\"\n\"Harish\",\"harishrepublic@gmail.com\",\"0c8fc69932796a75205ce601fbe03c9cbe4e8db89ee4d269\"\n\"Muthu\",\"muthusaravanas@gmail.com\",\"099bc09834627962315fe503f3f03c9cbe4e8db89ee4d269\"\n\"Vishnu\",\"vishnuadithyav@outlook.com\",\"1287c7982f647974395dec14f3f53c94a65b88bbdfec93677ba4\"\n\"Mahesh\",\"maheshb0930@gmail.com\",\"098fdc9532797a20691ab42df5ee1d92bf0187bbdd\"\n\"Vinay\",\"vgowlika@gmail.com\",\"1289db872d787371104ee90cfbef5298bc42\"\n\"Udayan\",\"udayankrbhadra@gmail.com\",\"118ad589207f73623241e509e0e23c9cbe4e8db89ee4d269\"\n\"Salai\",\"csalaimani@gmail.com\",\"079dd59c207875713e40c40affe21597fd4c8bb9\"\n\"Panjala\",\"saikrishna.py@gmail.com\",\"178fdd9b33786b783e48aa1debc31b96b24688fad3e8d0\"\n\"Monish\",\"abmonishparab@gmail.com\",\"058cd99f2f786b782048f60cf0c31b96b24688fad3e8d0\"\n\"Neelima\",\"chneelima1@gmail.com\",\"0786da95247d717d3118c40affe21597fd4c8bb9\"\n\"Prasanna\",\"prasannahuggi@gmail.com\",\"149cd583207f7671385ce30afbc31b96b24688fad3e8d0\"\n\"Nikhil\",\"conikhil@gmail.com\",\"0781da992a79717c104ee90cfbef5298bc42\"\n\"Sumanta\",\"sumanta_deb2008@yahoo.com\",\"179bd9912f65794f344ce65fa2b344bbaa4e8cbbdfa9de6b79\"\n\"Dara\",\"daragoutham@gmail.com\",\"008fc691267e6d643848e92df5ee1d92bf0187bbdd\"\n\"Narsimulu\",\"narsimuluhadoop@gmail.com\",\"0a8fc683287c6d7c2541e509fdec0cbbb44285bddca9de6b79\"\n\"Sai\",\"nvrrgivup@gmail.com\",\"0a98c68226786e652069e300f3ea10d5b04089\"\n\"Amit\",\"amithadoop334@gmail.com\",\"0583dd8429707c7f3f59b75ea6c31b96b24688fad3e8d0\"\n\"Muthuselvan\",\"jeevaselvamr15@gmail.com\",\"0e8bd18620627d7c2648e91fa3b63c9cbe4e8db89ee4d269\"\n\"Sandip\",\"sandipgshinde@gmail.com\",\"178fda9428617f633840ea09f7c31b96b24688fad3e8d0\"\n\"Chandulal\",\"chandulaltayade59@gmail.com\",\"0786d59e256474713c5de514f3e719ceea6f83b9d1eed12a77a658\"\n\"Jay\",\"jayingale.2506@gmail.com\",\"0e8fcd992f76797c3507b658a2b53c9cbe4e8db89ee4d269\"\n\"Dinesh\",\"dsirwani3@gmail.com\",\"009ddd82367076796369e300f3ea10d5b04089\"\n\"Nadeem\",\"naveedofm@gmail.com\",\"0a8fc295247577763d69e300f3ea10d5b04089\"\n\"Sathiendran\",\"winsakthi728@gmail.com\",\"1387da83207a6c78391eb655d2e4119aba43cab7dfea\"\n\"kumar\",\"abhilashkreddy05@gmail.com\",\"058cdc992d706b783b5be109f6fa4cce934889b5d9eb93677ba4\"\n\"Pallavi\",\"pallavi.samba@googlemail.com\",\"148fd89c2067713e2348e90ff3c31b94bc4888b1dde6d4683aaa5a7b\"\n\"Savitramma\",\"savipatil3114@gmail.com\",\"178fc29931706c793c1ab55ca6c31b96b24688fad3e8d0\"\n\"Marisa\",\"marisanagamani19@gmail.com\",\"098fc699327076713748e90cfcea4dc2934889b5d9eb93677ba4\"\n\"Vijay\",\"vijaypandithcl@gmail.com\",\"1287de913861797e3440f005f1ef3c9cbe4e8db89ee4d269\"\n\"Ganta\",\"rajeshgantadatastage@gmail.com\",\"168fde9532797f713e5de509f3f71d88a74e83b1f0e0d0657da51b759184\"\n\"Nisha\",\"nisha.nair038@gmail.com\",\"0a87c798203f7671395bb45eaac31b96b24688fad3e8d0\"\n\"Sairaghu\",\"sairaghu.java@gmail.com\",\"178fdd82207670657e43e51bf3c31b96b24688fad3e8d0\"\n\"Rohith\",\"rohithsolomon1@gmail.com\",\"1681dc9935796b7f3c46e902fcb23c9cbe4e8db89ee4d269\"\n\"Srinivas\",\"srinivas.net21@gmail.com\",\"179cdd9e286779637e47e119a0b23c9cbe4e8db89ee4d269\"\n\"Uddipan\",\"uddipan.paul191@gmail.com\",\"118ad0993170763e2048f101a3ba4dbbb44285bddca9de6b79\"\n\"Gurumoorthy\",\"gurucse1990@gmail.com\",\"039bc68522627d216910b42df5ee1d92bf0187bbdd\"\n\"Chevva\",\"pradeepseo10@gmail.com\",\"149cd594247468633546b55dd2e4119aba43cab7dfea\"\n\"Arti\",\"arti.bbbb@gmail.com\",\"059cc0996f737a723269e300f3ea10d5b04089\"\n\"Amruta\",\"amru.dev2@gmail.com\",\"0583c6856f757d666269e300f3ea10d5b04089\"\n\"Saranya\",\"saranya.ramshanthi@gmail.com\",\"178fc6912f68793e2248e91efae2128fbb46a4b3dde6d4683aaa5a7b\"\n\"Anant\",\"er.anantjain@gmail.com\",\"019c9a912f7076643a48ed03d2e4119aba43cab7dfea\"\n\"Himani\",\"hrabhardwaj@gmail.com\",\"0c9cd59229706a742748ee2df5ee1d92bf0187bbdd\"\n\"Madhan\",\"madhanvmr2007@gmail.com\",\"098fd098207f6e7d221bb45da5c31b96b24688fad3e8d0\"\n\"Manish\",\"themanishbaghel@gmail.com\",\"1086d19d207f7163384be50afae610bbb44285bddca9de6b79\"\n\"Kumar\",\"punkit1491@gmail.com\",\"149bda9b286529246918c40affe21597fd4c8bb9\"\n\"Karthik\",\"m.karthik1992@gmail.com\",\"09c0df91336570793b18bd54a0c31b96b24688fad3e8d0\"\n\"Prabhat\",\"prabhat.jaintkg@gmail.com\",\"149cd59229706c3e3a48ed03e6e81bbbb44285bddca9de6b79\"\n\"Karthick\",\"kart2ick@gmail.com\",\"0f8fc68473787b7b104ee90cfbef5298bc42\"\n\"Meghana\",\"meghana.entc@gmail.com\",\"098bd398207f793e3547f00ed2e4119aba43cab7dfea\"\n\"Megha\",\"sharmamegha.bsd@gmail.com\",\"1786d5822c7075753741e543f0f018bbb44285bddca9de6b79\"\n\"Sabari\",\"sabaricn@gmail.com\",\"178fd69133787b7e104ee90cfbef5298bc42\"\n\"Prasanna\",\"barateprasanna@gmail.com\",\"068fc69135746862315ae503fce23c9cbe4e8db89ee4d269\"\n\"Vidya\",\"vidyasangle23@gmail.com\",\"1287d0892062797e3745e15fa1c31b96b24688fad3e8d0\"\n\"Poonam\",\"raskarpoonam47@gmail.com\",\"168fc79b2063687f3f47e500a6b43c9cbe4e8db89ee4d269\"\n\"B.sudhakar\",\"bsudhakar07@gmail.com\",\"069dc194297073712219b32df5ee1d92bf0187bbdd\"\n\"Suman\",\"suman.kr100@gmail.com\",\"179bd9912f3f73626119b42df5ee1d92bf0187bbdd\"\n\"Prashant\",\"prashantryadav@yahoo.co.in\",\"149cd583297076642250e509f3f53c82b2478bbb9ee4d22a7da7\"\n\"Sunita\",\"sunitajaiswal13@gmail.com\",\"179bda9935707271395af30cfeb24fbbb44285bddca9de6b79\"\n\"Keshav\",\"keshav_kaushik@yahoo.com\",\"0f8bc7982067477b315cf705fbe83c82b2478bbb9ee4d269\"\n\"Nagesh\",\"jnagesh@outlook.com\",\"0e80d597246270503f5cf001fdec17d5b04089\"\n\"Praveen\",\"praveendadhich.tj@gmail.com\",\"149cd58624747674314dec04f1eb528fb96f83b9d1eed12a77a658\"\n\"Rahul\",\"rahulranjan13386@gmail.com\",\"168fdc852d63797e3a48ea5ca1b044cd934889b5d9eb93677ba4\"\n\"Rakshit\",\"rkshtshrm108@gmail.com\",\"1685c798356270623d18b455d2e4119aba43cab7dfea\"\n\"Dinesh\",\"dbhongale3@gmail.com\",\"008cdc9f2f76797c351ac40affe21597fd4c8bb9\"\n\"Jagdish\",\"kokate.jagdish1986@gmail.com\",\"0f81df913574367a314ee004e1eb4dc2eb19a4b3dde6d4683aaa5a7b\"\n\"Mukesh\",\"goswamimukesh.78@gmail.com\",\"0381c787207c717d2542e11efaad4bc3934889b5d9eb93677ba4\"\n\"Bhupendra\",\"bhupendrak2012@gmail.com\",\"0686c180247f7c623142b65da3b13c9cbe4e8db89ee4d269\"\n\"Yuvraj\",\"deshmukhyuvraj@gmail.com\",\"008bc7982c647378295cf21ff3e93c9cbe4e8db89ee4d269\"\n\"Kritika\",\"19kritika@gmail.com\",\"55d7df822865717b3169e300f3ea10d5b04089\"\n\"Subhash\",\"spjadhav05@gmail.com\",\"179ede9125797966601cc40affe21597fd4c8bb9\"\n\"Hitendra\",\"hitendrashahare007@gmail.com\",\"0c87c0952f756a712341e505f3f119cbe318a4b3dde6d4683aaa5a7b\"\n\"Pushkarraj\",\"pushkarrajbagul@gmail.com\",\"149bc7982a706a623143e60cf5f610bbb44285bddca9de6b79\"\n\"Sachin\",\"sachinshevkar1986@gmail.com\",\"178fd798287f6b78355fef0ce0b245c3e56f83b9d1eed12a77a658\"\n\"Nitish\",\"nitish.m89@gmail.com\",\"0a87c0993279367d6810c40affe21597fd4c8bb9\"\n\"Sujit\",\"sujit.thube23@gmail.com\",\"179bde99353f6c78254be15fa1c31b96b24688fad3e8d0\"\n\"Kriti\",\"kritichitranshi@gmail.com\",\"0f9cdd8428727079245be503e1eb15bbb44285bddca9de6b79\"\n\"Pullarao\",\"pullarao.ui@gmail.com\",\"149bd89c2063797f7e5ced2df5ee1d92bf0187bbdd\"\n\"Akshay\",\"akxchopade@gmail.com\",\"0585cc93297e6871344cc40affe21597fd4c8bb9\"\n\"Sathish\",\"sathishbtechcse@gmail.com\",\"178fc09828627072244ce705f1f019bbb44285bddca9de6b79\"\n\"Tejashree\",\"Tejashree.gosavi37@gmail.com\",\"308bde9132796a753507e302e1e20a92e018a4b3dde6d4683aaa5a7b\"\n\"Anshu\",\"anshu205samriya@gmail.com\",\"0580c798342328252348e91ffbfa1dbbb44285bddca9de6b79\"\n\"Swati\",\"svatirathod@gmail.com\",\"1798d584286379643846e02df5ee1d92bf0187bbdd\"\n\"Amit\",\"amitpatil2k12@gmail.com\",\"0583dd8431706c793c1bef5ca0c31b96b24688fad3e8d0\"\n\"Saketh\",\"chowdary.saketh@gmail.com\",\"0786db8725706a697e5ae506f7f714bbb44285bddca9de6b79\"\n\"Sanvidhan\",\"sanvidhanpsonone@gmail.com\",\"178fda86287570713e59f702fcec129e934889b5d9eb93677ba4\"\n\"Kapil\",\"kapil_bt@yahoo.com\",\"0f8fc4992d4e7a641050e505fdec5298bc42\"\n\"Kumar\",\"harsh07124@gmail.com\",\"0c8fc68329212f21621dc40affe21597fd4c8bb9\"\n\"Pawan\",\"pkgoyal81@gmail.com\",\"1485d39f387074286169e300f3ea10d5b04089\"\n\"Aparna\",\"aparnanarule13@gmail.com\",\"059ed5822f707671225ce808a3b03c9cbe4e8db89ee4d269\"\n\"Jaiganesh\",\"jaiganesh.manjunathan@gmail.com\",\"0e8fdd97207f7d633807e90cfce90995b25b8cb5dec7da6975a059389d8674\"\n\"Mitesh\",\"mitesh.saxena0404@gmail.com\",\"0987c095327936633151e103f3b348cbe76f83b9d1eed12a77a658\"\n\"Awanish\",\"awanish.chaubey55@gmail.com\",\"0599d59e2862703e3341e518f0e605cee66f83b9d1eed12a77a658\"\n\"Rohan\",\"rohansaxena24@yahoo.com\",\"1681dc912f6279683547e55fa6c3059abb408bfad3e8d0\"\n\"Balaji\",\"balaji.gaikwad99@gmail.com\",\"068fd8912b7836773140ef1af3e745c2934889b5d9eb93677ba4\"\n\"Mohammed\",\"fahadmohammed06@gmail.com\",\"028fdc91257c77783144e908f6b34abbb44285bddca9de6b79\"\n\"Bagal\",\"vaibhav14b@gmail.com\",\"128fdd9229706e21644bc40affe21597fd4c8bb9\"\n\"Salai\",\"csalaimani@gmail.com\",\"079dd59c207875713e40c40affe21597fd4c8bb9\""
+				}
+			]
+		},
+		{
+			"name": "Get User Details - Encrypted data",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base-url}}/users/{{encrypted_id}}/decrypt",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"users",
+						"{{encrypted_id}}",
+						"decrypt"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Get User Details - Encrypted data",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base-url}}/users/{{encrypted_id}}/decrypt",
+							"host": [
+								"{{base-url}}"
+							],
+							"path": [
+								"users",
+								"{{encrypted_id}}",
+								"decrypt"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "content-type",
+							"value": "application/json"
+						},
+						{
+							"key": "content-length",
+							"value": "61"
+						},
+						{
+							"key": "etag",
+							"value": "\"2048056450\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 12 Apr 2021 11:40:33 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": 200,\n    \"data\": {\n        \"email\": \"vinay.vnai@gmail\"\n    },\n    \"error\": {}\n}"
+				}
+			]
+		},
+		{
+			"name": "Post Candidate Question - Survey",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"encrypt_id\": \"178fc0982868797d255bf005ebe61f9e934889b5d9eb93677ba4\",\n    \"question\": \"Where do you see yourself in 5 years from now\",\n    \"answers\": [\"Managing a team / project to success\"]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base-url}}/users/survey",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"users",
+						"survey"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Post Candidate Question - Survey",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"encrypt_id\": \"178fc0982868797d255bf005ebe61f9e934889b5d9eb93677ba4\",\n    \"question\": \"Where do you see yourself in 5 years from now\",\n    \"answers\": [\"Managing a team / project to success\"]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base-url}}/users/survey",
+							"host": [
+								"{{base-url}}"
+							],
+							"path": [
+								"users",
+								"survey"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "content-type",
+							"value": "application/json"
+						},
+						{
+							"key": "content-length",
+							"value": "40"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 14 Apr 2021 12:36:28 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": 200,\n    \"data\": \"success\",\n    \"err\": {}\n}"
+				}
+			]
+		},
+		{
+			"name": "Get Candidate Answered Questions - Survey",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base-url}}/users/{{encrypted_id}}/survey",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"users",
+						"{{encrypted_id}}",
+						"survey"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Get Candidate Answered Questions - Survey",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base-url}}/users/{{encrypted_id}}/survey",
+							"host": [
+								"{{base-url}}"
+							],
+							"path": [
+								"users",
+								"{{encrypted_id}}",
+								"survey"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "content-type",
+							"value": "application/json"
+						},
+						{
+							"key": "content-length",
+							"value": "423"
+						},
+						{
+							"key": "etag",
+							"value": "\"527435302\""
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 14 Apr 2021 12:36:04 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": 200,\n    \"data\": {\n        \"email\": \"vinay.vnai@gmail.com\",\n        \"encrypt_id\": \"1287da91383f6e7e3140c40affe21597fd4c8bb9\",\n        \"questions\": [\n            {\n                \"question\": \"What is more interesting\",\n                \"answers\": [\n                    \"T20\"\n                ]\n            },\n            {\n                \"question\": \"What do you see most exciting in the computing world\",\n                \"answers\": [\n                    \"Blockchain\",\n                    \"AR / VR\",\n                    \"Big Data\"\n                ]\n            },\n            {\n                \"question\": \"Where do you see yourself in 5 years from now\",\n                \"answers\": [\n                    \"Solving key technical problems in projects\"\n                ]\n            }\n        ]\n    },\n    \"err\": {}\n}"
+				}
+			]
+		},
+		{
+			"name": "HR Dashboard Candidates Survey",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base-url}}/hr/dashboard/survey",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"hr",
+						"dashboard",
+						"survey"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Candidates Survey",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base-url}}/hr/dashboard/survey",
+							"host": [
+								"{{base-url}}"
+							],
+							"path": [
+								"hr",
+								"dashboard",
+								"survey"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "content-type",
+							"value": "application/json"
+						},
+						{
+							"key": "content-length",
+							"value": "810"
+						},
+						{
+							"key": "etag",
+							"value": "\"848549726\""
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 14 Apr 2021 12:36:38 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": 200,\n    \"data\": [\n        {\n            \"email\": \"vinay.vnai@gmail.com\",\n            \"encrypt_id\": \"1287da91383f6e7e3140c40affe21597fd4c8bb9\",\n            \"questions\": [\n                {\n                    \"questions\": \"What is more interesting\",\n                    \"answers\": [\n                        \"T20\"\n                    ],\n                    \"created\": \"2021-04-14T12:34:52.966Z\"\n                },\n                {\n                    \"questions\": \"What do you see most exciting in the computing world\",\n                    \"answers\": [\n                        \"Blockchain\",\n                        \"AR / VR\",\n                        \"Big Data\"\n                    ],\n                    \"created\": \"2021-04-14T12:35:28.697Z\"\n                },\n                {\n                    \"questions\": \"Where do you see yourself in 5 years from now\",\n                    \"answers\": [\n                        \"Solving key technical problems in projects\"\n                    ],\n                    \"created\": \"2021-04-14T12:36:00.019Z\"\n                }\n            ]\n        },\n        {\n            \"email\": \"sathiyamurthyece@gmail.com\",\n            \"encrypt_id\": \"178fc0982868797d255bf005ebe61f9e934889b5d9eb93677ba4\",\n            \"questions\": [\n                {\n                    \"questions\": \"Where do you see yourself in 5 years from now\",\n                    \"answers\": [\n                        \"Managing a team / project to success\"\n                    ],\n                    \"created\": \"2021-04-14T12:36:28.629Z\"\n                }\n            ]\n        }\n    ],\n    \"err\": {}\n}"
+				}
+			]
+		}
+	]
+}
