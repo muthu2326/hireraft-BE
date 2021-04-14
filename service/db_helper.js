@@ -5,7 +5,8 @@ var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
 
 const crypto = require('crypto');
-const algorithm = 'aes-256-cbc';
+const algorithm = 'aes-256-ctr';
+const password = 'd6F3Efeq';
 const key = crypto.randomBytes(32);
 const iv = crypto.randomBytes(16);
 
@@ -332,7 +333,9 @@ exports.getJobsStatusForUser = function (user_id, jobs, cb) {
     console.log("DB Helper ::  entering getJobsStatusForUser")
     console.log('user_id', user_id)
     console.log('jobs recieved', jobs.length)
-    UsersAndJobsApplied.find({user_id: user_id,},{
+    UsersAndJobsApplied.find({
+            user_id: user_id,
+        }, {
             _id: 0,
             job_id: 1,
             status: 1
@@ -381,29 +384,16 @@ exports.getJobsStatusForUser = function (user_id, jobs, cb) {
         });
 }; /*End of getUser*/
 
+exports.encrypt = (text) => {
+    var cipher = crypto.createCipher(algorithm, password)
+    var crypted = cipher.update(text, 'utf8', 'hex')
+    crypted += cipher.final('hex');
+    return crypted;
+}
 
-exports.encrypt = (text) =>{
-    // let cipher = crypto.createCipheriv('aes-256-cbc', Buffer.from(key), iv);
-    // let encrypted = cipher.update(text);
-    // encrypted = Buffer.concat([encrypted, cipher.final()]);
-    // // return { iv: iv.toString('hex'), encryptedData: encrypted.toString('hex') };
-    // return encrypted.toString('hex')
-
-    const cipher = crypto.createCipher('aes192', 'a password');
-    let encrypted = cipher.update(text, 'utf8', 'hex');
-    console.log('encrypted: ' + encrypted);
-    encrypted += cipher.final('hex');
-    return encrypted
-   }
-   
-exports.decrypt = (text) =>{
-    // let iv = Buffer.from(text.iv, 'hex');
-    // let encryptedText = Buffer.from(text.encryptedData, 'hex');
-    // let decipher = crypto.createDecipheriv('aes-256-cbc', Buffer.from(key), iv);
-    // let decrypted = decipher.update(encryptedText);
-    // decrypted = Buffer.concat([decrypted, decipher.final()]);
-
-    const decipher = crypto.createDecipher('aes192', 'a password');
-    let decrypted = decipher.update(text, 'hex', 'utf8');
-    return decrypted.toString();
-   }
+exports.decrypt = (text) => {
+    var decipher = crypto.createDecipher(algorithm, password)
+    var dec = decipher.update(text, 'hex', 'utf8')
+    dec += decipher.final('utf8');
+    return dec;
+}

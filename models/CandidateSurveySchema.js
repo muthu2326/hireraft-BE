@@ -14,7 +14,7 @@ const setTags = tags => {
 };
 
 const CandidateSurveySchema = new Schema({
-    encrypted_id: {
+    encrypt_id: {
         type: String,
         default: null,
         trim: true,

@@ -9,6 +9,7 @@ const message = require("../service/message.json");
 const NaukriPostedJob = require('../models/NaukriPostedJobSchema');
 const UsersAndJobsApplied = require('../models/UsersAndJobsAppliedSchema');
 const RegisteredUsers = require('../models/RegisteredUsersSchema');
+const CandidateSurvey = require('../models/CandidateSurveySchema');
 
 exports.getJobsSummary = function (req, res) {
     console.log("HR Controller: entering getJobsSummary")
@@ -116,3 +117,63 @@ exports.getJobsSummary = function (req, res) {
         }
     })
 }
+
+exports.getAllCandidatesSurvey = (req, res) => {
+    console.log("User Controller: entering getAllCandidatesSurvey")
+    console.log('Request params :: ', req.params)
+    console.log("request query :: ", req.query);   
+
+    CandidateSurvey.find((err, surveyRes) => {
+        if (err) {
+            console.log('err in user getAllCandidatesSurvey', err)
+            console.log('Exiting getAllCandidatesSurvey')
+            res.send({
+                status: 500,
+                data: {},
+                err: {
+                    msg: message.something_went_wrong,
+                    err: err
+                }
+            })
+            return;
+        }
+        console.log('surveyRes length', surveyRes.length)
+
+        let emails_data = surveyRes.map((e) => e.email)
+        let emails = [...new Set(emails_data)]
+        let responseObj = []
+
+        if(surveyRes.length > 0){
+            emails.forEach((email) => {
+                let obj = {
+                    email: email             
+                }
+                questions = surveyRes.map((q) =>{
+                    if(email == q.email){
+                        obj.encrypt_id = q.encrypt_id
+                        return {
+                            questions: q.questions.question,
+                            answers: q.questions.answers,
+                            created: q.created
+                        }
+                    }
+                })
+                obj.questions = questions.filter((f) => f != null)
+                responseObj.push(obj)
+            })
+            res.send({
+                status: 200,
+                data: responseObj,
+                err: {}
+            })
+            return;
+        }else{
+            res.send({
+                status: 200,
+                data: responseObj,
+                err: {}
+            })
+            return;
+        }
+    })
+  }
