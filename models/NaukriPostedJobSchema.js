@@ -54,6 +54,11 @@ const NaukriPostedJobSchema = new Schema({
         default: '',
         trim: true,
     },
+    company_contact_person_role: {
+        type: String,
+        default: null,
+        trim: true,
+    },
     raw_job_description: {
         type: String,
         default: '',

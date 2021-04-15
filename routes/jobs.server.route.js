@@ -14,4 +14,6 @@ router.get('/count',jobs.getJobsCount);
 /* GET job by ID. */
 router.get('/:job_id',jobs.getJobById);
 
+router.get('/recruiters/details',jobs.getJobContactPersionDetails);
+
 module.exports = router;

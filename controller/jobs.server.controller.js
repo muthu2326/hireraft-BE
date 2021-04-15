@@ -4,6 +4,11 @@ var dbHelper = require('../service/db_helper')
 var nodemailer = require('nodemailer');
 const config = require('config');
 const message = require("../service/message.json");
+const fs = require('fs')
+const csv = require('fast-csv');
+const {
+    Parser
+} = require('json2csv');
 
 const NaukriPostedJob = require('../models/NaukriPostedJobSchema');
 const UsersAndJobsApplied = require('../models/UsersAndJobsAppliedSchema');
@@ -326,6 +331,55 @@ exports.getJobsCount = function (req, res) {
                 },
                 err: {}
             })
+            return;
+        }
+    })
+}
+
+exports.getJobContactPersionDetails = (req, res) => {
+    console.log("Jobs Controller: entering getJobContactPersionDetails")
+    console.log('Request params :: ', req.params)
+    console.log("request query :: ", req.query);
+
+    NaukriPostedJob.find((err, jobs) => {
+        if (err) {
+            console.log('err in getJobContactPersionDetails', err)
+            res.send({
+                status: 500,
+                data: {},
+                err: {
+                    msg: message.something_went_wrong,
+                    err: err
+                }
+            })
+            return;
+        }
+        if (jobs.length > 0) {
+            let jobs_format = jobs.map((j) => {
+                return {
+                    CompnayName: j.company_name? j.company_name.trim(): null,
+                    Person: j.company_contact_person ? j.company_contact_person.trim(): null,
+                    Role: j.company_contact_person_role ? j.company_contact_person_role.trim() : null
+                }
+            })
+            const csvFields = ['CompnayName', 'Person', 'Role'];
+            console.log('jobs', jobs_format.length)
+            const json2csvParser = new Parser({
+                csvFields
+            });
+            const csvData = json2csvParser.parse(jobs_format);
+            res.setHeader('Content-disposition', 'attachment; filename=users.csv');
+            res.set('Content-Type', 'text/csv');
+            res.attachment('recruiter_details.csv');
+            res.send(csvData);
+        } else {
+            res.status(400).jsonp({
+                status: 400,
+                data: {},
+                error: {
+                    msg: `No Jobs found`
+                }
+            });
             return;
         }
     })
