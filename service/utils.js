@@ -25,7 +25,7 @@ exports.getFilterCondition = function (filter) {
                 }
                 break;
             case "skills":
-                if (filter[key].length > 0) {
+                if (filter[key] != "-1") {
                     conditionflag = true;
                     // condition["skills_required"] = {
                     //     $regex: filter.skills,
