@@ -100,6 +100,156 @@ exports.getjob = function (req, res) {
         })
 }
 
+exports.getRecommendedJobs = (req, res) => {
+    console.log("Job Controller: entering getRecommendedJobs")
+    console.log('Request params :: ', req.params)
+    console.log("request query :: ", req.query);
+
+    let condition = {}
+    let recommendations = req.query.tech ? req.query.tech : []
+    const user_id = req.query.uuid ? req.query.uuid : null
+    let rec = null
+
+    if (recommendations.includes(',')) {
+        rec = recommendations.split(',')
+    } else {
+        rec = [recommendations]
+    }
+
+    skills = []
+    rec.forEach((skill) => {
+        let obj = {
+            "recommandations": {
+                $regex: skill,
+                $options: 'i'
+            }
+        }
+        skills.push(obj)
+    })
+
+    condition["$or"] = skills
+    console.log('condition', JSON.stringify(condition))
+
+    NaukriPostedJob.find(condition, {
+            _id: 1,
+            company_name: 1,
+            company_address: 1,
+            employment_type: 1,
+            raw_experience_required: 1,
+            raw_salary_package: 1,
+            skills_required: 1,
+            date: 1,
+            role: 1
+        }, {
+            sort: '-1'
+        },
+        function (err, docs) {
+            if (err) {
+                console.log('err in finding job', err)
+                res.status(500).jsonp({
+                    status: 500,
+                    data: {},
+                    error: {
+                        msg: message.something_went_wrong,
+                        err: err,
+                    },
+                });
+                return;
+            }
+            if (user_id != null) {
+                dbHelper.getJobsStatusForUser(user_id, docs, (err, jobs_res) => {
+                    if (err) {
+                        console.log('err in finding job', err)
+                        res.status(500).jsonp({
+                            status: 500,
+                            data: {},
+                            error: {
+                                msg: message.something_went_wrong,
+                                err: err,
+                            },
+                        });
+                        return;
+                    } else {
+                        res.status(200).jsonp({
+                            status: 200,
+                            data: {
+                                count: jobs_res.length,
+                                jobs: jobs_res
+                            },
+                            error: {},
+                        });
+                        return;
+                    }
+                })
+            } else {
+                res.status(200).jsonp({
+                    status: 200,
+                    data: {
+                        count: docs.length,
+                        jobs: docs
+                    },
+                    error: {},
+                });
+                return;
+            }
+        })
+}
+
+exports.updateJobsRecommendations = (req, res) => {
+    console.log("Job Controller: entering updateJobsRecommendations")
+    console.log('Request body :: ', req.body)
+    console.log("request query :: ", req.query);
+
+    let jobs_ids = req.body.jobs ? req.body.jobs : []
+    let skills = req.body.skills ? req.body.skills : []
+
+    console.log('skills', skills)
+
+    if (jobs_ids.length > 0) {
+        let jobs = {
+            _id: {
+                $in: jobs_ids
+            }
+        }
+
+        let recommandation = {
+            recommandations: skills.map((r) => r.toLowerCase().trim())
+        }
+
+        NaukriPostedJob.update(jobs, recommandation, { multi: true },
+            (err, updatedRes) => {
+                if (err) {
+                    console.log('err in finding job', err)
+                    res.status(500).jsonp({
+                        status: 500,
+                        data: {},
+                        error: {
+                            msg: message.something_went_wrong,
+                            err: err,
+                        },
+                    });
+                    return;
+                }
+                console.log('updatedRes', updatedRes)
+                res.status(200).jsonp({
+                    status: 200,
+                    data: updatedRes,
+                    error: {},
+                });
+                return;
+            })
+    }else{
+        res.status(400).jsonp({
+            status: 400,
+            data: {},
+            error: {
+                msg: "No Jobs to update"
+            },
+        });
+        return;
+    }
+}
+
 exports.getJobById = function (req, res) {
     console.log("Job Controller: entering getJobById")
     console.log('Request params :: ', req.params)
@@ -357,8 +507,8 @@ exports.getJobContactPersionDetails = (req, res) => {
         if (jobs.length > 0) {
             let jobs_format = jobs.map((j) => {
                 return {
-                    CompnayName: j.company_name? j.company_name.trim(): null,
-                    Person: j.company_contact_person ? j.company_contact_person.trim(): null,
+                    CompnayName: j.company_name ? j.company_name.trim() : null,
+                    Person: j.company_contact_person ? j.company_contact_person.trim() : null,
                     Role: j.company_contact_person_role ? j.company_contact_person_role.trim() : null
                 }
             })

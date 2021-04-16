@@ -5,6 +5,11 @@ var jobs=require("../controller/jobs.server.controller");
 /* POST users listing. */
 router.post('/',jobs.getjob);
 
+router.post('/update/recommendation',jobs.updateJobsRecommendations);
+
+/* GET recommended jobs. */
+router.get('/recommendations',jobs.getRecommendedJobs);
+
 /* POST user apply for a job. */
 router.post('/apply',jobs.applyJobNew);
 

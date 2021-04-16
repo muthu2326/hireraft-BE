@@ -25,7 +25,7 @@ exports.getFilterCondition = function (filter) {
                 }
                 break;
             case "skills":
-                if (filter[key] != "-1") {
+                if (filter[key].length > 0) {
                     conditionflag = true;
                     // condition["skills_required"] = {
                     //     $regex: filter.skills,
@@ -67,6 +67,11 @@ exports.getFilterCondition = function (filter) {
                         //     $options: 'i'
                         // }
                     }
+                }
+            case "recommendations":
+                if (filter[key] != "-1") {
+                    conditionflag = true;
+                    condition["recommanded"] = true
                 }
                 break;
             default:

@@ -155,6 +155,7 @@ const NaukriPostedJobSchema = new Schema({
         default: '',
         trim: true,
     },
+    recommandations: [],
     created: { type: Date, default: Date.now },
     updated: { type: Date, default: Date.now },
 });
