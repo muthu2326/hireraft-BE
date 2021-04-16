@@ -141,7 +141,9 @@ exports.getRecommendedJobs = (req, res) => {
             date: 1,
             role: 1
         }, {
-            sort: '-1'
+            sort: {
+                'date': '-1'
+            }
         },
         function (err, docs) {
             if (err) {
