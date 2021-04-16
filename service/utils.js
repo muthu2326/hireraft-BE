@@ -68,11 +68,6 @@ exports.getFilterCondition = function (filter) {
                         // }
                     }
                 }
-            case "recommendations":
-                if (filter[key] != "-1") {
-                    conditionflag = true;
-                    condition["recommanded"] = true
-                }
                 break;
             default:
                 console.log("Not a valid filter ::: ", key);
