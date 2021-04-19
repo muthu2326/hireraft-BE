@@ -218,7 +218,7 @@ exports.updateJobsRecommendations = (req, res) => {
             recommandations: skills.map((r) => r.toLowerCase().trim())
         }
 
-        NaukriPostedJob.update(jobs, recommandation, { multi: true },
+        NaukriPostedJob.updateMany(jobs, recommandation,
             (err, updatedRes) => {
                 if (err) {
                     console.log('err in finding job', err)
@@ -235,7 +235,9 @@ exports.updateJobsRecommendations = (req, res) => {
                 console.log('updatedRes', updatedRes)
                 res.status(200).jsonp({
                     status: 200,
-                    data: updatedRes,
+                    data: {
+                        msg: "Success"
+                    },
                     error: {},
                 });
                 return;
