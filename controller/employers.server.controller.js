@@ -118,7 +118,7 @@ exports.storeEmployerAndCandidates = (req, res) => {
                 let email_data = {
                     email: response.email,
                     phone: response.phone,
-                    candidates: response.candidates.length > 0 ? emp.candidates : "No candidates shorlisted",
+                    candidates: response.candidates.length > 0 ? response.candidates : "No candidates shorlisted",
                     msg: `An employer has shorlisted the candidates, Please find the details below`
                 }
 
