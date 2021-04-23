@@ -540,7 +540,8 @@ exports.hashEmails = (req, res) => {
                 .on("data", function (data) {
                     let email = data['Email'];
                     let obj = {
-                        Fristname: data['Fristname'],
+                        Company: data['Company'],
+                        FirstName: data['FirstName'],
                         Email: data['Email'],
                         ID: encrypt(data['Email']),
                         Token: sessionRes.token
@@ -550,7 +551,7 @@ exports.hashEmails = (req, res) => {
                 .on("end", function () {
                     fs.unlinkSync(req.file.path);
                     if (data_list.length > 0) {
-                        const csvFields = ['Firstname', 'Email', 'ID', 'Token'];
+                        const csvFields = ['Company','FirstName', 'Email', 'ID', 'Token'];
                         console.log('data_list', data_list.length)
                         const json2csvParser = new Parser({
                             csvFields
