@@ -452,16 +452,9 @@ exports.findEmployer = (encrypt_id, cb) => {
             if (docs) {
                 cb(null, docs)
                 return;
-            } else {
-                let err_res = {
-                    status: 400,
-                    data: {},
-                    err: {
-                        msg: message.employer_not_found
-                    }
-                }
-                cb(err_res, null)
-                return;
+            }{
+                cb(null, null)
+                return
             }
         }
     })
