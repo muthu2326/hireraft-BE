@@ -14,6 +14,7 @@ const message = require("./message.json");
 const RegisteredUsers = require('../models/RegisteredUsersSchema');
 const NaukriPostedJob = require('../models/NaukriPostedJobSchema');
 const UsersAndJobsApplied = require('../models/UsersAndJobsAppliedSchema');
+const Employer = require('../models/EmployerSchema');
 
 exports.findUser = function (user_id, email, cb) {
 
@@ -300,6 +301,28 @@ sendEmailToHr = (user, job, job_url, cb) => {
     }
 }
 
+exports.sendEmployerDetailsToHr = (data, cb) => {
+    console.log('entering sendEmplyerDetailsToHr')
+    console.log('data', data)
+
+    email_content = {
+        subject: `Employer - ${data.email}`,
+        body: `<html><body>
+    Hi,<br><br>${data.msg}<br><br>
+    <b>Email:</b> ${data.email}<br>
+    <b>Phone:</b> ${data.phone}<br>
+    <b>Candidates:</b> ${data.candidates}<br><br>         
+    Thanks & Regards,<br>
+    <b>Hireraft<b>
+    </body></html>`,
+        from: config.get('from_email'),
+        to: config.get('notify_to')
+    }
+    sendEmail(email_content)
+    cb(null, 'succesfully sent email to HR')
+    return;
+}
+
 sendEmail = (data) => {
     console.log('Send Email', data)
     var transporter = nodemailer.createTransport({
@@ -396,4 +419,43 @@ exports.decrypt = (text) => {
     var dec = decipher.update(text, 'hex', 'utf8')
     dec += decipher.final('utf8');
     return dec;
+}
+
+exports.findEmployer = (encrypt_id, cb) => {
+    console.log('Entering findEmployer')
+    console.log('encrypt_id', encrypt_id)
+
+    Employer.findOne({
+        encrypt_id: encrypt_id
+    }, (err, docs) => {
+        console.log('docs', docs)
+        if (err) {
+            console.log('err in findEmployer', err)
+            let err_res = {
+                status: 500,
+                data: {},
+                err: {
+                    msg: message.something_went_wrong,
+                    err: err
+                }
+            }
+            cb(err_res, null)
+            return;
+        } else {
+            if (docs) {
+                cb(null, docs)
+                return;
+            } else {
+                let err_res = {
+                    status: 400,
+                    data: {},
+                    err: {
+                        msg: message.employer_not_found
+                    }
+                }
+                cb(err_res, null)
+                return;
+            }
+        }
+    })
 }

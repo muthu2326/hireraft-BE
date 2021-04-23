@@ -35,22 +35,11 @@ exports.storeEmployerAndCandidates = (req, res) => {
         return;
     }
 
-    Employer.findOne({
-        email: email,
-        encrypt_id: encrypt_id
-    }, (err, employerResponse) => {
-        console.log('employerResponse', employerResponse)
+    dbHelper.findEmployer(encrypt_id, (err, employerResponse) => {
         if (err) {
             console.log('err in employer getShorlistedCandidates', err)
             console.log('Exiting getShorlistedCandidates')
-            res.send({
-                status: 500,
-                data: {},
-                err: {
-                    msg: message.something_went_wrong,
-                    err: err
-                }
-            })
+            res.send(err)
             return;
         }
         if (employerResponse) {
@@ -62,9 +51,7 @@ exports.storeEmployerAndCandidates = (req, res) => {
 
             Employer.updateOne({
                 "_id": employerResponse._id
-            }, empRequest, {
-                useFindAndModify: true
-            }, (err, updatedRes) => {
+            }, empRequest, (err, updatedRes) => {
                 if (err) {
                     console.log('err in employer getShorlistedCandidates', err)
                     console.log('Exiting getShorlistedCandidates')
@@ -79,12 +66,28 @@ exports.storeEmployerAndCandidates = (req, res) => {
                     return;
                 }
                 console.log('updated response', updatedRes)
-                res.send({
-                    status: 200,
-                    data: message.success,
-                    err: {}
-                })
-                return;
+                dbHelper.findEmployer(encrypt_id, (err, emp) => {
+                    if (err) {
+                        console.log('err in employer getShorlistedCandidates', err)
+                        res.send(err)
+                        return;
+                    }
+                    let email_data = {
+                        email: emp.email,
+                        phone: emp.phone,
+                        candidates: emp.candidates.length > 0 ? emp.candidates : "No candidates shorlisted",
+                        msg: `An employer has updated his shorlisted candidates, Please find the details below`
+                    }
+                    dbHelper.sendEmployerDetailsToHr(email_data, (err, mail_res) => {
+                        console.log('email call back response', mail_res)
+                        res.send({
+                            status: 200,
+                            data: message.success,
+                            err: {}
+                        })
+                        return;
+                    })
+                })              
             })
         } else {
 
@@ -111,12 +114,23 @@ exports.storeEmployerAndCandidates = (req, res) => {
                     return;
                 }
                 console.log('employer response', response)
-                res.send({
-                    status: 200,
-                    data: message.success,
-                    err: {}
+
+                let email_data = {
+                    email: response.email,
+                    phone: response.phone,
+                    candidates: response.candidates.length > 0 ? emp.candidates : "No candidates shorlisted",
+                    msg: `An employer has shorlisted the candidates, Please find the details below`
+                }
+
+                dbHelper.sendEmployerDetailsToHr(email_data, (err, mail_res) => {
+                    console.log('email call back response', mail_res)
+                    res.send({
+                        status: 200,
+                        data: message.success,
+                        err: {}
+                    })
+                    return;
                 })
-                return;
             })
         }
     })
