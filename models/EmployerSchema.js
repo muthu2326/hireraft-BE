@@ -19,6 +19,11 @@ const EmployerSchema = new Schema({
         default: null,
         trim: true,
     },
+    name: {
+        type: String,
+        default: null,
+        trim: true,
+    },
     email: {
         type: String,
         default: null,

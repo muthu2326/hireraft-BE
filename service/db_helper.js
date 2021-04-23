@@ -317,8 +317,9 @@ exports.sendEmployerDetailsToHr = (data, cb) => {
         subject: data.email ? `Employer - ${data.email} : shortlisted candidate` : `Employer - shortlisted candidate`,
         body: `<html><body>
     Hi,<br><br>${data.msg}<br><br>
+    <b>Company:</b> ${data.name ? data.name : 'Not Available'}<br>
     <b>Email:</b> ${data.email ? data.email : 'Not Available'}<br>
-    <b>Phone:</b> ${data.phone}<br>
+    <b>Phone:</b> ${data.phone}<br> 
     <b>Candidates</b>: ${tab}
     Thanks & Regards,<br>
     <b>Hireraft<b>

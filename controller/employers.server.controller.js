@@ -21,6 +21,7 @@ exports.storeEmployerAndCandidates = (req, res) => {
     let encrypt_id = req.params.encrypt_id
     let encrypted_email = dbHelper.decrypt(encrypt_id)
     let email = req.body.email? req.body.email: null
+    let name = req.body.name? req.body.name: null
     let phone = req.body.phone
     let candidates = req.body.candidates ? req.body.candidates : []
 
@@ -45,6 +46,7 @@ exports.storeEmployerAndCandidates = (req, res) => {
         if (employerResponse) {
             let empRequest = {
                 email: email,
+                name: name,
                 phone: phone,
                 candidates: candidates
             }
@@ -73,6 +75,7 @@ exports.storeEmployerAndCandidates = (req, res) => {
                         return;
                     }
                     let email_data = {
+                        name: emp.name,
                         email: emp.email,
                         phone: emp.phone,
                         candidates: emp.candidates.length > 0 ? emp.candidates : [],
@@ -93,6 +96,7 @@ exports.storeEmployerAndCandidates = (req, res) => {
 
             let empRequest = {
                 encrypt_id: encrypt_id,
+                name: name,
                 email: email,
                 phone: phone,
                 candidates: candidates
@@ -116,6 +120,7 @@ exports.storeEmployerAndCandidates = (req, res) => {
                 console.log('employer response', response)
 
                 let email_data = {
+                    name: response.email,
                     email: response.email,
                     phone: response.phone,
                     candidates: response.candidates.length > 0 ? response.candidates : [],
