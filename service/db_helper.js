@@ -311,14 +311,15 @@ sendEmailToHr = (user, job, job_url, cb) => {
 exports.sendEmployerDetailsToHr = (data, cb) => {
     console.log('entering sendEmplyerDetailsToHr')
     console.log('data', data)
-
+    let tab = data.candidates.length > 0 ? `<br><br>${formatTableForArray(data.candidates)}<br><br>` : "No candidates shorlisted<br><br>"
+    
     email_content = {
         subject: `Employer - ${data.email}`,
         body: `<html><body>
     Hi,<br><br>${data.msg}<br><br>
     <b>Email:</b> ${data.email}<br>
     <b>Phone:</b> ${data.phone}<br>
-    <b>Candidates:</b> ${data.candidates}<br><br>         
+    <b>Candidates</b>: ${tab}
     Thanks & Regards,<br>
     <b>Hireraft<b>
     </body></html>`,
@@ -575,4 +576,26 @@ exports.hashEmails = (req, res) => {
         })
     }
 
+}
+
+var formatTableForArray = exports.formatTableForArray = (arr) => {
+    console.log('arr', arr)
+    let data = arr.map((d) => {                
+        return `<tr>
+            <td style={text-align:'center'}>${d.id}</td>
+            <td style={text-align:'center'}>${d.name}</td>
+            <td style={text-align:'center'}><a href=${d.candidate_url}>Click here</a></td>
+        </tr>`
+    })
+    let tab = `
+    <table border='1'>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Candidate Page</th>
+        </tr>
+           ${data.join('')}
+    </table>`
+
+    return tab
 }

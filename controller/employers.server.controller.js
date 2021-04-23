@@ -75,7 +75,7 @@ exports.storeEmployerAndCandidates = (req, res) => {
                     let email_data = {
                         email: emp.email,
                         phone: emp.phone,
-                        candidates: emp.candidates.length > 0 ? emp.candidates : "No candidates shorlisted",
+                        candidates: emp.candidates.length > 0 ? emp.candidates : [],
                         msg: `An employer has updated his shorlisted candidates, Please find the details below`
                     }
                     dbHelper.sendEmployerDetailsToHr(email_data, (err, mail_res) => {
@@ -118,7 +118,7 @@ exports.storeEmployerAndCandidates = (req, res) => {
                 let email_data = {
                     email: response.email,
                     phone: response.phone,
-                    candidates: response.candidates.length > 0 ? response.candidates : "No candidates shorlisted",
+                    candidates: response.candidates.length > 0 ? response.candidates : [],
                     msg: `An employer has shorlisted the candidates, Please find the details below`
                 }
 
