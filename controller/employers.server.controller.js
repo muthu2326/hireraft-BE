@@ -219,3 +219,21 @@ exports.decryptEmployerData = (req, res) => {
     });
     return;
 }
+
+exports.generateHashForEmails = function (req, res) {
+    console.log('Employer Controller: entering generateHashForEmails');
+    let NOW = new Date()
+    console.log('req.file', req.file)
+
+    if (!req.file) {
+        res.status(400).jsonp({
+            status: 400,
+            data: {},
+            error: {
+                msg: message.invalid_get_request
+            }
+        });
+        return;
+    }
+    dbHelper.hashEmails(req, res)
+}

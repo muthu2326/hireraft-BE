@@ -9,12 +9,19 @@ const algorithm = 'aes-256-ctr';
 const password = 'd6F3Efeq';
 const key = crypto.randomBytes(32);
 const iv = crypto.randomBytes(16);
+const fs = require('fs')
+const csv = require('fast-csv');
+const { Parser } = require('json2csv');
+const {
+    v4: uuidv4
+} = require('uuid');
 
 const message = require("./message.json");
 const RegisteredUsers = require('../models/RegisteredUsersSchema');
 const NaukriPostedJob = require('../models/NaukriPostedJobSchema');
 const UsersAndJobsApplied = require('../models/UsersAndJobsAppliedSchema');
 const Employer = require('../models/EmployerSchema');
+const Session = require('../models/SessionSchema');
 
 exports.findUser = function (user_id, email, cb) {
 
@@ -407,7 +414,7 @@ exports.getJobsStatusForUser = function (user_id, jobs, cb) {
         });
 }; /*End of getUser*/
 
-exports.encrypt = (text) => {
+var encrypt = exports.encrypt = (text) => {
     var cipher = crypto.createCipher(algorithm, password)
     var crypted = cipher.update(text, 'utf8', 'hex')
     crypted += cipher.final('hex');
@@ -458,4 +465,120 @@ exports.findEmployer = (encrypt_id, cb) => {
             }
         }
     })
+}
+
+exports.hashEmails = (req, res) => {
+    let data_list = []
+
+    let csv_type = req.query.type ? req.query.type : 'employer'
+
+    if (csv_type == 'user') {
+        fs.createReadStream(req.file.path)
+            .pipe(csv.parse({
+                headers: true
+            }))
+            .on("data", function (data) {
+                let email = data['Email'];
+                console.log('email', email)
+
+                let obj = {
+                    Fristname: data['Fristname'],
+                    Email: data['Email'],
+                    ID: dbHelper.encrypt(data['Email'])
+                }
+                data_list.push(obj)
+            })
+            .on("end", function () {
+                fs.unlinkSync(req.file.path);
+                if (data_list.length > 0) {
+                    const csvFields = ['Firstname', 'Email', 'ID'];
+                    console.log('data_list', data_list)
+                    const json2csvParser = new Parser({
+                        csvFields
+                    });
+                    const csvData = json2csvParser.parse(data_list);
+                    res.setHeader('Content-disposition', 'attachment; filename=users.csv');
+                    res.set('Content-Type', 'text/csv');
+                    res.attachment('users.csv');
+                    res.send(csvData);
+                } else {
+                    res.status(400).jsonp({
+                        status: 400,
+                        data: {},
+                        error: {
+                            msg: `No Emails found from the file`
+                        }
+                    });
+                    return;
+                }
+            })
+    } else if (csv_type == 'employer') {
+        let NOW = new Date()
+        let currentDatetime = new Date()
+        let token = uuidv4(12);
+        let expiry = currentDatetime.setDate(currentDatetime.getDate() + 7)
+
+        let sessionRequest = {
+            userId: null,
+            email: null,
+            role: "employerCampign",
+            token: token,
+            expiryDate: expiry
+        }
+
+        session = new Session(sessionRequest)
+        session.save((err, sessionRes) => {
+            if (err) {
+                res.send({
+                    status: 500,
+                    data: {},
+                    err: {
+                        msg: message.something_went_wrong,
+                        err: err
+                    }
+                })
+                return;
+            }
+            console.log('session response', sessionRes)
+            fs.createReadStream(req.file.path)
+                .pipe(csv.parse({
+                    headers: true
+                }))
+                .on("data", function (data) {
+                    let email = data['Email'];
+                    let obj = {
+                        Fristname: data['Fristname'],
+                        Email: data['Email'],
+                        ID: encrypt(data['Email']),
+                        Token: sessionRes.token
+                    }
+                    data_list.push(obj)
+                })
+                .on("end", function () {
+                    fs.unlinkSync(req.file.path);
+                    if (data_list.length > 0) {
+                        const csvFields = ['Firstname', 'Email', 'ID', 'Token'];
+                        console.log('data_list', data_list.length)
+                        const json2csvParser = new Parser({
+                            csvFields
+                        });
+                        const csvData = json2csvParser.parse(data_list);
+                        res.setHeader('Content-disposition', 'attachment; filename=employers.csv');
+                        res.set('Content-Type', 'text/csv');
+                        res.attachment('employers.csv');
+                        res.send(csvData);
+                    } else {
+                        res.status(400).jsonp({
+                            status: 400,
+                            data: {},
+                            error: {
+                                msg: `No Emails found from the file`
+                            }
+                        });
+                        return;
+                    }
+                })
+        })
+    }
+
 }
