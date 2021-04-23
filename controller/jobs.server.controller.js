@@ -218,7 +218,7 @@ exports.updateJobsRecommendations = (req, res) => {
             recommandations: skills.map((r) => r.toLowerCase().trim())
         }
 
-        NaukriPostedJob.update(jobs, recommandation, { multi: true },
+        NaukriPostedJob.updateMany(jobs, recommandation, { multi: true },
             (err, updatedRes) => {
                 if (err) {
                     console.log('err in finding job', err)

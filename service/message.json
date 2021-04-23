@@ -13,6 +13,8 @@
     "no_users_found": "No users found",
     "user_deleted": "Successfully removed user",
     "user_updated": "Successfully updated user",
+    "employer_not_found": "No employer found",
+    "invalid_employer": "Invalid Employer",
 
     "job_not_found": "Job not found",
 

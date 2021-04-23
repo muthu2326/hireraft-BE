@@ -12,6 +12,7 @@ global.lib = require('./lib');
 var jobs = require('./routes/jobs.server.route');
 var users = require('./routes/users.server.route');
 var hr = require('./routes/hr.server.route');
+var employers = require('./routes/employers.server.route');
 
 var app = express();
 
@@ -31,6 +32,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/jobs', jobs);
 app.use('/users', users);
 app.use('/hr', hr);
+app.use('/employers', employers);
 
 /// catch 404 and forwarding to error handler
 app.use(function(req, res, next) {
