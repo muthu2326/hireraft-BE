@@ -314,10 +314,10 @@ exports.sendEmployerDetailsToHr = (data, cb) => {
     let tab = data.candidates.length > 0 ? `<br><br>${formatTableForArray(data.candidates)}<br><br>` : "No candidates shorlisted<br><br>"
     
     email_content = {
-        subject: `Employer - ${data.email}`,
+        subject: data.email ? `Employer - ${data.email} : shortlisted candidate` : `Employer - shortlisted candidate`,
         body: `<html><body>
     Hi,<br><br>${data.msg}<br><br>
-    <b>Email:</b> ${data.email}<br>
+    <b>Email:</b> ${data.email ? data.email : 'Not Available'}<br>
     <b>Phone:</b> ${data.phone}<br>
     <b>Candidates</b>: ${tab}
     Thanks & Regards,<br>

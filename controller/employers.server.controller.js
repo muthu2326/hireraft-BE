@@ -8,7 +8,7 @@ exports.storeEmployerAndCandidates = (req, res) => {
     console.log('Request body :: ', req.body)
     console.log("request query :: ", req.query);
 
-    if (!req.params.encrypt_id || !req.body.candidates || !req.body.email || !req.body.phone) {
+    if (!req.params.encrypt_id || !req.body.candidates || !req.body.phone) {
         console.log("missing mandat fields");
         res.status(400).jsonp({
             status: 400,
@@ -20,7 +20,7 @@ exports.storeEmployerAndCandidates = (req, res) => {
 
     let encrypt_id = req.params.encrypt_id
     let encrypted_email = dbHelper.decrypt(encrypt_id)
-    let email = req.body.email
+    let email = req.body.email? req.body.email: null
     let phone = req.body.phone
     let candidates = req.body.candidates ? req.body.candidates : []
 
