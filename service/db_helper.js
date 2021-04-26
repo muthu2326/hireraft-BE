@@ -9,11 +9,19 @@ const algorithm = 'aes-256-ctr';
 const password = 'd6F3Efeq';
 const key = crypto.randomBytes(32);
 const iv = crypto.randomBytes(16);
+const fs = require('fs')
+const csv = require('fast-csv');
+const { Parser } = require('json2csv');
+const {
+    v4: uuidv4
+} = require('uuid');
 
 const message = require("./message.json");
 const RegisteredUsers = require('../models/RegisteredUsersSchema');
 const NaukriPostedJob = require('../models/NaukriPostedJobSchema');
 const UsersAndJobsApplied = require('../models/UsersAndJobsAppliedSchema');
+const Employer = require('../models/EmployerSchema');
+const Session = require('../models/SessionSchema');
 
 exports.findUser = function (user_id, email, cb) {
 
@@ -300,6 +308,30 @@ sendEmailToHr = (user, job, job_url, cb) => {
     }
 }
 
+exports.sendEmployerDetailsToHr = (data, cb) => {
+    console.log('entering sendEmplyerDetailsToHr')
+    console.log('data', data)
+    let tab = data.candidates.length > 0 ? `<br><br>${formatTableForArray(data.candidates)}<br><br>` : "No candidates shorlisted<br><br>"
+    
+    email_content = {
+        subject: data.email ? `Employer - ${data.email} : shortlisted candidate` : `Employer - shortlisted candidate`,
+        body: `<html><body>
+    Hi,<br><br>${data.msg}<br><br>
+    <b>Name:</b> ${data.name ? data.name : 'Not Available'}<br>
+    <b>Email:</b> ${data.email ? data.email : 'Not Available'}<br>
+    <b>Phone:</b> ${data.phone}<br> 
+    <b>Candidates</b>: ${tab}
+    Thanks & Regards,<br>
+    <b>Hireraft<b>
+    </body></html>`,
+        from: config.get('from_email'),
+        to: config.get('notify_to')
+    }
+    sendEmail(email_content)
+    cb(null, 'succesfully sent email to HR')
+    return;
+}
+
 sendEmail = (data) => {
     console.log('Send Email', data)
     var transporter = nodemailer.createTransport({
@@ -384,7 +416,7 @@ exports.getJobsStatusForUser = function (user_id, jobs, cb) {
         });
 }; /*End of getUser*/
 
-exports.encrypt = (text) => {
+var encrypt = exports.encrypt = (text) => {
     var cipher = crypto.createCipher(algorithm, password)
     var crypted = cipher.update(text, 'utf8', 'hex')
     crypted += cipher.final('hex');
@@ -396,4 +428,175 @@ exports.decrypt = (text) => {
     var dec = decipher.update(text, 'hex', 'utf8')
     dec += decipher.final('utf8');
     return dec;
+}
+
+exports.findEmployer = (encrypt_id, cb) => {
+    console.log('Entering findEmployer')
+    console.log('encrypt_id', encrypt_id)
+
+    Employer.findOne({
+        encrypt_id: encrypt_id
+    }, (err, docs) => {
+        console.log('docs', docs)
+        if (err) {
+            console.log('err in findEmployer', err)
+            let err_res = {
+                status: 500,
+                data: {},
+                err: {
+                    msg: message.something_went_wrong,
+                    err: err
+                }
+            }
+            cb(err_res, null)
+            return;
+        } else {
+            if (docs) {
+                cb(null, docs)
+                return;
+            }{
+                cb(null, null)
+                return
+            }
+        }
+    })
+}
+
+exports.hashEmails = (req, res) => {
+    let data_list = []
+
+    let csv_type = req.query.type ? req.query.type : 'employer'
+
+    if (csv_type == 'user') {
+        fs.createReadStream(req.file.path)
+            .pipe(csv.parse({
+                headers: true
+            }))
+            .on("data", function (data) {
+                let email = data['Email'];
+                console.log('email', email)
+
+                let obj = {
+                    Fristname: data['Fristname'],
+                    Email: data['Email'],
+                    ID: dbHelper.encrypt(data['Email'])
+                }
+                data_list.push(obj)
+            })
+            .on("end", function () {
+                fs.unlinkSync(req.file.path);
+                if (data_list.length > 0) {
+                    const csvFields = ['Firstname', 'Email', 'ID'];
+                    console.log('data_list', data_list)
+                    const json2csvParser = new Parser({
+                        csvFields
+                    });
+                    const csvData = json2csvParser.parse(data_list);
+                    res.setHeader('Content-disposition', 'attachment; filename=users.csv');
+                    res.set('Content-Type', 'text/csv');
+                    res.attachment('users.csv');
+                    res.send(csvData);
+                } else {
+                    res.status(400).jsonp({
+                        status: 400,
+                        data: {},
+                        error: {
+                            msg: `No Emails found from the file`
+                        }
+                    });
+                    return;
+                }
+            })
+    } else if (csv_type == 'employer') {
+        let NOW = new Date()
+        let currentDatetime = new Date()
+        let token = uuidv4(12);
+        let expiry = currentDatetime.setDate(currentDatetime.getDate() + 7)
+
+        let sessionRequest = {
+            userId: null,
+            email: null,
+            role: "employerCampign",
+            token: token,
+            expiryDate: expiry
+        }
+
+        session = new Session(sessionRequest)
+        session.save((err, sessionRes) => {
+            if (err) {
+                res.send({
+                    status: 500,
+                    data: {},
+                    err: {
+                        msg: message.something_went_wrong,
+                        err: err
+                    }
+                })
+                return;
+            }
+            console.log('session response', sessionRes)
+            fs.createReadStream(req.file.path)
+                .pipe(csv.parse({
+                    headers: true
+                }))
+                .on("data", function (data) {
+                    let email = data['Email'];
+                    let obj = {
+                        Company: data['Company'],
+                        FirstName: data['FirstName'],
+                        Email: data['Email'],
+                        ID: encrypt(data['Email']),
+                        Token: sessionRes.token
+                    }
+                    data_list.push(obj)
+                })
+                .on("end", function () {
+                    fs.unlinkSync(req.file.path);
+                    if (data_list.length > 0) {
+                        const csvFields = ['Company','FirstName', 'Email', 'ID', 'Token'];
+                        console.log('data_list', data_list.length)
+                        const json2csvParser = new Parser({
+                            csvFields
+                        });
+                        const csvData = json2csvParser.parse(data_list);
+                        res.setHeader('Content-disposition', 'attachment; filename=employers.csv');
+                        res.set('Content-Type', 'text/csv');
+                        res.attachment('employers.csv');
+                        res.send(csvData);
+                    } else {
+                        res.status(400).jsonp({
+                            status: 400,
+                            data: {},
+                            error: {
+                                msg: `No Emails found from the file`
+                            }
+                        });
+                        return;
+                    }
+                })
+        })
+    }
+
+}
+
+var formatTableForArray = exports.formatTableForArray = (arr) => {
+    console.log('arr', arr)
+    let data = arr.map((d) => {                
+        return `<tr>
+            <td style={text-align:'center'}>${d.id}</td>
+            <td style={text-align:'center'}>${d.name}</td>
+            <td style={text-align:'center'}><a href=${d.candidate_url}>Click here</a></td>
+        </tr>`
+    })
+    let tab = `
+    <table border='1'>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Candidate Page</th>
+        </tr>
+           ${data.join('')}
+    </table>`
+
+    return tab
 }
