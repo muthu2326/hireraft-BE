@@ -266,7 +266,7 @@ exports.getEmployerSurveyByEncryptedId = (req, res) => {
     console.log('Request params :: ', req.params)
     console.log("request query :: ", req.query);   
 
-    if (!req.params.encrypt_id || req.query.type) {
+    if (!req.params.encrypt_id || !req.query.type) {
         console.log("missing encrypt_id in params");
         res.status(400).jsonp({
             status: 400,
