@@ -16,4 +16,10 @@ router.get('/:encrypt_id/decrypt', authenticate, employer.decryptEmployerData);
 
 router.post('/upload/generate/hash', upload.single('file'), employer.generateHashForEmails);
 
+/* POST employer survey */
+router.post('/survey', employer.postEmployerSurvey);
+
+/* GET employer survey */
+router.get('/:encrypt_id/survey', employer.getEmployerSurveyByEncryptedId);
+
 module.exports = router;

@@ -242,3 +242,41 @@ exports.generateHashForEmails = function (req, res) {
     }
     dbHelper.hashEmails(req, res)
 }
+
+exports.postEmployerSurvey = (req, res) => {
+    console.log("Employer Controller: entering postEmployerSurvey")
+    console.log('Request body :: ', req.body)
+    console.log("request query :: ", req.query);   
+
+    if (!req.body.encrypt_id || !req.body.question || !req.body.answers || !req.body.type) {
+        console.log("missing mandat fields");
+        res.status(400).jsonp({
+            status: 400,
+            data: {},
+            message: message.missing_fields,
+        });
+        return;
+    }
+
+    dbHelper.postSurvey(req, res)
+}
+
+exports.getEmployerSurveyByEncryptedId = (req, res) => {
+    console.log("User Controller: entering getEmployerSurveyByEncryptedId")
+    console.log('Request params :: ', req.params)
+    console.log("request query :: ", req.query);   
+
+    if (!req.params.encrypt_id || req.query.type) {
+        console.log("missing encrypt_id in params");
+        res.status(400).jsonp({
+            status: 400,
+            data: {},
+            message: message.invalid_get_request,
+        });
+        return;
+    }
+
+    req.query.type = req.query.type ? req.query.type : 'employer'
+    dbHelper.fetchSurvey(req, res)
+
+}

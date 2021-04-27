@@ -9,7 +9,7 @@ const { Parser } = require('json2csv');
 const RegisteredUsers = require('../models/RegisteredUsersSchema');
 const UsersAndJobsApplied = require('../models/UsersAndJobsAppliedSchema');
 const NaukriPostedJob = require('../models/NaukriPostedJobSchema');
-const CandidateSurvey = require('../models/CandidateSurveySchema');
+const Survey = require('../models/SurveySchema');
 
 exports.userRegistration = function (req, res) {
     console.log('Entering userRegistration')
@@ -361,8 +361,8 @@ exports.decryptUserData = function (req, res) {
     return;
 }
 
-exports.postCandidateSurvey = (req, res) => {
-    console.log("User Controller: entering postCandidateSurvey")
+exports.postSurvey = (req, res) => {
+    console.log("User Controller: entering postSurvey")
     console.log('Request body :: ', req.body)
     console.log("request query :: ", req.query);   
 
@@ -376,45 +376,12 @@ exports.postCandidateSurvey = (req, res) => {
         return;
     }
 
-    let encrypt_id = req.body.encrypt_id
-    let email = dbHelper.decrypt(encrypt_id)
-
-    let surveyRequest = {
-        encrypt_id : encrypt_id,
-        email: email,
-        questions: {
-            question: req.body.question,
-            answers: req.body.answers
-        }
-    }
-
-    let survey = new CandidateSurvey(surveyRequest)
-    survey.save((err, response) => {
-        if (err) {
-            console.log('err in user postCandidateSurvey', err)
-            console.log('Exiting postCandidateSurvey')
-            res.send({
-                status: 500,
-                data: {},
-                err: {
-                    msg: message.something_went_wrong,
-                    err: err
-                }
-            })
-            return;
-        }
-        console.log('survey response', response)
-        res.send({
-            status: 200,
-            data: message.success,
-            err: {}
-        })
-        return;
-    })
+    req.body.type = req.body.type ? req.body.type : 'candidate'
+    dbHelper.postSurvey(req, res)
 }
 
-exports.getCandidateSurveyByEncryptedId = (req, res) => {
-    console.log("User Controller: entering getCandidateSurveyByEncryptedId")
+exports.getSurveyByEncryptedId = (req, res) => {
+    console.log("User Controller: entering getSurveyByEncryptedId")
     console.log('Request params :: ', req.params)
     console.log("request query :: ", req.query);   
 
@@ -428,54 +395,6 @@ exports.getCandidateSurveyByEncryptedId = (req, res) => {
         return;
     }
 
-    let encrypt_id = req.params.encrypt_id
-    let email = dbHelper.decrypt(encrypt_id)
-
-    console.log('email', email)
-
-    CandidateSurvey.find({
-        email: email,
-        encrypt_id: encrypt_id
-    }, (err, response) => {
-        if (err) {
-            console.log('err in user postCandidateSurvey', err)
-            console.log('Exiting postCandidateSurvey')
-            res.send({
-                status: 500,
-                data: {},
-                err: {
-                    msg: message.something_went_wrong,
-                    err: err
-                }
-            })
-            return;
-        }
-        console.log('response length', response.length)
-
-        let responseObj = {
-            email: email,
-            encrypt_id: encrypt_id,
-            questions: []
-        }
-
-        if(response.length > 0){
-            response.forEach((q) => {
-                console.log('q', q)
-                responseObj.questions.push(q.questions)
-            })
-            res.send({
-                status: 200,
-                data: responseObj,
-                err: {}
-            })
-            return;
-        }else{
-            res.send({
-                status: 200,
-                data: responseObj,
-                err: {}
-            })
-            return;
-        }
-    })
-  }
+    req.query.type = req.query.type ? req.query.type : 'candidate'
+    dbHelper.fetchSurvey(req, res)
+}

@@ -9,7 +9,7 @@ const message = require("../service/message.json");
 const NaukriPostedJob = require('../models/NaukriPostedJobSchema');
 const UsersAndJobsApplied = require('../models/UsersAndJobsAppliedSchema');
 const RegisteredUsers = require('../models/RegisteredUsersSchema');
-const CandidateSurvey = require('../models/CandidateSurveySchema');
+const Survey = require('../models/SurveySchema');
 
 exports.getJobsSummary = function (req, res) {
     console.log("HR Controller: entering getJobsSummary")
@@ -123,7 +123,7 @@ exports.getAllCandidatesSurvey = (req, res) => {
     console.log('Request params :: ', req.params)
     console.log("request query :: ", req.query);   
 
-    CandidateSurvey.find((err, surveyRes) => {
+    Survey.find((err, surveyRes) => {
         if (err) {
             console.log('err in user getAllCandidatesSurvey', err)
             console.log('Exiting getAllCandidatesSurvey')

@@ -13,8 +13,13 @@ const setTags = tags => {
     return [];
 };
 
-const CandidateSurveySchema = new Schema({
+const SurveySchema = new Schema({
     encrypt_id: {
+        type: String,
+        default: null,
+        trim: true,
+    },
+    type: {
         type: String,
         default: null,
         trim: true,
@@ -39,6 +44,6 @@ const CandidateSurveySchema = new Schema({
     updated: { type: Date, default: Date.now },
 });
 
-const candidateSurvey = mongoose.model('candidateSurvey', CandidateSurveySchema);
+const survey = mongoose.model('survey', SurveySchema);
 
-module.exports = candidateSurvey;
+module.exports = survey;

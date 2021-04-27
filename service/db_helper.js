@@ -22,6 +22,7 @@ const NaukriPostedJob = require('../models/NaukriPostedJobSchema');
 const UsersAndJobsApplied = require('../models/UsersAndJobsAppliedSchema');
 const Employer = require('../models/EmployerSchema');
 const Session = require('../models/SessionSchema');
+const Survey = require('../models/SurveySchema');
 
 exports.findUser = function (user_id, email, cb) {
 
@@ -423,7 +424,7 @@ var encrypt = exports.encrypt = (text) => {
     return crypted;
 }
 
-exports.decrypt = (text) => {
+var decrypt = exports.decrypt = (text) => {
     var decipher = crypto.createDecipher(algorithm, password)
     var dec = decipher.update(text, 'hex', 'utf8')
     dec += decipher.final('utf8');
@@ -599,4 +600,108 @@ var formatTableForArray = exports.formatTableForArray = (arr) => {
     </table>`
 
     return tab
+}
+
+exports.postSurvey = (req, res) => {
+    console.log('entering :: postSurvey')
+
+    let encrypt_id = req.body.encrypt_id
+    let email = decrypt(encrypt_id)
+    let type = req.body.type
+
+    console.log('survey type', type)
+
+    let surveyRequest = {
+        encrypt_id : encrypt_id,
+        type: req.body.type,
+        email: email,
+        questions: {
+            question: req.body.question,
+            answers: req.body.answers
+        }
+    }
+
+    let survey = new Survey(surveyRequest)
+    survey.save((err, response) => {
+        if (err) {
+            console.log('err in user postSurvey', err)
+            console.log('Exiting postSurvey')
+            res.send({
+                status: 500,
+                data: {},
+                err: {
+                    msg: message.something_went_wrong,
+                    err: err
+                }
+            })
+            return;
+        }
+        console.log('survey response', response)
+        res.send({
+            status: 200,
+            data: message.success,
+            err: {}
+        })
+        return;
+    })
+}
+
+exports.fetchSurvey = (req, res)=> {
+    console.log('entering :: fetchSurvey')
+
+    let encrypt_id = req.params.encrypt_id
+    let email = decrypt(encrypt_id)
+    let type = req.query.type
+
+    console.log('survey type', type)
+
+    console.log('email', email)
+
+    Survey.find({
+        encrypt_id: encrypt_id,
+        email: email,
+        type: type,        
+    }, (err, response) => {
+        if (err) {
+            console.log('err in fetchSurvey', err)
+            console.log('Exiting fetchSurvey')
+            res.send({
+                status: 500,
+                data: {},
+                err: {
+                    msg: message.something_went_wrong,
+                    err: err
+                }
+            })
+            return;
+        }
+        console.log('response length', response.length)
+
+        let responseObj = {
+            email: email,
+            type: type, 
+            encrypt_id: encrypt_id,
+            questions: []
+        }
+
+        if(response.length > 0){
+            response.forEach((q) => {
+                console.log('q', q)
+                responseObj.questions.push(q.questions)
+            })
+            res.send({
+                status: 200,
+                data: responseObj,
+                err: {}
+            })
+            return;
+        }else{
+            res.send({
+                status: 200,
+                data: responseObj,
+                err: {}
+            })
+            return;
+        }
+    })
 }
