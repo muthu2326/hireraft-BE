@@ -123,7 +123,9 @@ exports.getAllCandidatesSurvey = (req, res) => {
     console.log('Request params :: ', req.params)
     console.log("request query :: ", req.query);   
 
-    Survey.find((err, surveyRes) => {
+    let type = req.query.type ? req.query.type : 'candidate'
+
+    Survey.find({type: type},(err, surveyRes) => {
         if (err) {
             console.log('err in user getAllCandidatesSurvey', err)
             console.log('Exiting getAllCandidatesSurvey')
@@ -152,6 +154,7 @@ exports.getAllCandidatesSurvey = (req, res) => {
                     if(email == q.email){
                         obj.encrypt_id = q.encrypt_id
                         return {
+                            type: q.type,
                             questions: q.questions.question,
                             answers: q.questions.answers,
                             created: q.created
