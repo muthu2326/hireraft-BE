@@ -512,7 +512,7 @@ exports.hashEmails = (req, res) => {
         let NOW = new Date()
         let currentDatetime = new Date()
         let token = uuidv4(12);
-        let expiry = currentDatetime.setDate(currentDatetime.getDate() + 7)
+        let expiry = currentDatetime.setDate(currentDatetime.getDate() + config.token_validity)
 
         let sessionRequest = {
             userId: null,

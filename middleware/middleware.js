@@ -1,6 +1,7 @@
 const message = require("../service/message.json");
 const Session = require('../models/SessionSchema');
 
+
 exports.authenticate = (req, res, next) => {
     console.log('middleware :: entering authenticate session')
     console.log('req headers', req.headers)

@@ -3,5 +3,6 @@
     "from_email": "jobs@hireraft.com",
     "notify_to": ["muthu.r@digiapt.com"],
     "auth_email": "jobs@hireraft.com",
-    "auth_pass": "DigiJobs#321"
+    "auth_pass": "DigiJobs#321",
+    "token_validity": 10
 }
