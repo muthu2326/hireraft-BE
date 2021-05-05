@@ -13,6 +13,70 @@ const {
 const NaukriPostedJob = require('../models/NaukriPostedJobSchema');
 const UsersAndJobsApplied = require('../models/UsersAndJobsAppliedSchema');
 
+exports.createJob = (req, res) => {
+    console.log("Job Controller: entering createJob")
+    console.log('Request body :: ', req.body)
+    console.log("request query :: ", req.query);
+
+    let jobRequest = {
+        technology: req.body.technology ? req.body.technology : null,
+        company_name: req.body.company_name ? req.body.company_name : null,
+        company_address: req.body.company_address ? req.body.company_address : null,
+        company_website: req.body.company_website ? req.body.company_website : null,
+        email: req.body.email ? req.body.email : null,
+        phone: req.body.phone ? req.body.phone : null,
+        company_contact_person: req.body.company_contact_person ? req.body.company_contact_person : null,
+        company_contact_person_role: req.body.company_contact_person_role ? req.body.company_contact_person_role : null,
+        raw_job_description: req.body.raw_job_description ? req.body.raw_job_description : null,
+        job_description: req.body.job_description ? req.body.job_description : null,
+        raw_skills_required: req.body.raw_skills_required ? req.body.raw_skills_required : null,
+        skills_required: req.body.skills_required ? req.body.skills_required : [],
+        raw_salary_package: req.body.raw_salary_package ? req.body.raw_salary_package : null,
+        raw_experience_required: req.body.raw_experience_required ? req.body.raw_experience_required : null,
+        raw_qualifications: req.body.raw_qualifications ? req.body.raw_qualifications : null,
+        qualifications: req.body.qualifications ? req.body.qualifications : [],
+        role: req.body.role ? req.body.role : null,
+        industry_type: req.body.industry_type ? req.body.industry_type : null,
+        functional_area: req.body.functional_area ? req.body.functional_area : null,
+        employment_type: req.body.employment_type ? req.body.employment_type : null,
+        role_category: req.body.role_category ? req.body.role_category : null,
+        notice_period: req.body.notice_period ? req.body.notice_period : null,
+        job_post_datetime: req.body.job_post_datetime ? req.body.job_post_datetime : 'Today',
+        url: req.body.url ? req.body.url : null,
+        salary_min: req.body.salary_min ? req.body.salary_min : null,
+        salary_max: req.body.salary_max ? req.body.salary_max : null,
+        experience_min: req.body.experience_min ? req.body.experience_min : null,
+        experience_max: req.body.experience_max ? req.body.experience_max : null,
+        recommandations: req.body.recommandations ? req.body.recommandations : [],
+    }
+
+    let job = new NaukriPostedJob(jobRequest)
+    job.save((err, jobResponse) => {
+        if (err) {
+            console.log('err in create job', err)
+            res.status(500).jsonp({
+                status: 500,
+                data: {},
+                error: {
+                    msg: message.something_went_wrong,
+                    err: err,
+                },
+            });
+            return;
+        }else{
+            console.log('created new jobResponse', jobResponse)
+            res.status(200).jsonp({
+                status: 200,
+                data: {
+                    msg: message.success
+                },
+                error: {},
+            });
+            return;
+        }
+    })
+}
+
 exports.getjob = function (req, res) {
 
     var check = utility.checkRequestBody(req.body)

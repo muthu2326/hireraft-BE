@@ -7,6 +7,8 @@ router.post('/',jobs.getjob);
 
 router.post('/update/recommendation',jobs.updateJobsRecommendations);
 
+router.post('/create',jobs.createJob);
+
 /* GET recommended jobs. */
 router.get('/recommendations',jobs.getRecommendedJobs);
 
