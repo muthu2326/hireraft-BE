@@ -513,7 +513,9 @@ exports.getJobContactPersionDetails = (req, res) => {
                 return {
                     CompnayName: j.company_name ? j.company_name.trim() : null,
                     Person: j.company_contact_person ? j.company_contact_person.trim() : null,
-                    Role: j.company_contact_person_role ? j.company_contact_person_role.trim() : null
+                    Role: j.company_contact_person_role ? j.company_contact_person_role.trim() : null,
+                    JobTitle: j.title ? j.title : null, 
+                    JobURL: j.url ? j.url : null
                 }
             })
             const csvFields = ['CompnayName', 'Person', 'Role'];
