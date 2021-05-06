@@ -9,6 +9,10 @@ router.post('/update/recommendation',jobs.updateJobsRecommendations);
 
 router.post('/create',jobs.createJob);
 
+router.put('/:job_id',jobs.editJob);
+
+router.delete('/:job_id',jobs.removeJob);
+
 /* GET recommended jobs. */
 router.get('/recommendations',jobs.getRecommendedJobs);
 
