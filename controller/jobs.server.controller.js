@@ -13,6 +13,235 @@ const {
 const NaukriPostedJob = require('../models/NaukriPostedJobSchema');
 const UsersAndJobsApplied = require('../models/UsersAndJobsAppliedSchema');
 
+exports.createJob = (req, res) => {
+    console.log("Job Controller: entering createJob")
+    console.log('Request body :: ', req.body)
+    console.log("request query :: ", req.query);
+
+    let jobRequest = {
+        technology: req.body.technology ? req.body.technology : null,
+        company_name: req.body.company_name ? req.body.company_name : null,
+        company_address: req.body.company_address ? req.body.company_address : null,
+        company_website: req.body.company_website ? req.body.company_website : null,
+        email: req.body.email ? req.body.email : null,
+        phone: req.body.phone ? req.body.phone : null,
+        company_contact_person: req.body.company_contact_person ? req.body.company_contact_person : null,
+        company_contact_person_role: req.body.company_contact_person_role ? req.body.company_contact_person_role : null,
+        raw_job_description: req.body.raw_job_description ? req.body.raw_job_description : null,
+        job_description: req.body.job_description ? req.body.job_description : null,
+        raw_skills_required: req.body.raw_skills_required ? req.body.raw_skills_required : null,
+        skills_required: req.body.skills_required ? req.body.skills_required : [],
+        raw_salary_package: req.body.raw_salary_package ? req.body.raw_salary_package : null,
+        raw_experience_required: req.body.raw_experience_required ? req.body.raw_experience_required : null,
+        raw_qualifications: req.body.raw_qualifications ? req.body.raw_qualifications : null,
+        qualifications: req.body.qualifications ? req.body.qualifications : [],
+        role: req.body.role ? req.body.role : null,
+        industry_type: req.body.industry_type ? req.body.industry_type : null,
+        functional_area: req.body.functional_area ? req.body.functional_area : null,
+        employment_type: req.body.employment_type ? req.body.employment_type : null,
+        role_category: req.body.role_category ? req.body.role_category : null,
+        notice_period: req.body.notice_period ? req.body.notice_period : null,
+        job_post_datetime: req.body.job_post_datetime ? req.body.job_post_datetime : 'Today',
+        url: req.body.url ? req.body.url : null,
+        salary_min: req.body.salary_min ? req.body.salary_min : null,
+        salary_max: req.body.salary_max ? req.body.salary_max : null,
+        experience_min: req.body.experience_min ? req.body.experience_min : null,
+        experience_max: req.body.experience_max ? req.body.experience_max : null,
+        recommandations: req.body.recommandations ? req.body.recommandations : [],
+    }
+
+    let job = new NaukriPostedJob(jobRequest)
+    job.save((err, jobResponse) => {
+        if (err) {
+            console.log('err in create job', err)
+            res.status(500).jsonp({
+                status: 500,
+                data: {},
+                error: {
+                    msg: message.something_went_wrong,
+                    err: err,
+                },
+            });
+            return;
+        } else {
+            console.log('created new jobResponse', jobResponse)
+            res.status(200).jsonp({
+                status: 200,
+                data: {
+                    msg: message.success
+                },
+                error: {},
+            });
+            return;
+        }
+    })
+}
+
+exports.editJob = (req, res) => {
+    console.log("Job Controller: entering editJob")
+    console.log('Request params:: ', req.params)
+    console.log('Request body:: ', req.body)
+    console.log("request query :: ", req.query);
+
+    if (!req.params.job_id) {
+        console.log("missing job_id in params");
+        res.status(400).jsonp({
+            status: 400,
+            data: {},
+            err: {
+                msg: message.invalid_get_request,
+            }
+        });
+        return;
+    }
+
+    var job_id = req.params.job_id;
+
+    NaukriPostedJob.findById(job_id, (err, job) => {
+        if (err) {
+            console.log('err in create job', err)
+            res.status(500).jsonp({
+                status: 500,
+                data: {},
+                error: {
+                    msg: message.something_went_wrong,
+                    err: err,
+                },
+            });
+            return;
+        } else {
+            console.log('found job')
+            if (job) {
+                let jobRequest = {
+                    technology: req.body.technology ? req.body.technology : job.technology,
+                    company_name: req.body.company_name ? req.body.company_name : job.company_name,
+                    company_address: req.body.company_address ? req.body.company_address : job.company_address,
+                    company_website: req.body.company_website ? req.body.company_website : job.company_website,
+                    email: req.body.email ? req.body.email : job.email,
+                    phone: req.body.phone ? req.body.phone : job.phone,
+                    company_contact_person: req.body.company_contact_person ? req.body.company_contact_person : job.company_contact_person,
+                    company_contact_person_role: req.body.company_contact_person_role ? req.body.company_contact_person_role : job.company_contact_person_role,
+                    raw_job_description: req.body.raw_job_description ? req.body.raw_job_description : job.raw_job_description,
+                    job_description: req.body.job_description ? req.body.job_description : job.job_description,
+                    raw_skills_required: req.body.raw_skills_required ? req.body.raw_skills_required : job.raw_skills_required,
+                    skills_required: req.body.skills_required ? req.body.skills_required : job.skills_required,
+                    raw_salary_package: req.body.raw_salary_package ? req.body.raw_salary_package : job.raw_salary_package,
+                    raw_experience_required: req.body.raw_experience_required ? req.body.raw_experience_required : job.raw_experience_required,
+                    raw_qualifications: req.body.raw_qualifications ? req.body.raw_qualifications : job.raw_qualifications,
+                    qualifications: req.body.qualifications ? req.body.qualifications : job.qualifications,
+                    role: req.body.role ? req.body.role : job.role,
+                    industry_type: req.body.industry_type ? req.body.industry_type : job.industry_type,
+                    functional_area: req.body.functional_area ? req.body.functional_area : job.functional_area,
+                    employment_type: req.body.employment_type ? req.body.employment_type : job.employment_type,
+                    role_category: req.body.role_category ? req.body.role_category : job.role_category,
+                    notice_period: req.body.notice_period ? req.body.notice_period : job.notice_period,
+                    job_post_datetime: req.body.job_post_datetime ? req.body.job_post_datetime : job.job_post_datetime,
+                    url: req.body.url ? req.body.url : job.url,
+                    salary_min: req.body.salary_min ? req.body.salary_min : job.salary_min,
+                    salary_max: req.body.salary_max ? req.body.salary_max : job.salary_max,
+                    experience_min: req.body.experience_min ? req.body.experience_min : job.experience_min,
+                    experience_max: req.body.experience_max ? req.body.experience_max : job.experience_max,
+                    recommandations: req.body.recommandations ? req.body.recommandations : job.recommandations,
+                    updated: new Date()
+                }
+
+                NaukriPostedJob.updateOne({
+                    _id: job_id
+                }, jobRequest, (err, updatedRes) => {
+                    console.log('updated job response', updatedRes)
+                    if (err) {
+                        console.log('err in edit job', err)
+                        res.status(500).jsonp({
+                            status: 500,
+                            data: {},
+                            error: {
+                                msg: message.something_went_wrong,
+                                err: err,
+                            },
+                        });
+                        return;
+                    } else {
+                        res.status(200).jsonp({
+                            status: 200,
+                            data: {
+                                msg: message.success
+                            },
+                            error: {},
+                        });
+                        return;
+                    }
+                })
+            } else {
+                res.status(400).jsonp({
+                    status: 400,
+                    data: {},
+                    err: {
+                        msg: message.job_not_found,
+                    }
+                });
+                return;
+            }
+        }
+    })
+}
+
+exports.removeJob = (req, res) => {
+    console.log("Job Controller: entering removeJob")
+    console.log('Request body :: ', req.params)
+    console.log("request query :: ", req.query);
+
+    if (!req.params.job_id) {
+        console.log("missing job_id in params");
+        res.status(400).jsonp({
+            status: 400,
+            data: {},
+            err: {
+                msg: message.invalid_get_request,
+            }
+        });
+        return;
+    }
+
+    var job_id = req.params.job_id;
+
+    NaukriPostedJob.deleteOne({
+        _id: job_id
+    }, (err, response) => {
+        if (err) {
+            console.log('err in edit job', err)
+            res.status(500).jsonp({
+                status: 500,
+                data: {},
+                error: {
+                    msg: message.something_went_wrong,
+                    err: err,
+                },
+            });
+            return;
+        } else {
+            if (response) {
+                res.status(200).jsonp({
+                    status: 200,
+                    data: {
+                        msg: message.success
+                    },
+                    error: {},
+                });
+                return;
+            } else {
+                res.status(400).jsonp({
+                    status: 400,
+                    data: {},
+                    err: {
+                        msg: message.job_not_found,
+                    }
+                });
+                return;
+            }
+        }
+    })
+}
+
 exports.getjob = function (req, res) {
 
     var check = utility.checkRequestBody(req.body)
@@ -242,7 +471,7 @@ exports.updateJobsRecommendations = (req, res) => {
                 });
                 return;
             })
-    }else{
+    } else {
         res.status(400).jsonp({
             status: 400,
             data: {},
@@ -265,7 +494,9 @@ exports.getJobById = function (req, res) {
         res.status(400).jsonp({
             status: 400,
             data: {},
-            message: message.invalid_get_request,
+            err: {
+                msg: message.invalid_get_request,
+            }
         });
         return;
     }

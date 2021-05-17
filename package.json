@@ -20,6 +20,7 @@
     "fs": "0.0.1-security",
     "http": "0.0.1-security",
     "https": "^1.0.0",
+    "indian-cities-json": "^2.0.0",
     "jade": "~1.3.0",
     "json2csv": "^5.0.6",
     "moment": "^2.29.1",
