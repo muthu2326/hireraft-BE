@@ -3,6 +3,7 @@ var utility = require('../service/utils')
 var dbHelper = require('../service/db_helper')
 var nodemailer = require('nodemailer');
 const config = require('config');
+var aggregatePaginate = require('mongoose-aggregate-paginate-v2');
 var async = require("async");
 const message = require("../service/message.json");
 
@@ -47,6 +48,7 @@ exports.storeCampaignLog = (req, res) => {
             return;
         }else{
             let status = null
+            let expiry_date = tokenRes.expiryDate
             if(tokenRes.status == 200){
                status = 'active'
             }else if(tokenRes.status == 400){
@@ -66,6 +68,7 @@ exports.storeCampaignLog = (req, res) => {
                 email: email,
                 role: req.body.role,
                 page_link: req.body.page_link,
+                expiry_date: expiry_date,
                 status: status
             }
             const campaign = new CampaignLogs(campaign_request)
@@ -91,7 +94,8 @@ exports.storeCampaignLog = (req, res) => {
                         email: response.email,
                         page_link: response.page_link,
                         clicked_on: response.clicked_on,
-                        status: response.status
+                        status: response.status,
+                        link_expired: expiry_date
                     }
 
                     dbHelper.sendEmailToHrAfterEmployerClicksOnCampaignLink(email_content, (err, cbResponse) => {
@@ -107,6 +111,128 @@ exports.storeCampaignLog = (req, res) => {
                     return;
                 }
             })
+        }
+    })
+}
+
+exports.getCampaignAnalytics = (req, res) => {
+    console.log('Entering getCampaignAnalytics')
+    console.log('Request Body :: ', req.body)
+    console.log('Request params :: ', req.params)
+    console.log("request query :: ", req.query);
+
+    const page = req.query.page
+    const limit = req.query.limit
+
+    let sort = req.query.sort ? req.query.sort: '-1'
+
+    console.log(typeof(sort))
+    let pagination = {}
+
+    if (page != null && limit != null) {
+        pagination.limit = limit
+        pagination.page = page
+    }
+
+    console.log('pagination', pagination)
+    var campaignAggregation = CampaignLogs.aggregate([
+        {
+            $group: {
+                _id: {email: '$email', uuid: '$uuid'},
+                count: {$sum: 1},
+                Id: {
+                    $addToSet: '$uuid'
+                }
+            },
+        }
+    ])
+
+    CampaignLogs.aggregatePaginate(campaignAggregation, pagination)
+    .then(function(results){
+        console.log(results);
+        analytics = results.docs.map((e) => {
+            return {
+                uuid: e._id.uuid,
+                email : e._id.email,
+                count : e.count
+            }
+        })
+
+        if(sort == '-1' || sort == 'desc'){
+            analytics.sort((a, b) => b.email.localeCompare(a.email))
+        }else if(sort == '1' || sort == 'asc'){
+            analytics.sort((a, b) => a.email.localeCompare(b.email))
+        }
+
+        res.send({
+            status: 200,
+            data: {
+                logs: analytics
+            },
+            err: {}
+        })
+        return;
+    }).catch(function(err){
+        console.log(err);
+        res.status(500).jsonp({
+            status: 500,
+            data: {},
+            error: {
+                msg: message.something_went_wrong,
+                err: err,
+            },
+        });
+        return;
+    })
+}
+
+exports.getCampaignDetailsByUUID = (req, res) => {
+    console.log('Entering getCampaignAnalytics')
+    console.log('Request Body :: ', req.body)
+    console.log('Request params :: ', req.params)
+    console.log("request query :: ", req.query);
+
+    const page = req.query.page
+    const limit = req.query.limit
+    const sort = req.query.sort
+
+    let pagination = {}
+
+    if (page != null && limit != null) {
+        pagination.limit = limit * 1
+        pagination.skip = ((page - 1) * limit)
+    }
+
+    if (sort) {
+        pagination.sort = {
+            "clicked_on": sort
+        }
+    }
+
+    console.log('pagination', pagination)
+
+    CampaignLogs.find({
+        uuid: req.params.uuid
+    },{}, pagination, (err, response) => {
+        if(err){
+            res.status(500).jsonp({
+                status: 500,
+                data: {},
+                error: {
+                    msg: message.something_went_wrong,
+                    err: err,
+                },
+            });
+            return;
+        }else{
+            res.send({
+                status: 200,
+                data: {
+                    logs: response
+                },
+                err: {}
+            })
+            return;
         }
     })
 }

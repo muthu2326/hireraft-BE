@@ -6,6 +6,7 @@
 
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+var aggregatePaginate = require('mongoose-aggregate-paginate-v2');
 
 const getTags = tags => tags.join(',');
 const setTags = tags => {
@@ -39,10 +40,16 @@ const CampaignLogsSchema = new Schema({
         default: null,
         trim: true,
     },
+    expiry_date: {
+        type: Date,
+        default: null
+    }, 
     clicked_on: { type: Date, default: Date.now },
     created: { type: Date, default: Date.now },
     updated: { type: Date, default: Date.now },
 });
+
+CampaignLogsSchema.plugin(aggregatePaginate);
 
 const campaignlogs = mongoose.model('campaignlogs', CampaignLogsSchema);
 

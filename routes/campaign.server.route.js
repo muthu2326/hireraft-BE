@@ -8,4 +8,8 @@ var {authenticate} = require("../middleware/middleware")
 /* POST store campaign details. */
 router.post('/logs', campaign.storeCampaignLog);
 
+router.get('/analytics', campaign.getCampaignAnalytics);
+
+router.get('/analytics/:uuid', campaign.getCampaignDetailsByUUID);
+
 module.exports = router;

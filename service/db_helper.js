@@ -755,21 +755,24 @@ exports.validateToken = (token, cb) => {
                 console.log('session data', sessionResponse)
                 cb(null, {
                     status: 200,
-                    msg: 'Valid token'
+                    msg: 'Valid token',
+                    expiryDate: sessionResponse.expiryDate
                 })
                 return;
             } else {
                 if (sessionResponse.role == 'employerCampign') {
                     cb(null, {
                         status: 400,
-                        msg: 'Token Expired'
+                        msg: 'Token Expired',
+                        expiryDate: sessionResponse.expiryDate
                     })
                     return;
                     return;
                 } else {
                     cb(null, {
                         status: 401,
-                        msg: 'Unauthorized Access'
+                        msg: 'Unauthorized Access',
+                        expiryDate: null
                     })
                     return;
                 }
@@ -777,7 +780,8 @@ exports.validateToken = (token, cb) => {
         } else {
             cb(null, {
                 status: 403,
-                msg: 'Forbidden Access'
+                msg: 'Forbidden Access',
+                expiryDate: null
             })
             return;
         }
