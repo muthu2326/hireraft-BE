@@ -14,6 +14,7 @@ var users = require('./routes/users.server.route');
 var hr = require('./routes/hr.server.route');
 var employers = require('./routes/employers.server.route');
 var states = require('./routes/states.server.route')
+var campaign = require('./routes/campaign.server.route')
 
 var app = express();
 
@@ -35,6 +36,7 @@ app.use('/users', users);
 app.use('/hr', hr);
 app.use('/employers', employers);
 app.use('/states', states);
+app.use('/campaign', campaign);
 
 /// catch 404 and forwarding to error handler
 app.use(function(req, res, next) {

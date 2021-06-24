@@ -11,7 +11,9 @@ const key = crypto.randomBytes(32);
 const iv = crypto.randomBytes(16);
 const fs = require('fs')
 const csv = require('fast-csv');
-const { Parser } = require('json2csv');
+const {
+    Parser
+} = require('json2csv');
 const {
     v4: uuidv4
 } = require('uuid');
@@ -313,7 +315,7 @@ exports.sendEmployerDetailsToHr = (data, cb) => {
     console.log('entering sendEmplyerDetailsToHr')
     console.log('data', data)
     let tab = data.candidates.length > 0 ? `<br><br>${formatTableForArray(data.candidates)}<br><br>` : "No candidates shorlisted<br><br>"
-    
+
     email_content = {
         subject: data.email ? `Employer - ${data.email} : shortlisted candidate` : `Employer - shortlisted candidate`,
         body: `<html><body>
@@ -322,6 +324,29 @@ exports.sendEmployerDetailsToHr = (data, cb) => {
     <b>Email:</b> ${data.email ? data.email : 'Not Available'}<br>
     <b>Phone:</b> ${data.phone}<br> 
     <b>Candidates</b>: ${tab}
+    Thanks & Regards,<br>
+    <b>Hireraft<b>
+    </body></html>`,
+        from: config.get('from_email'),
+        to: config.get('notify_to')
+    }
+    sendEmail(email_content)
+    cb(null, 'succesfully sent email to HR')
+    return;
+}
+
+exports.sendEmailToHrAfterEmployerClicksOnCampaign = (data, cb) => {
+    console.log('entering sendEmailToHrAfterEmployerClicksOnCampaign')
+    console.log('data', data)
+
+    email_content = {
+        subject: `Employer Clicked`,
+        body: `<html><body>
+    Hi,<br><br>${data.msg}<br><br>
+    <b>Email:</b> ${data.email ? data.email : 'Not Available'}<br>
+    <b>UUID:</b> ${data.uuid ? data.uuid : 'Not Available'}<br>
+    <b>Page Link:</b> <a href=${data.page_link}>Click here</a><br>
+    <b>Date and Time: </b> ${data.clicked_on}<br><br>
     Thanks & Regards,<br>
     <b>Hireraft<b>
     </body></html>`,
@@ -455,7 +480,7 @@ exports.findEmployer = (encrypt_id, cb) => {
             if (docs) {
                 cb(null, docs)
                 return;
-            }{
+            } {
                 cb(null, null)
                 return
             }
@@ -554,7 +579,7 @@ exports.hashEmails = (req, res) => {
                 .on("end", function () {
                     fs.unlinkSync(req.file.path);
                     if (data_list.length > 0) {
-                        const csvFields = ['Company','FirstName', 'Email', 'ID', 'Token'];
+                        const csvFields = ['Company', 'FirstName', 'Email', 'ID', 'Token'];
                         console.log('data_list', data_list.length)
                         const json2csvParser = new Parser({
                             csvFields
@@ -582,7 +607,7 @@ exports.hashEmails = (req, res) => {
 
 var formatTableForArray = exports.formatTableForArray = (arr) => {
     console.log('arr', arr)
-    let data = arr.map((d) => {                
+    let data = arr.map((d) => {
         return `<tr>
             <td style={text-align:'center'}>${d.id}</td>
             <td style={text-align:'center'}>${d.name}</td>
@@ -612,7 +637,7 @@ exports.postSurvey = (req, res) => {
     console.log('survey type', type)
 
     let surveyRequest = {
-        encrypt_id : encrypt_id,
+        encrypt_id: encrypt_id,
         type: req.body.type,
         email: email,
         questions: {
@@ -646,7 +671,7 @@ exports.postSurvey = (req, res) => {
     })
 }
 
-exports.fetchSurvey = (req, res)=> {
+exports.fetchSurvey = (req, res) => {
     console.log('entering :: fetchSurvey')
 
     let encrypt_id = req.params.encrypt_id
@@ -660,7 +685,7 @@ exports.fetchSurvey = (req, res)=> {
     Survey.find({
         encrypt_id: encrypt_id,
         email: email,
-        type: type,        
+        type: type,
     }, (err, response) => {
         if (err) {
             console.log('err in fetchSurvey', err)
@@ -679,12 +704,12 @@ exports.fetchSurvey = (req, res)=> {
 
         let responseObj = {
             email: email,
-            type: type, 
+            type: type,
             encrypt_id: encrypt_id,
             questions: []
         }
 
-        if(response.length > 0){
+        if (response.length > 0) {
             response.forEach((q) => {
                 console.log('q', q)
                 responseObj.questions.push(q.questions)
@@ -695,11 +720,63 @@ exports.fetchSurvey = (req, res)=> {
                 err: {}
             })
             return;
-        }else{
+        } else {
             res.send({
                 status: 200,
                 data: responseObj,
                 err: {}
+            })
+            return;
+        }
+    })
+}
+
+exports.validateToken = (token, cb) => {
+    console.log('Entering validateToken method')
+    console.log('Token :: ', token)
+    Session.findOne({
+        token: token
+    }, (err, sessionResponse) => {
+        if (err) {
+            console.log('err in dbHepler validateToken', err)
+            console.log('Exiting validateToken')
+            cb(err, null)
+            return;
+        }
+        if (sessionResponse) {
+            console.log('session found')
+            let NOW = new Date()
+            console.log('checking current time with token expiry time')
+            console.log('NOW ', NOW, 'expiry date', sessionResponse.expiryDate)
+            console.log('result :: ', NOW < sessionResponse.expiryDate)
+            if (NOW < sessionResponse.expiryDate) {
+                console.log('session is valid')
+                console.log('session data', sessionResponse)
+                cb(null, {
+                    status: 200,
+                    msg: 'Valid token'
+                })
+                return;
+            } else {
+                if (sessionResponse.role == 'employerCampign') {
+                    cb(null, {
+                        status: 400,
+                        msg: 'Token Expired'
+                    })
+                    return;
+                    return;
+                } else {
+                    cb(null, {
+                        status: 401,
+                        msg: 'Unauthorized Access'
+                    })
+                    return;
+                }
+            }
+        } else {
+            cb(null, {
+                status: 403,
+                msg: 'Forbidden Access'
             })
             return;
         }
