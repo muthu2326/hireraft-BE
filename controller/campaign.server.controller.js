@@ -94,7 +94,7 @@ exports.storeCampaignLog = (req, res) => {
                         status: response.status
                     }
 
-                    dbHelper.sendEmailToHrAfterEmployerClicksOnCampaign(email_content, (err, cbResponse) => {
+                    dbHelper.sendEmailToHrAfterEmployerClicksOnCampaignLink(email_content, (err, cbResponse) => {
                         console.log(err, cbResponse)
                     })
                     res.send({
