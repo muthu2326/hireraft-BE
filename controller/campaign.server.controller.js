@@ -90,7 +90,8 @@ exports.storeCampaignLog = (req, res) => {
                         uuid: response.uuid,
                         email: response.email,
                         page_link: response.page_link,
-                        clicked_on: response.clicked_on
+                        clicked_on: response.clicked_on,
+                        status: response.status
                     }
 
                     dbHelper.sendEmailToHrAfterEmployerClicksOnCampaign(email_content, (err, cbResponse) => {
