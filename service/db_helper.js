@@ -346,7 +346,7 @@ exports.sendEmailToHrAfterEmployerClicksOnCampaignLink = (data, cb) => {
     <b>Email:</b> ${data.email ? data.email : 'Not Available'}<br>
     <b>UUID:</b> ${data.uuid ? data.uuid : 'Not Available'}<br>
     <b>Page Link:</b> <a href=${data.page_link}>Click here</a><br>
-    <b>Status:</b>  ${data.status[0].toUpperCase() + data.status.slice(1, data.status.length).toLowerCase()}<br>
+    <b>Status:</b>  ${data.status[0].toUpperCase() + data.status.slice(1, data.status.length).toLowerCase()}<br>    
     <b>Date and Time: </b> ${data.clicked_on}<br><br>
     Thanks & Regards,<br>
     <b>Hireraft<b>
