@@ -1,7 +1,7 @@
 {
     "db":"mongodb://naukri:naukri@localhost:27017/jobs",
     "from_email": "jobs@hireraft.com",
-    "notify_to": ["gaurav.kumar@digiapt.com", "jayarama.reddy@digiapt.com"],
+    "notify_to": ["gaurav.kumar@digiapt.com", "manoj.kumar@digiapt.com"],
     "auth_email": "jobs@hireraft.com",
     "auth_pass": "DigiJobs#321",
     "token_validity": 10
