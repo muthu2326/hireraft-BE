@@ -335,7 +335,7 @@ exports.sendEmployerDetailsToHr = (data, cb) => {
     return;
 }
 
-exports.sendEmailToHrAfterEmployerClicksOnCampaign = (data, cb) => {
+exports.sendEmailToHrAfterEmployerClicksOnCampaignLink = (data, cb) => {
     console.log('entering sendEmailToHrAfterEmployerClicksOnCampaign')
     console.log('data', data)
 

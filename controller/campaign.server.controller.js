@@ -93,7 +93,7 @@ exports.storeCampaignLog = (req, res) => {
                         clicked_on: response.clicked_on
                     }
 
-                    dbHelper.sendEmailToHrAfterEmployerClicksOnCampaign(email_content, (err, cbResponse) => {
+                    dbHelper.sendEmailToHrAfterEmployerClicksOnCampaignLink(email_content, (err, cbResponse) => {
                         console.log(err, cbResponse)
                     })
                     res.send({
