@@ -24,6 +24,7 @@ exports.storeEmployerAndCandidates = (req, res) => {
     let name = req.body.name? req.body.name: null
     let phone = req.body.phone
     let candidates = req.body.candidates ? req.body.candidates : []
+    let page_link = req.body.page_link ? req.body.page_link : 'Not available'
 
     console.log('encrypted_email', encrypted_email)
 
@@ -78,6 +79,7 @@ exports.storeEmployerAndCandidates = (req, res) => {
                         name: emp.name,
                         email: emp.email,
                         phone: emp.phone,
+                        page_link: page_link,
                         candidates: emp.candidates.length > 0 ? emp.candidates : [],
                         msg: `An employer has updated his shorlisted candidates, Please find the details below`
                     }

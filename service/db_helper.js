@@ -322,7 +322,8 @@ exports.sendEmployerDetailsToHr = (data, cb) => {
     Hi,<br><br>${data.msg}<br><br>
     <b>Name:</b> ${data.name ? data.name : 'Not Available'}<br>
     <b>Email:</b> ${data.email ? data.email : 'Not Available'}<br>
-    <b>Phone:</b> ${data.phone}<br> 
+    <b>Phone:</b> ${data.phone}<br>
+    <b>Page Link:</b> <a href=${data.page_link}>Click here</a><br>
     <b>Candidates</b>: ${tab}
     Thanks & Regards,<br>
     <b>Hireraft<b>
