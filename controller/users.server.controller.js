@@ -288,49 +288,51 @@ exports.generateHashForEmails = function (req, res) {
         });
         return;
     }
+    req.query.type = 'user'
+    dbHelper.hashEmails(req, res)
 
-    let users_list = []
+    // let users_list = []
 
-    fs.createReadStream(req.file.path)
-        .pipe(csv.parse({
-            headers: true
-        }))
-        .on("data", function (data) {
-            console.log('csv data: dealer')
-            // console.log(data)
+    // fs.createReadStream(req.file.path)
+    //     .pipe(csv.parse({
+    //         headers: true
+    //     }))
+    //     .on("data", function (data) {
+    //         console.log('csv data: dealer')
+    //         // console.log(data)
 
-            let email = data['Email'];
-            console.log('email', email)
+    //         let email = data['Email'];
+    //         console.log('email', email)
 
-            let obj = {
-                Fristname: data['Fristname'],
-                Email: data['Email'],
-                ID: dbHelper.encrypt(data['Email'])
-            }
-            users_list.push(obj)
-        })
-        .on("end", function () {
-            fs.unlinkSync(req.file.path);
-            if (users_list.length > 0) {
-                const csvFields = ['Firstname', 'Email', 'ID'];
-                console.log('users_list', users_list)
-                const json2csvParser = new Parser({ csvFields });
-                const csvData = json2csvParser.parse(users_list);
-                res.setHeader('Content-disposition', 'attachment; filename=users.csv');
-                res.set('Content-Type', 'text/csv');
-                res.attachment('users.csv');
-                res.send(csvData);   
-            } else {
-                res.status(400).jsonp({
-                    status: 400,
-                    data: {},
-                    error: {
-                        msg: `No Emails found from the file`
-                    }
-                });
-                return;
-            }
-        })
+    //         let obj = {
+    //             Fristname: data['Fristname'],
+    //             Email: data['Email'],
+    //             ID: dbHelper.encrypt(data['Email'])
+    //         }
+    //         users_list.push(obj)
+    //     })
+    //     .on("end", function () {
+    //         fs.unlinkSync(req.file.path);
+    //         if (users_list.length > 0) {
+    //             const csvFields = ['Firstname', 'Email', 'ID'];
+    //             console.log('users_list', users_list)
+    //             const json2csvParser = new Parser({ csvFields });
+    //             const csvData = json2csvParser.parse(users_list);
+    //             res.setHeader('Content-disposition', 'attachment; filename=users.csv');
+    //             res.set('Content-Type', 'text/csv');
+    //             res.attachment('users.csv');
+    //             res.send(csvData);   
+    //         } else {
+    //             res.status(400).jsonp({
+    //                 status: 400,
+    //                 data: {},
+    //                 error: {
+    //                     msg: `No Emails found from the file`
+    //                 }
+    //             });
+    //             return;
+    //         }
+    //     })
 }
 
 exports.decryptUserData = function (req, res) {

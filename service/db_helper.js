@@ -496,44 +496,74 @@ exports.hashEmails = (req, res) => {
     let csv_type = req.query.type ? req.query.type : 'employer'
 
     if (csv_type == 'user') {
-        fs.createReadStream(req.file.path)
-            .pipe(csv.parse({
-                headers: true
-            }))
-            .on("data", function (data) {
-                let email = data['Email'];
-                console.log('email', email)
 
-                let obj = {
-                    Fristname: data['Fristname'],
-                    Email: data['Email'],
-                    ID: dbHelper.encrypt(data['Email'])
-                }
-                data_list.push(obj)
-            })
-            .on("end", function () {
-                fs.unlinkSync(req.file.path);
-                if (data_list.length > 0) {
-                    const csvFields = ['Firstname', 'Email', 'ID'];
-                    console.log('data_list', data_list)
-                    const json2csvParser = new Parser({
-                        csvFields
-                    });
-                    const csvData = json2csvParser.parse(data_list);
-                    res.setHeader('Content-disposition', 'attachment; filename=users.csv');
-                    res.set('Content-Type', 'text/csv');
-                    res.attachment('users.csv');
-                    res.send(csvData);
-                } else {
-                    res.status(400).jsonp({
-                        status: 400,
-                        data: {},
-                        error: {
-                            msg: `No Emails found from the file`
-                        }
-                    });
-                    return;
-                }
+        let NOW = new Date()
+        let currentDatetime = new Date()
+        let token = uuidv4(12);
+        let expiry = currentDatetime.setDate(currentDatetime.getDate() + config.token_validity)
+
+        let sessionRequest = {
+            userId: null,
+            email: null,
+            role: "candidateCampaign",
+            token: token,
+            expiryDate: expiry
+        }
+
+        session = new Session(sessionRequest)
+        session.save((err, sessionRes) => {
+            if (err) {
+                res.send({
+                    status: 500,
+                    data: {},
+                    err: {
+                        msg: message.something_went_wrong,
+                        err: err
+                    }
+                })
+                return;
+            }
+            console.log('session response', sessionRes)
+            fs.createReadStream(req.file.path)
+                .pipe(csv.parse({
+                    headers: true
+                }))
+                .on("data", function (data) {
+                    let email = data['Email'];
+                    console.log('email', email)
+
+                    let obj = {
+                        Fristname: data['Fristname'],
+                        Email: data['Email'],
+                        ID: encrypt(data['Email']),
+                        Token: sessionRes.token
+                    }
+                    data_list.push(obj)
+                })
+                .on("end", function () {
+                    fs.unlinkSync(req.file.path);
+                    if (data_list.length > 0) {
+                        const csvFields = ['Firstname', 'Email', 'ID', 'Token'];
+                        console.log('data_list', data_list)
+                        const json2csvParser = new Parser({
+                            csvFields
+                        });
+                        const csvData = json2csvParser.parse(data_list);
+                        res.setHeader('Content-disposition', 'attachment; filename=users.csv');
+                        res.set('Content-Type', 'text/csv');
+                        res.attachment('users.csv');
+                        res.send(csvData);
+                    } else {
+                        res.status(400).jsonp({
+                            status: 400,
+                            data: {},
+                            error: {
+                                msg: `No Emails found from the file`
+                            }
+                        });
+                        return;
+                    }
+                })
             })
     } else if (csv_type == 'employer') {
         let NOW = new Date()
