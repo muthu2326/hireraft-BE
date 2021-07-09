@@ -37,7 +37,8 @@ exports.userRegistration = function (req, res) {
         course: req.body.course,
         passing_year: req.body.passing_year,
         skills: req.body.skills,
-        joining_by: req.body.joining_by
+        joining_by: req.body.joining_by,
+        subscribe: req.body.subscribe ? req.body.subscribe : false
     }
 
     const user = new RegisteredUsers(users_request)

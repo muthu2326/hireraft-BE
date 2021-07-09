@@ -57,6 +57,11 @@ const RegisteredUsersSchema = new Schema({
         default: null,
         trim: true,
     },
+    subscribe: {
+        type: Boolean,
+        default: false,
+        trim: true,
+    },
     created: { type: Date, default: Date.now },
     updated: { type: Date, default: Date.now },
 });
