@@ -25,6 +25,7 @@ exports.storeEmployerAndCandidates = (req, res) => {
     let phone = req.body.phone
     let candidates = req.body.candidates ? req.body.candidates : []
     let page_link = req.body.page_link ? req.body.page_link : 'Not available'
+    let can_contact = req.body.can_contact ? req.body.can_contact : false
 
     console.log('encrypted_email', encrypted_email)
 
@@ -49,6 +50,7 @@ exports.storeEmployerAndCandidates = (req, res) => {
                 email: email,
                 name: name,
                 phone: phone,
+                can_contact: can_contact,
                 candidates: candidates
             }
 
@@ -79,6 +81,7 @@ exports.storeEmployerAndCandidates = (req, res) => {
                         name: emp.name,
                         email: emp.email,
                         phone: emp.phone,
+                        can_contact: can_contact,
                         page_link: page_link,
                         candidates: emp.candidates.length > 0 ? emp.candidates : [],
                         msg: `An employer has updated his shorlisted candidates, Please find the details below`
@@ -101,6 +104,7 @@ exports.storeEmployerAndCandidates = (req, res) => {
                 name: name,
                 email: email,
                 phone: phone,
+                can_contact: can_contact,
                 candidates: candidates
             }
 
@@ -125,7 +129,9 @@ exports.storeEmployerAndCandidates = (req, res) => {
                     name: response.email,
                     email: response.email,
                     phone: response.phone,
+                    can_contact: response.can_contact,
                     candidates: response.candidates.length > 0 ? response.candidates : [],
+                    page_link: page_link,
                     msg: `An employer has shorlisted the candidates, Please find the details below`
                 }
 

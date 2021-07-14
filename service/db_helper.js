@@ -266,7 +266,8 @@ exports.sendEmailToHrAfterReg = (user, cb) => {
     <b>Skills:</b> ${user.skills}<br>
     <b>Course:</b> ${user.course}<br>
     <b>Passing Year:</b> ${user.passing_year}<br>
-    <b>Joining By:</b> ${user.joining_by}<br><br>                      
+    <b>Joining By:</b> ${user.joining_by}<br>
+    <b>Subscribed:</b> ${user.subscribe ? 'Yes' : 'No'}<br><br>                      
     Thanks & Regards,<br>
     <b>Hireraft<b>
     </body></html>`,
@@ -323,6 +324,7 @@ exports.sendEmployerDetailsToHr = (data, cb) => {
     <b>Name:</b> ${data.name ? data.name : 'Not Available'}<br>
     <b>Email:</b> ${data.email ? data.email : 'Not Available'}<br>
     <b>Phone:</b> ${data.phone}<br>
+    <b>Available for Contact:</b> ${data.can_contact ? 'Yes' : 'No'}<br>
     <b>Page Link:</b> <a href=${data.page_link}>Click here</a><br>
     <b>Candidates</b>: ${tab}
     Thanks & Regards,<br>
