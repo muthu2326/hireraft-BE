@@ -82,7 +82,8 @@ exports.registerUser = function (req, cb) {
         course: req.body.course,
         passing_year: req.body.passing_year,
         skills: req.body.skills,
-        joining_by: req.body.joining_by
+        joining_by: req.body.joining_by,
+        subscribe: req.body.subscribe ? req.body.subscribe : false
     }
 
     const user = new RegisteredUsers(users_request)
@@ -154,6 +155,7 @@ exports.applyForJob = function (req, user, job, job_url, cb) {
     let applyForJob_request = {
         user_id: user._id,
         job_id: job._id,
+        job_type: job.job_type ? job.job_type : 'db',
         status: "Applied"
     }
 
@@ -291,7 +293,8 @@ sendEmailToHr = (user, job, job_url, cb) => {
         <b>Skills:</b> ${user.skills}<br>
         <b>Course:</b> ${user.course}<br>
         <b>Passing Year:</b> ${user.passing_year}<br>
-        <b>Joining By:</b> ${user.joining_by}<br><br>
+        <b>Joining By:</b> ${user.joining_by}<br>
+        <b>Subscribed:</b> ${user.subscribe ? 'Yes' : 'No'}<br><br> 
         <b>Company Name:</b> ${job.company_name}<br>
         <b>Company Address:</b> ${job.company_address}<br>
         <b>Job Details</b>: To view <a href=${job_url}>click here</a><br>

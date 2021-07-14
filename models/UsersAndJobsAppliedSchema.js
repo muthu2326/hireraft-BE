@@ -30,6 +30,11 @@ const UsersAndJobsAppliedSchema = new Schema({
         default: '',
         trim: true,
     },
+    job_type: {
+        type: String,
+        default: 'db',
+        trim: true,
+    },
     created: { type: Date, default: Date.now },
     updated: { type: Date, default: Date.now },
 });

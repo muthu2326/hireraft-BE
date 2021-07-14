@@ -19,6 +19,9 @@ router.get('/recommendations',jobs.getRecommendedJobs);
 /* POST user apply for a job. */
 router.post('/apply',jobs.applyJobNew);
 
+/* POST user apply for a job. */
+router.post('/cms/apply',jobs.applyForCMSJobNew);
+
 /* GET user apply for a job. */
 router.get('/count',jobs.getJobsCount);
 

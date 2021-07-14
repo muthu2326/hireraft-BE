@@ -680,6 +680,101 @@ exports.applyJobNew = function (req, res) {
     })
 }
 
+exports.applyForCMSJobNew = (req, res) => {
+    console.log("Jobs Controller: entering applyForCMSJobNew")
+    console.log('Request params :: ', req.params)
+    console.log("request query :: ", req.query);
+
+    if (!req.body.email || !req.body.uuid || !req.body.job_id || !req.body.job_url) {
+        let response = {
+            status: 400,
+            data: {},
+            error: {
+                msg: message.missing_fields,
+            },
+        };
+        res.status(400).jsonp(response);
+        return;
+    }
+    let user_id = req.body.uuid
+    let email = req.body.email
+    let job_id = req.body.job_id
+    let job_type = req.body.job_type
+    let job_url = req.body.job_url
+
+    let job = {
+        _id: req.body.job_id ? req.body.job_id : 'Not Available',
+        company_name: req.body.company_name ? req.body.company_name : 'Not Available',
+        company_address: req.body.company_address ? req.body.company_address : 'Not Available',
+        employment_type: req.body.employment_type ? req.body.employment_type : 'Not Available',
+        role: req.body.role ? req.body.role : 'Not Available',
+        job_type : job_type
+    }
+
+    dbHelper.findUser(user_id, email, (err, ch_user) => {
+        if (err) {
+            res.status(err.status).jsonp(err);
+            return;
+        } else {
+            if (!ch_user) {
+                console.log('New User')
+                dbHelper.registerUser(req, (err, new_user) => {
+                    if (err) {
+                        res.status(err.status).jsonp(err);
+                        return;
+                    }
+                    if (new_user) {
+                        let new_user_id = new_user._id;
+                        dbHelper.applyForJob(req, new_user, job, job_url, (err, response) => {
+                            if (err) {
+                                res.status(err.status).jsonp(err);
+                                return;
+                            } else {
+                                res.send({
+                                    status: 200,
+                                    data: {
+                                        reference: response._id,
+                                        msg: "Successfully Applied"
+                                    },
+                                    err: {}
+                                })
+                                return;
+                            }
+                        })                          
+                    }
+                })
+            } else {
+                console.log('user already registered')
+                dbHelper.checkIfUserAppliedForSameJob(user_id, job_id, (err, duplicateJob) => {
+                    if (err) {
+                        res.status(err.status).jsonp(err);
+                        return;
+                    } else {
+                        if (!duplicateJob) {
+                            dbHelper.applyForJob(req, ch_user, job, job_url, (err, response) => {
+                                if (err) {
+                                    res.status(err.status).jsonp(err);
+                                    return;
+                                } else {
+                                    res.send({
+                                        status: 200,
+                                        data: {
+                                            reference: response._id,
+                                            msg: "Successfully Applied"
+                                        },
+                                        err: {}
+                                    })
+                                    return;
+                                }
+                            })
+                        }
+                    }
+                })
+            }
+        }
+    })
+}
+
 exports.getJobsCount = function (req, res) {
     console.log("Jobs Controller: entering getJobsCount")
     console.log('Request params :: ', req.params)

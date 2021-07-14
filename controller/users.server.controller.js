@@ -124,6 +124,54 @@ exports.getUserById = function (req, res) {
     });
 }; /*End of getUser*/
 
+/*Get a single user */
+exports.getUserCMSJobs = function (req, res) {
+    console.log("User Controller: entering getUserJobs")
+    console.log('Request params :: ', req.params)
+    console.log("request query :: ", req.query);
+
+    /*Validate for a null id*/
+    if (!req.params.user_id) {
+        console.log("missing user_id in params");
+        res.status(400).jsonp({
+            status: 400,
+            data: {},
+            message: message.invalid_get_request,
+        });
+        return;
+    }
+
+    var user_id = req.params.user_id;
+    UsersAndJobsApplied.find({
+        user_id: user_id,
+        job_type: 'cms'
+    }, {
+        _id: 0,
+        job_id: 1
+    }, function (err, jobs_applied) {
+        if (err) {
+            console.log('err in finding getUserJobs', err)
+            res.status(500).jsonp({
+                status: 500,
+                data: {},
+                error: {
+                    msg: message.something_went_wrong,
+                    err: err,
+                },
+            });
+            return;
+        }
+        console.log('getUserJobs response', jobs_applied.length)
+        res.send({
+            status: 200,
+            data: {
+                jobs: jobs_applied.map((j) => j.job_id)
+            },
+            err: {}
+        })
+        return;
+    })
+}
 
 /*Get a single user */
 exports.getUserJobs = function (req, res) {
@@ -164,7 +212,8 @@ exports.getUserJobs = function (req, res) {
     console.log('pagination', pagination)
 
     UsersAndJobsApplied.find({
-        user_id: user_id
+        user_id: user_id,
+        job_type: { $ne: 'cms' }
     }, {
         _id: 0,
         job_id: 1,
@@ -291,49 +340,6 @@ exports.generateHashForEmails = function (req, res) {
     }
     req.query.type = 'user'
     dbHelper.hashEmails(req, res)
-
-    // let users_list = []
-
-    // fs.createReadStream(req.file.path)
-    //     .pipe(csv.parse({
-    //         headers: true
-    //     }))
-    //     .on("data", function (data) {
-    //         console.log('csv data: dealer')
-    //         // console.log(data)
-
-    //         let email = data['Email'];
-    //         console.log('email', email)
-
-    //         let obj = {
-    //             Fristname: data['Fristname'],
-    //             Email: data['Email'],
-    //             ID: dbHelper.encrypt(data['Email'])
-    //         }
-    //         users_list.push(obj)
-    //     })
-    //     .on("end", function () {
-    //         fs.unlinkSync(req.file.path);
-    //         if (users_list.length > 0) {
-    //             const csvFields = ['Firstname', 'Email', 'ID'];
-    //             console.log('users_list', users_list)
-    //             const json2csvParser = new Parser({ csvFields });
-    //             const csvData = json2csvParser.parse(users_list);
-    //             res.setHeader('Content-disposition', 'attachment; filename=users.csv');
-    //             res.set('Content-Type', 'text/csv');
-    //             res.attachment('users.csv');
-    //             res.send(csvData);   
-    //         } else {
-    //             res.status(400).jsonp({
-    //                 status: 400,
-    //                 data: {},
-    //                 error: {
-    //                     msg: `No Emails found from the file`
-    //                 }
-    //             });
-    //             return;
-    //         }
-    //     })
 }
 
 exports.decryptUserData = function (req, res) {
