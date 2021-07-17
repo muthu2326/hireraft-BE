@@ -211,6 +211,116 @@ exports.applyForJob = function (req, user, job, job_url, cb) {
     })
 }
 
+exports.applyForMultipleCMSJob = function (req, user, jobs, cb) {
+    console.log('entering applyForMultipleCMSJob')
+
+    let job_request = []
+
+    jobs.forEach((j) => {
+        let applyForJob_request = {
+            user_id: user._id,
+            job_id: j._id,
+            job_type: j.job_type,
+            status: "Applied"
+        }
+        job_request.push(new UsersAndJobsApplied(applyForJob_request))
+    })
+
+    if(job_request.length > 0){
+
+        UsersAndJobsApplied.insertMany(job_request, (err, jobs_res) => {
+            console.log('applied job response', jobs_res)
+            if (err) {
+                console.log('err in apply for jobs', err)
+                console.log('Exiting applyForMultipleCMSJob from Jobs apply')
+                let err_res = {
+                    status: 500,
+                    data: {},
+                    err: {
+                        msg: message.something_went_wrong,
+                        err: err
+                    }
+                }
+                cb(err_res, null)
+                return;
+            } else if (jobs_res) {
+                if(jobs.length == jobs_res.length){
+                    emailFormatForCMSJobs(user, jobs)
+                    console.log('sent email to HR')
+                    console.log('Applied jobs succesfully')
+                    cb(null, jobs_res)   
+                }else{
+                    emailFormatForCMSJobs(user, jobs)
+                    console.log('sent email to HR')
+                    console.log('No Jobs Applied')
+                    cb(null, jobs_res)
+                }                
+            }else {
+                let err_res2 = {
+                    status: 500,
+                    data: {},
+                    err: {
+                        msg: message.something_went_wrong
+                    }
+                }
+                cb(err_res2, null)
+                return;
+            }
+        })                          
+    }else{
+        emailFormatForCMSJobs(user, jobs)
+        console.log('sent email to HR')
+        console.log('Applied jobs succesfully')
+        cb(null, [])  
+    }
+}
+
+var emailFormatForCMSJobs = exports.emailFormatForCMSJobs = (user, jobs) => {
+    let tab = jobs.length > 0 ? `<br><br>${formatTableForAllJobs(jobs)}<br><br>` : "No Jobs Applied<br><br>"
+    email_content = {
+        subject: `${user.name} - Applied for CMS Jobs`,
+        body: `<html><body>
+        Hi,<br><br>A candidate has applied for ${jobs.length > 0 ? jobs.length : '0'} CMS jobs, Please find the details below<br><br>
+        <b>Name:</b> ${user.name}<br>
+        <b>Email:</b> ${user.email}<br>
+        <b>Phone:</b> ${user.phone}<br>
+        <b>Skills:</b> ${user.skills}<br>
+        <b>Course:</b> ${user.course}<br>
+        <b>Passing Year:</b> ${user.passing_year}<br>
+        <b>Joining By:</b> ${user.joining_by}<br>
+        <b>Subscribed:</b> ${user.subscribe ? 'Yes' : 'No'}<br><br> 
+        <b>Job Details:</b> ${tab}                   
+        Thanks & Regards,<br>
+        <b>Hireraft<b>
+        </body></html>`,
+            from: config.get('from_email'),
+            to: config.get('notify_to')
+        }
+    sendEmail(email_content)
+}
+
+var formatTableForAllJobs = exports.formatTableForAllJobs = (arr) => {
+    console.log('arr', arr)
+    let data = arr.map((d) => {
+        return `<tr>
+            <td style={text-align:'center'}>${d.company_name}</td>
+            <td style={text-align:'center'}>${d.role}</td>
+            <td style={text-align:'center'}><a href=${d.job_url}>Click here</a></td>
+        </tr>`
+    })
+    let tab = `
+    <table border='1'>
+        <tr>
+            <th>Company Name</th>
+            <th>Role</th>
+            <th>Job Page</th>
+        </tr>
+           ${data.join('')}
+    </table>`
+
+    return tab
+}
+
 exports.FindJobDetails = (job_id, cb) => {
     console.log('Entering FindJobDetails')
     console.log('job_id', job_id)

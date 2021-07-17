@@ -680,7 +680,8 @@ exports.applyJobNew = function (req, res) {
     })
 }
 
-exports.applyForCMSJobNew = (req, res) => {
+// Not in use - must be removed
+exports.applyForCMSJobNew2 = (req, res) => {
     console.log("Jobs Controller: entering applyForCMSJobNew")
     console.log('Request params :: ', req.params)
     console.log("request query :: ", req.query);
@@ -768,6 +769,94 @@ exports.applyForCMSJobNew = (req, res) => {
                                 }
                             })
                         }
+                    }
+                })
+            }
+        }
+    })
+}
+
+exports.applyForCMSJobNew = (req, res) => {
+    console.log("Jobs Controller: entering applyForCMSJobNew")
+    console.log('Request params :: ', req.params)
+    console.log("request query :: ", req.query);
+
+    if (!req.body.email || !req.body.uuid || !req.body.jobs) {
+        let response = {
+            status: 400,
+            data: {},
+            error: {
+                msg: message.missing_fields,
+            },
+        };
+        res.status(400).jsonp(response);
+        return;
+    }
+    let user_id = req.body.uuid
+    let email = req.body.email
+    let jobs = req.body.jobs ? req.body.jobs : []
+    
+    let jobs_request = jobs.map((j) => {
+        return {
+            _id: j.job_id ? j.job_id : 'Not Available',
+            company_name: j.company_name ? j.company_name : 'Not Available',
+            company_address: j.company_address ? j.company_address : 'Not Available',
+            employment_type: j.employment_type ? j.employment_type : 'Not Available',
+            role: j.role ? j.role : 'Not Available',
+            job_type : j.job_type,
+            job_url: j.job_url
+        }
+    })
+
+    console.log('jobs_request', jobs_request.length)
+    dbHelper.findUser(user_id, email, (err, ch_user) => {
+        if (err) {
+            res.status(err.status).jsonp(err);
+            return;
+        } else {
+            if (!ch_user) {
+                console.log('New User')
+                dbHelper.registerUser(req, (err, new_user) => {
+                    if (err) {
+                        res.status(err.status).jsonp(err);
+                        return;
+                    }
+                    if (new_user) {
+                        let new_user_id = new_user._id;
+                        dbHelper.applyForMultipleCMSJob(req, new_user, jobs_request, (err, response) => {
+                            if (err) {
+                                res.status(err.status).jsonp(err);
+                                return;
+                            } else {
+                                res.send({
+                                    status: 200,
+                                    data: {
+                                        reference: response ? response.map((e) => e._id) : [],
+                                        msg: `Successfully Applied for ${response ? response.length : '0'} jobs`
+                                    },
+                                    err: {}
+                                })
+                                return;
+                            }
+                        })
+                    }
+                })
+            }else{
+                console.log('user already exists')
+                dbHelper.applyForMultipleCMSJob(req, ch_user, jobs_request, (err, response) => {
+                    if (err) {
+                        res.status(err.status).jsonp(err);
+                        return;
+                    } else {
+                        res.send({
+                            status: 200,
+                            data: {
+                                reference: response ? response.map((e) => e._id) : [],
+                                msg: `Successfully Applied for ${response ? response.length : '0'} jobs`
+                            },
+                            err: {}
+                        })
+                        return;
                     }
                 })
             }
