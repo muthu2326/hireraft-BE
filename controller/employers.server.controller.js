@@ -26,6 +26,7 @@ exports.storeEmployerAndCandidates = (req, res) => {
     let candidates = req.body.candidates ? req.body.candidates : []
     let page_link = req.body.page_link ? req.body.page_link : 'Not available'
     let can_contact = req.body.can_contact ? req.body.can_contact : false
+    let employer_type = req.query.employer_type ? req.query.employer_type : 'registered'
 
     console.log('encrypted_email', encrypted_email)
 
@@ -132,7 +133,8 @@ exports.storeEmployerAndCandidates = (req, res) => {
                     can_contact: response.can_contact,
                     candidates: response.candidates.length > 0 ? response.candidates : [],
                     page_link: page_link,
-                    msg: `An employer has shorlisted the candidates, Please find the details below`
+                    employer_type: employer_type,
+                    msg: `An ${employer_type == 'unregistered'? 'unregistered' : '' } employer has shorlisted the candidates, Please find the details below`
                 }
 
                 dbHelper.sendEmployerDetailsToHr(email_data, (err, mail_res) => {

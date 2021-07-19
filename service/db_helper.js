@@ -451,12 +451,12 @@ exports.sendEmployerDetailsToHr = (data, cb) => {
     let tab = data.candidates.length > 0 ? `<br><br>${formatTableForArray(data.candidates)}<br><br>` : "No candidates shorlisted<br><br>"
 
     email_content = {
-        subject: data.email ? `Employer - ${data.email} : shortlisted candidate` : `Employer - shortlisted candidate`,
+        subject: data.email ? `Employer - ${data.email} : shortlisted candidate ${data.employer_type == 'unregistered'? '(Unregistered)' : ''}` : `Employer - shortlisted candidate ${data.employer_type == 'unregistered'? '(Unregistered)' : ''}`,
         body: `<html><body>
     Hi,<br><br>${data.msg}<br><br>
     <b>Name:</b> ${data.name ? data.name : 'Not Available'}<br>
     <b>Email:</b> ${data.email ? data.email : 'Not Available'}<br>
-    <b>Phone:</b> ${data.phone}<br>
+    <b>Phone:</b> ${data.phone ? data.phone : 'Not Available'}<br>
     <b>Available for Contact:</b> ${data.can_contact ? 'Yes' : 'No'}<br>
     <b>Page Link:</b> <a href=${data.page_link}>Click here</a><br>
     <b>Candidates</b>: ${tab}
