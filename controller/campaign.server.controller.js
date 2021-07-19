@@ -32,6 +32,7 @@ exports.storeCampaignLog = (req, res) => {
     }
 
     let email = dbHelper.decrypt(req.body.uuid)
+    let role = req.body.role ? req.body.role : 'employer'
 
     dbHelper.validateToken(req.body.token, (err, tokenRes) => {
         if (err) {
@@ -89,7 +90,7 @@ exports.storeCampaignLog = (req, res) => {
                     console.log('successfully created log')
                     console.log('log response', response)
                     let email_content = {
-                        msg: 'An employer has visited the campaign page, please find the details below :',
+                        msg: `An ${role.lowerCase()} has visited the campaign page, please find the details below :`,
                         uuid: response.uuid,
                         email: response.email,
                         page_link: response.page_link,
