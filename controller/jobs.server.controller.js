@@ -795,6 +795,7 @@ exports.applyForCMSJobNew = (req, res) => {
     let user_id = req.body.uuid
     let email = req.body.email
     let jobs = req.body.jobs ? req.body.jobs : []
+    let user_type = req.query.user_type ? req.query.user_type : 'registered'
     
     let jobs_request = jobs.map((j) => {
         return {
@@ -809,59 +810,82 @@ exports.applyForCMSJobNew = (req, res) => {
     })
 
     console.log('jobs_request', jobs_request.length)
-    dbHelper.findUser(user_id, email, (err, ch_user) => {
-        if (err) {
-            res.status(err.status).jsonp(err);
-            return;
-        } else {
-            if (!ch_user) {
-                console.log('New User')
-                dbHelper.registerUser(req, (err, new_user) => {
-                    if (err) {
-                        res.status(err.status).jsonp(err);
-                        return;
-                    }
-                    if (new_user) {
-                        let new_user_id = new_user._id;
-                        dbHelper.applyForMultipleCMSJob(req, new_user, jobs_request, (err, response) => {
-                            if (err) {
-                                res.status(err.status).jsonp(err);
-                                return;
-                            } else {
-                                res.send({
-                                    status: 200,
-                                    data: {
-                                        reference: response ? response.map((e) => e._id) : [],
-                                        msg: `Successfully Applied for ${response ? response.length : '0'} jobs`
-                                    },
-                                    err: {}
-                                })
-                                return;
-                            }
-                        })
-                    }
-                })
-            }else{
-                console.log('user already exists')
-                dbHelper.applyForMultipleCMSJob(req, ch_user, jobs_request, (err, response) => {
-                    if (err) {
-                        res.status(err.status).jsonp(err);
-                        return;
-                    } else {
-                        res.send({
-                            status: 200,
-                            data: {
-                                reference: response ? response.map((e) => e._id) : [],
-                                msg: `Successfully Applied for ${response ? response.length : '0'} jobs`
-                            },
-                            err: {}
-                        })
-                        return;
-                    }
-                })
-            }
+    if(user_type == 'unregistered'){
+        let user = {
+            _id: user_id,
+            email: email
         }
-    })
+        dbHelper.applyForMultipleCMSJob(req, user, jobs_request, (err, response) => {
+            if (err) {
+                res.status(err.status).jsonp(err);
+                return;
+            } else {
+                res.send({
+                    status: 200,
+                    data: {
+                        reference: response ? response.map((e) => e._id) : [],
+                        msg: `Successfully Applied for ${response ? response.length : '0'} jobs`
+                    },
+                    err: {}
+                })
+                return;
+            }
+        })
+    }else{
+        dbHelper.findUser(user_id, email, (err, ch_user) => {
+            if (err) {
+                res.status(err.status).jsonp(err);
+                return;
+            } else {
+                if (!ch_user) {
+                    console.log('New User')
+                    dbHelper.registerUser(req, (err, new_user) => {
+                        if (err) {
+                            res.status(err.status).jsonp(err);
+                            return;
+                        }
+                        if (new_user) {
+                            let new_user_id = new_user._id;
+                            dbHelper.applyForMultipleCMSJob(req, new_user, jobs_request, (err, response) => {
+                                if (err) {
+                                    res.status(err.status).jsonp(err);
+                                    return;
+                                } else {
+                                    res.send({
+                                        status: 200,
+                                        data: {
+                                            reference: response ? response.map((e) => e._id) : [],
+                                            msg: `Successfully Applied for ${response ? response.length : '0'} jobs`
+                                        },
+                                        err: {}
+                                    })
+                                    return;
+                                }
+                            })
+                        }
+                    })
+                }else{
+                    console.log('user already exists')
+                    dbHelper.applyForMultipleCMSJob(req, ch_user, jobs_request, (err, response) => {
+                        if (err) {
+                            res.status(err.status).jsonp(err);
+                            return;
+                        } else {
+                            res.send({
+                                status: 200,
+                                data: {
+                                    reference: response ? response.map((e) => e._id) : [],
+                                    msg: `Successfully Applied for ${response ? response.length : '0'} jobs`
+                                },
+                                err: {}
+                            })
+                            return;
+                        }
+                    })
+                }
+            }
+        })
+    }
 }
 
 exports.getJobsCount = function (req, res) {

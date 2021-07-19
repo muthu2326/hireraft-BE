@@ -215,6 +215,7 @@ exports.applyForMultipleCMSJob = function (req, user, jobs, cb) {
     console.log('entering applyForMultipleCMSJob')
 
     let job_request = []
+    let user_type = req.query.user_type ? req.query.user_type : 'registered'
 
     jobs.forEach((j) => {
         let applyForJob_request = {
@@ -245,12 +246,12 @@ exports.applyForMultipleCMSJob = function (req, user, jobs, cb) {
                 return;
             } else if (jobs_res) {
                 if(jobs.length == jobs_res.length){
-                    emailFormatForCMSJobs(user, jobs)
+                    emailFormatForCMSJobs(user, user_type, jobs)
                     console.log('sent email to HR')
                     console.log('Applied jobs succesfully')
                     cb(null, jobs_res)   
                 }else{
-                    emailFormatForCMSJobs(user, jobs)
+                    emailFormatForCMSJobs(user, user_type, jobs)
                     console.log('sent email to HR')
                     console.log('No Jobs Applied')
                     cb(null, jobs_res)
@@ -268,35 +269,54 @@ exports.applyForMultipleCMSJob = function (req, user, jobs, cb) {
             }
         })                          
     }else{
-        emailFormatForCMSJobs(user, jobs)
+        emailFormatForCMSJobs(user, user_type, jobs)
         console.log('sent email to HR')
         console.log('Applied jobs succesfully')
         cb(null, [])  
     }
 }
 
-var emailFormatForCMSJobs = exports.emailFormatForCMSJobs = (user, jobs) => {
+var emailFormatForCMSJobs = exports.emailFormatForCMSJobs = (user, user_type, jobs) => {
     let tab = jobs.length > 0 ? `<br><br>${formatTableForAllJobs(jobs)}<br><br>` : "No Jobs Applied<br><br>"
-    email_content = {
-        subject: `${user.name} - Applied for CMS Jobs`,
-        body: `<html><body>
-        Hi,<br><br>A candidate has applied for ${jobs.length > 0 ? jobs.length : '0'} CMS jobs, Please find the details below<br><br>
-        <b>Name:</b> ${user.name}<br>
-        <b>Email:</b> ${user.email}<br>
-        <b>Phone:</b> ${user.phone}<br>
-        <b>Skills:</b> ${user.skills}<br>
-        <b>Course:</b> ${user.course}<br>
-        <b>Passing Year:</b> ${user.passing_year}<br>
-        <b>Joining By:</b> ${user.joining_by}<br>
-        <b>Subscribed:</b> ${user.subscribe ? 'Yes' : 'No'}<br><br> 
-        <b>Job Details:</b> ${tab}                   
-        Thanks & Regards,<br>
-        <b>Hireraft<b>
-        </body></html>`,
-            from: config.get('from_email'),
-            to: config.get('notify_to')
-        }
-    sendEmail(email_content)
+
+    if(user_type == 'unregistered'){
+        email_content = {
+            subject: `Applied for Campaign Job (Unregistered User)`,
+            body: `<html><body>
+            Hi,<br><br>An unregistered candidate has applied for a campagin ${jobs.length > 1 ? 'jobs' : 'job'}, Please find the details below<br><br>
+           
+            <b>UUID:</b> ${user._id}<br>
+            <b>Email:</b> ${user.email}<br><br>
+            <b>Job Details:</b> ${tab}                   
+            Thanks & Regards,<br>
+            <b>Hireraft<b>
+            </body></html>`,
+                from: config.get('from_email'),
+                to: config.get('notify_to')
+            }
+            sendEmail(email_content)
+    }else{
+        email_content = {
+            subject: `${user.name} - Applied for Campaign Jobs`,
+            body: `<html><body>
+            Hi,<br><br>A candidate has applied for ${jobs.length > 0 ? jobs.length : '0'} campagin ${jobs.length > 1 ? 'jobs' : 'job'}, Please find the details below<br><br>
+            <b>Name:</b> ${user.name}<br>
+            <b>Email:</b> ${user.email}<br>
+            <b>Phone:</b> ${user.phone}<br>
+            <b>Skills:</b> ${user.skills}<br>
+            <b>Course:</b> ${user.course}<br>
+            <b>Passing Year:</b> ${user.passing_year}<br>
+            <b>Joining By:</b> ${user.joining_by}<br>
+            <b>Subscribed:</b> ${user.subscribe ? 'Yes' : 'No'}<br><br> 
+            <b>Job Details:</b> ${tab}                   
+            Thanks & Regards,<br>
+            <b>Hireraft<b>
+            </body></html>`,
+                from: config.get('from_email'),
+                to: config.get('notify_to')
+            }
+        sendEmail(email_content)
+    }
 }
 
 var formatTableForAllJobs = exports.formatTableForAllJobs = (arr) => {
