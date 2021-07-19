@@ -94,6 +94,7 @@ exports.storeCampaignLog = (req, res) => {
                         uuid: response.uuid,
                         email: response.email,
                         page_link: response.page_link,
+                        role: role,
                         clicked_on: response.clicked_on,
                         status: response.status,
                         link_expired: expiry_date

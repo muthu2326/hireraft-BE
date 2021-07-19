@@ -476,7 +476,7 @@ exports.sendEmailToHrAfterEmployerClicksOnCampaignLink = (data, cb) => {
     console.log('data', data)
 
     email_content = {
-        subject: `Employer Clicked - ${data.status[0].toUpperCase() + data.status.slice(1, data.status.length).toLowerCase()} Link`,
+        subject: `${data.role == 'employer'? 'Employer' : 'Candidate'} Clicked - ${data.status[0].toUpperCase() + data.status.slice(1, data.status.length).toLowerCase()} Link`,
         body: `<html><body>
     Hi,<br><br>${data.msg}<br><br>
     <b>Email:</b> ${data.email ? data.email : 'Not Available'}<br>

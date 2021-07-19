@@ -7,16 +7,29 @@ exports.storeEmployerAndCandidates = (req, res) => {
     console.log("Emplyer Controller: entering decryptEmployerData")
     console.log('Request body :: ', req.body)
     console.log("request query :: ", req.query);
-
-    if (!req.params.encrypt_id || !req.body.candidates || !req.body.phone) {
-        console.log("missing mandat fields");
-        res.status(400).jsonp({
-            status: 400,
-            data: {},
-            message: message.missing_fields,
-        });
-        return;
+    
+    if(req.query.employer_type == 'unregistered' ? true : false){
+        if (!req.params.encrypt_id || !req.body.candidates) {
+            console.log("missing mandat fields");
+            res.status(400).jsonp({
+                status: 400,
+                data: {},
+                message: message.missing_fields,
+            });
+            return;
+        }
+    }else{
+        if (!req.params.encrypt_id || !req.body.candidates || !req.body.phone) {
+            console.log("missing mandat fields");
+            res.status(400).jsonp({
+                status: 400,
+                data: {},
+                message: message.missing_fields,
+            });
+            return;
+        }
     }
+    
 
     let encrypt_id = req.params.encrypt_id
     let encrypted_email = dbHelper.decrypt(encrypt_id)
