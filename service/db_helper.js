@@ -25,6 +25,7 @@ const UsersAndJobsApplied = require('../models/UsersAndJobsAppliedSchema');
 const Employer = require('../models/EmployerSchema');
 const Session = require('../models/SessionSchema');
 const Survey = require('../models/SurveySchema');
+const JobLogs = require('../models/JobLogsSchema');
 
 exports.findUser = function (user_id, email, cb) {
 
@@ -339,6 +340,40 @@ var formatTableForAllJobs = exports.formatTableForAllJobs = (arr) => {
     </table>`
 
     return tab
+}
+
+exports.storeJobLogs = (jobs, user, action, cb) => {
+    console.log('entering job logs creation')
+
+    let jobActions = jobs.map((job) => {
+        let action_Request = {
+            job_id: job.job_id,
+            job_type: job.job_type,
+            user_id: user._id,
+            action: action
+        }
+        return new JobLogs(action_Request)
+    })    
+
+    JobLogs.insertMany(jobActions, (err, job_logs_res) => {
+        if (err) {
+            console.log('err in JobLogs', err)
+            let err ={
+                status: 500,
+                data: {},
+                err: {
+                    msg: message.something_went_wrong,
+                    err: err
+                }
+            }
+            cb(err, null)
+            return;
+        } else {
+            console.log('successfully created Job logs', job_logs_res ? job_logs_res.length : job_logs_res)
+            cb(null, job_logs_res)
+            return
+        }
+    })
 }
 
 exports.FindJobDetails = (job_id, cb) => {

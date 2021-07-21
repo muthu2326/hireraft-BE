@@ -12,6 +12,7 @@ const {
 
 const NaukriPostedJob = require('../models/NaukriPostedJobSchema');
 const UsersAndJobsApplied = require('../models/UsersAndJobsAppliedSchema');
+const JobLogs = require('../models/JobLogsSchema');
 
 exports.createJob = (req, res) => {
     console.log("Job Controller: entering createJob")
@@ -808,7 +809,7 @@ exports.applyForCMSJobNew = (req, res) => {
             job_url: j.job_url
         }
     })
-
+    
     console.log('jobs_request', jobs_request.length)
     if(user_type == 'unregistered'){
         let user = {
@@ -820,15 +821,23 @@ exports.applyForCMSJobNew = (req, res) => {
                 res.status(err.status).jsonp(err);
                 return;
             } else {
-                res.send({
-                    status: 200,
-                    data: {
-                        reference: response ? response.map((e) => e._id) : [],
-                        msg: `Successfully Applied for ${response ? response.length : '0'} jobs`
-                    },
-                    err: {}
-                })
-                return;
+                // Creating job logs
+                dbHelper.storeJobLogs(jobs, user, 'applied', (err, job_logs) => {
+                    if (err) {
+                        res.status(err.status).jsonp(err);
+                        return;
+                    }else{
+                        res.send({
+                            status: 200,
+                            data: {
+                                reference: response ? response.map((e) => e._id) : [],
+                                msg: `Successfully Applied for ${response ? response.length : '0'} jobs`
+                            },
+                            err: {}
+                        })
+                        return;
+                    }
+                })                
             }
         })
     }else{
@@ -851,15 +860,22 @@ exports.applyForCMSJobNew = (req, res) => {
                                     res.status(err.status).jsonp(err);
                                     return;
                                 } else {
-                                    res.send({
-                                        status: 200,
-                                        data: {
-                                            reference: response ? response.map((e) => e._id) : [],
-                                            msg: `Successfully Applied for ${response ? response.length : '0'} jobs`
-                                        },
-                                        err: {}
+                                    dbHelper.storeJobLogs(jobs, user, 'applied', (err, job_logs) => {
+                                        if (err) {
+                                            res.status(err.status).jsonp(err);
+                                            return;
+                                        }else{
+                                            res.send({
+                                                status: 200,
+                                                data: {
+                                                    reference: response ? response.map((e) => e._id) : [],
+                                                    msg: `Successfully Applied for ${response ? response.length : '0'} jobs`
+                                                },
+                                                err: {}
+                                            })
+                                            return;
+                                        }
                                     })
-                                    return;
                                 }
                             })
                         }
@@ -871,15 +887,22 @@ exports.applyForCMSJobNew = (req, res) => {
                             res.status(err.status).jsonp(err);
                             return;
                         } else {
-                            res.send({
-                                status: 200,
-                                data: {
-                                    reference: response ? response.map((e) => e._id) : [],
-                                    msg: `Successfully Applied for ${response ? response.length : '0'} jobs`
-                                },
-                                err: {}
+                            dbHelper.storeJobLogs(jobs, user, 'applied', (err, job_logs) => {
+                                if (err) {
+                                    res.status(err.status).jsonp(err);
+                                    return;
+                                }else{
+                                    res.send({
+                                        status: 200,
+                                        data: {
+                                            reference: response ? response.map((e) => e._id) : [],
+                                            msg: `Successfully Applied for ${response ? response.length : '0'} jobs`
+                                        },
+                                        err: {}
+                                    })
+                                    return;
+                                }
                             })
-                            return;
                         }
                     })
                 }
@@ -925,6 +948,103 @@ exports.getJobsCount = function (req, res) {
                 err: {}
             })
             return;
+        }
+    })
+}
+
+exports.storeJobAction = function (req, res) {
+    console.log("Jobs Controller: entering storeJobAction")
+    console.log('Request params :: ', req.params)
+    console.log("request query :: ", req.query);
+
+    if (!req.params.job_id) {
+        let response = {
+            status: 400,
+            data: {},
+            error: {
+                msg: message.missing_fields,
+            },
+        };
+        res.status(400).jsonp(response);
+        return;
+    }
+
+    let job_id = req.params.job_id
+    let action_Request = {
+        job_id: job_id,
+        job_type: req.body.job_type,
+        user_id: req.body.user_id,
+        action: req.body.action
+    }
+    let jobLog = new JobLogs(action_Request)
+    jobLog.save((err, response) => {
+        if (err) {
+            console.log('err in getJobContactPersionDetails', err)
+            res.send({
+                status: 500,
+                data: {},
+                err: {
+                    msg: message.something_went_wrong,
+                    err: err
+                }
+            })
+            return;
+        }else{
+            res.send({
+                status: 200,
+                data: {
+                    msg: message.success
+                },
+                err: {}
+            })
+            return;
+        }
+    })
+}
+
+exports.jobAnalytics = (req, res) => {
+    console.log("Jobs Controller: entering jobAnalytics")
+    console.log('Request params :: ', req.params)
+    console.log("request query :: ", req.query);
+
+    JobLogs.find({
+        job_type: 'cms'
+    },{
+        _id: 0,
+        job_id: 1,
+        action: 1
+    },(err, response) => {
+        if (err) {
+            console.log('err in getJobContactPersionDetails', err)
+            res.send({
+                status: 500,
+                data: {},
+                err: {
+                    msg: message.something_went_wrong,
+                    err: err
+                }
+            })
+            return;
+        }else{
+            if(response){
+                let job_logs = response.map((j => j.job_id))
+                let jobs_ids = [... new Set(job_logs)]
+                let result = jobs_ids.map((job_id) => {
+                    return {
+                        job_id: job_id,
+                        view: response.filter((l=> job_id == l.job_id && l.action == 'view')).length,
+                        applied: response.filter((l=> job_id == l.job_id && l.action == 'applied')).length
+                    }
+                })
+                res.send({
+                    status: 200,
+                    data: {
+                        analytics: result
+                    },
+                    err: {}
+                })
+                return;
+            }
         }
     })
 }

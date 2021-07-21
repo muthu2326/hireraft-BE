@@ -19,6 +19,12 @@ router.get('/recommendations',jobs.getRecommendedJobs);
 /* POST user apply for a job. */
 router.post('/apply',jobs.applyJobNew);
 
+/* Post Job View */
+router.post('/:job_id/action',jobs.storeJobAction);
+
+/* GET Job Analytics */
+router.get('/cms/analytics',jobs.jobAnalytics);
+
 /* POST user apply for a job. */
 router.post('/cms/apply',jobs.applyForCMSJobNew);
 
